@@ -1,0 +1,68 @@
+<em> Introduction
+
+SOIL (Simple OpenGL Image Library) is a library that allows loading of OpenGL textures stored in various image formats including BMP, JPG, PNG (for complete list, refer to http://www.lonesock.net/soil.html. This article tries to provide a solution to the Image loading issue faced by OpenGL developers who are not using standard frameworks like Unity that include image loaders within.
+
+Other solutions for standalone image loading include DeVIL - which can load textures using the API -  ilutOglLoadImage, in a similar manner to that of SOIL.
+
+<em>SOIL API
+
+The SOIL library does the below steps to load the image as a texture, for the API SOIL_load_OGL_texture. The prototype is like below:
+
+SOIL_load_OGL_texture
+        (
+        "./img_test.png",
+        SOIL_LOAD_AUTO,
+        passed_in_ID, /* or SOIL_CREATE_NEW_ID to generate the ID internally */
+        NULL
+        );
+
+- Decodes the file by opening the provided file name
+
+- Creates a GL texture object by using the OpenGL API, or can use a passed-in Texture object ID.
+
+- Loads the file data into the GPU using the glTexImage2D API. It does not handle glTexImage3D.
+
+- Returns the generated texture object id.
+
+This API is very useful, and one of the use-cases could be to call this API from a separate thread, so that the main thread can execute the rest of the program while the texture loading thread handles the File open/decode/texture loading tasks. This makes the program respond to the user in a responsive manner.
+
+For example, in C++, it can be offloaded like below:
+
+std::thread textureloader(SOIL_loader);
+
+Where, SOIL_loader() is the function that calls SOIL_load_OGL_texture, to load the texture. This runs in a separate thread.
+
+One interesting problem with a library/use-case like this is the Threading aspect. OpenGL specifies that the context may be valid in only one Thread at a time. However, the SOIL loader uses the GL context to load the texture, and hence it is invalid as the GL context is "owned" by the main thread.
+
+<em> Solution for threading
+
+This can be solved using the below approach.
+
+- Create and spawn thread for the loader as above.
+
+- Wait for the thread to finish execution, so that no GL calls are made. This can be done using pthread join or similar API depending on the OS.
+
+- Inside the SOIL_loader function, make the GL context current in that loader thread before calling the SOIL API.
+
+- Perform the loading
+
+- After the thread completes, the execution returns to the main thread. After this point, make the GL context again current to the main thread, by calling glfwMakeContextCurrent, or similar API for the platform. This ensures the main thread can make GL calls as usual.
+
+<em> GL context Issue with the above solution
+
+The above solution renders the threading useless because the main thread waits for the child thread to finish. This can be avoided by splitting the solution into 2 parts.
+
+- Do not upload image data into the GL texture in the child thread. But load the image file into a memory buffer, using the SOIL API - SOIL_load_image(). This returns a pointer to the memory buffer containing raw data. Since no GL is involved in the child thread, no GL context setting needs to be done.
+
+- In the main thread, use the memory buffer to upload the image data to GL, whenever the child thread completes. The main thread owns the GL context at all times. A dummy texture can be shown during this time of loading.
+
+<em> References:
+
+http://www.lonesock.net/soil.html
+
+https://bitbucket.org/SpartanJ/soil2
+
+https://github.com/ScaledLizard/ResIL
+
+
+-prabindh@yahoo.com
