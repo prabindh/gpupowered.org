@@ -1,0 +1,82 @@
+Introduction:
+
+Recently, the xgxperf C++ package (Utility to draw common 2D objects using Qt, and measure performance) was moved from the earlier Qt4 to Qt5. (Qt5.1 Alpha1). This post summarises the changes that were required for this purpose. This post can be used as a general guideline of how to port applications from Qt4 to Qt5, specially applications that are widget based. An introduction to xgxperf is available at (https://gforge.ti.com/gf/download/docmanfileversion/237/3977/XgxPerfToolkit_v2.pdf)
+
+Original Qt4 package (SVN):
+
+https://gforge.ti.com/gf/project/gleslayer/scmsvn/?action=browse&path=%2Ftrunk%2FPackages%2FOMAP3_Graphics_SDK%2Fxgxperf%2Fxgxperf%2F
+
+New Qt5 package (github)
+
+https://github.com/prabindh/xgxperf
+
+Changes:
+
+Note that, the svg package needs to be built in Qt5 for the VG support required by xgxperf.
+
+1. Errors in <QtGui> for QWidget definition.
+#include <QWidget> works, but #include <QtWidgets/QWidget> does not.
+
+2. Some like #include "<QGraphicsItem>", need QtWidgets/QGraphicsItem, <QtWidgets/QVBoxLayout> 
+
+3. QString::toAscii() ==> QString::toLatin1() in xgxperfserver.cpp
+
+4. Qt += widgets needed, to avoid linking errors for all widgets
+
+5. Project ERROR: Unknown module(s) in QT: svg ==> svg is not default in Qt, needs qtsvg
+
+6. QApplication ==> <QtWidgets/QApplication>
+
+7. "<QtWidgets/QGraphicsProxyWidget>" needs to be declared explicitly
+
+8. #include "<QtWidgets/QGraphicsDropShadowEffect>" to be declared explicitly
+
+9. #include "<QDebug>" to be declared explicitly
+
+10. If project includes .ui files, and needs the ui_mainwindow.h, also need to add QT += widgets, to get uic to be called to generate ui files
+
+11. Add QtWidgets, #include "<QtWidgets/QGraphicsEffect> "
+
+12. Add QtWidgets, #include "<QtWidgets/QGraphicsView>"
+
+13. #include "<QtWidgets/QPushButton>"
+
+14. QGraphicsItem::Scale ==> QGraphicsItem::setScale
+
+15. QApplication::sendEvent becomes QCoreApplication::sendEvent
+
+16. QGraphicsDropShadowEffect ==> QtWidgets/QGraphicsDropShadowEffect
+
+<em> Results:
+
+After these changes, the entire xgxperf package was able to be built. The demo application launched as below:
+
+Usage: xgxperf_app (Application Manager for Qt applications)
+cookie<0,1,2..>\n<numWdgts=3,.>\n<fx=0,1>\n<transparency=0,1>\n<texture=0,1,2>\n<fontsize=8,16..>\n<fps=1,..>\n<prebuiltID=0,1,2,3,10\n<wdgtsize=100,256,512><numFrames=100,200..>\n<appstring>\n For example,
+./xgxperf_app [-qws] 123 3 0 0 0 0 10 99 512 100 \"vslib\" 
+
+Default invocation runs the Automation demo for ~100 seconds.
+
+This was validated on AM335x CortexA8 ARM platform EVM on a WVGA display, with eglfs platform plugin with patches for usage with TI Graphics SDK.
+
+Usage of Qt5 on TI platforms and build procedure can be obtained from the page at http://gpupowered.org/node/8
+
+Usage with QML:
+
+Exposing C++ in a QML environment is explained in detail in the Qt pages at,
+
+http://qt-project.org/doc/qt-5.0/qtqml/qtqml-cppintegration-exposecppattributes.html
+
+Additional information:
+
+In wpa_gui, below additional changes were required to move to Qt5.2
+
+QApplication ==> QtWidgets/QApplication
+
+QSystemTrayIcon ==> QtWidgets/QSystemTrayIcon
+
+QtGui/QDialog ==> QDialog, same for QTreeWidget, QVBoxLayout
+
+Qt::WFlags ==> Qt::WindowFlags
+
+qApp->argc(), argv() removed, so need to pass argc,argv from app to all further classes/function calls

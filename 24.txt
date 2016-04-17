@@ -1,0 +1,62 @@
+It is now possible to run Qt5, on TI ARM platforms with OpenGLES2.0 support like AM335x, OMAP5, from the respective Linux Development kits.
+
+(Jan 2014 update) Qt5.2 build instructions posted at http://gpupowered.org/node/31
+
+(Nov 2013 update) It is also now possible to build directly from Yocto with meta-ti recipes for AMSDK, as most of the standalone patches are pulled into meta-arago.
+
+http://arago-project.org/pipermail/meta-arago/2013-October/002103.html
+
+<em>Instructions for AM335x - Sitara platform:
+
+Dependencies:
+
+(1) Download the latest Sitara EZ-SDK from 
+
+http://downloads.ti.com/sitara_linux/esd/AM335xSDK/latest/index_FDS.html
+
+The Sitara SDK complete installer provides all 3 components necessary for standalone Qt5 build - A recent Linaro toolchain, Root filesystem with dependencies for cross-compiling Qt5, and SGX drivers, along with the boot images (MLO, uboot and uImage based on 3.2 kernel)
+
+Note: The toolchain is available at the below location in the AMSDK
+
+ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin
+
+(2) Qt 5.1.0 can be downloaded from Qt website directly.
+
+(3) Patches for Qt 5.1.0 are at
+
+https://github.com/prabindh/qt-configs/tree/master/qt5_1.0_Aug13
+
+Step1 : Configure:
+
+export QMAKESPEC=
+
+export PATH=/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin:~/work1/arm-qt5-5.1.0/qt-everywhere-opensource-src-5.1.0/qtbase/bin:$PATH
+
+./configure -prefix /home1/prabu/qt5.1.0_install -release -make libs -xplatform linux-arm-gnueabi-ti-g++ -opengl es2 -confirm-license -opensource -icu -no-xcb -no-pch -make examples -verbose
+
+This should result in all makefiles generated, with OpenGLES2.0 support and eglfs. Note that the AMSDK 6.00 does not provide libicu, and hence it is not possible to build qtwebkit directly with this. However, if libicu is added to the image via Yocto, it can be accomplished.
+
+Step2: Build:
+
+After configure, perform a "make" command to generate the Qt5 libraries and install to target/required folders.
+
+Step3 : Running on target platform
+
+Use the pre-built binaries provided as part of AMSDK 6.00 to flash a SD card. Install Qt5.1.0 binaries to this card.
+
+After booting up, example applications can be run, as below sample shows.
+
+cd qt5.1.0_install/examples/quick/demos/clocks
+
+../../bin/qmlscene clocks.qml
+
+
+<em>Instructions for OMAP5 platform:
+
+OMAP5 platform supports Qt5.1.0 with KMS platform. This can be run with instructions provided at,
+
+http://tigraphics.blogspot.in/2013/08/qt5-with-kms-omap5-jacinto6.html
+
+All Qt5 related forum comments are archived at - Qt5 Discus comments (http://gpupowered.org/node/35) page.
+
+-prabindh@yahoo.com, 2014

@@ -1,0 +1,67 @@
+Note: A new version of the Lab setup is available here <a href="http://www.gpupowered.org/node/13"> in this page.</a>
+
+<strong>Brief introduction to OpenGL ES2.0
+
+The Khronos consortium ratified the OpenGL ES2.0 specification in 2008. While OpenGL ES1.1 supported only a fixed-function pipeline to render Graphics, OpenGL ES2.0 supported a programmable pipeline, and the GLSL (the shader language used for programming the shaders) enabled programmers to write code to perform special effects on vertices and fragments/pixels. OpenGL ES2.0 is widely adopted in the embedded industry, and with WebGL, is also gaining popular support in current browsers.
+
+<strong> Learning methodology adopted
+
+GPUPowered adopts an API based approach of learning, with tracking based on number of APIs covered, and complexity of the usage.
+
+Unique approaches of this set of labs are mentioned below.
+
+<em><li>Setting up the platform is the first roadblock many first time OpenGL users face. A recent study <a href="http://tigraphics.blogspot.com/2011/11/why-is-opengles-so-complex.html">over here</a> indicates that "the number of lines in the first Tutorial to draw a simple triangle (yes - 3 vertices - "Hello Triangle"), is of the order of 5oo lines". Using WebGL as a fundamental platform abstracts away half of this setup roadblock, and ensures the reader can start fast.
+
+<em><li>A simple framework is provided that abstracts context creation, user event interaction (ex, mouse handling), Debug viewport management, and display management. User can 
+focus on OpenGL ES2.0 code directly without understanding platform dependencies
+
+<em><li>A default set of pre-modelled lab courses is provided as reference to all users
+
+<em><li>Each lab targets a set of OpenGL ES2.0 APIs, so that all APIs are covered in detail. The level of complexity grows with each tutorial.
+
+<em><li>Logged in users can create new advanced tutorials, store online for later editing, and complete at their own pace
+
+<em><li>An online editor that understands the OpenGL ES2.0/ WebGL syntax is provided for advanced programming
+
+<em><li>A debug console to print gl errors during the execution of the program
+
+<em><li>A GL viewport console that helps debugging off-screen rendering work
+
+<em><li>An online forum for users to discuss technical topics around OpenGL programming and advanced concepts
+
+
+<strong> Why the WebGL format ?
+
+WebGL is a derivative standard, based on OpenGL ES2.0 - that allows the browser to run code using the GPU. There are a few differences (owing to the differences between the native programming method of OpenGL ES2.0 vs the Javascript environment of the browser), and performance differences, but for the purpose of learning the OpenGL ES2.0 standard, WebGL is probably the most suited due to the wide availability and ease of use of real-time programming on browsers.
+
+Quoting from the Khronos website,
+
+<cite>WebGL - OpenGL ES 2.0 for the Web
+
+WebGL is a cross-platform, royalty-free web standard for a low-level 3D graphics API based on OpenGL ES 2.0, exposed through the HTML5 Canvas element as Document Object Model interfaces. Developers familiar with OpenGL ES 2.0 will recognize WebGL as a Shader-based API using GLSL, with constructs that are semantically similar to those of the underlying OpenGL ES 2.0 API. It stays very close to the OpenGL ES 2.0 specification, with some concessions made for what developers expect out of memory-managed languages such as JavaScript.
+
+WebGL brings plugin-free 3D to the web, implemented right into the browser. Major browser vendors Apple (Safari), Google (Chrome), Mozilla (Firefox), and Opera (Opera) are members of the WebGL Working Group. 
+</cite>
+
+<strong> 3D models
+
+A number of Labs refer to 3D models like the one below. The models have been created using Blender.
+
+http://gpupowered.org/sand/images/cathedral.PNG
+
+<strong> Usage of workers for background processing of textures and scripts
+
+More information on this is available at,
+
+http://gpupowered.org/node/11/
+
+<strong> OpenGL ES2.0 lessons [Beta]
+
+<li>Click on the link below to start viewing the gpupowered.org WebGL learning sessions:
+
+<em> <a href="http://gpupowered.org/sand/launch/tutorials.html">tutorials.html</a>
+
+
+<li>Click on the link below to start modifying your stored personal WebGL content:
+
+<em> <a href="http://gpupowered.org/sand/launch/tutorials.html">tutorials.html</a>

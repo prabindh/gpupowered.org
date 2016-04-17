@@ -1,0 +1,62 @@
+<em> This post specifies the steps for building Qt5 as part of Arago distribution, using the AM335x/ Sitara SDK 5.07 recipes. With these steps, a complete qt5 distribution can be built with OpenGL ES2 support, touch (evdev) support, and icu support.
+
+<em>Step 1 - Setup the Arago build system on local machine:
+
+git clone git://arago-project.org/git/projects/oe-layersetup.git arago
+cd arago
+./oe-layertool-setup.sh -f configs/amsdk/amsdk-05.07.00.00-config.txt
+cd build
+. conf/setenv
+export PATH=/opt/toolchain/arago-07262012_2011_09/arago-2011.09/armv7a/bin:$PATH
+
+<em>Step 2 - Add qt5 to image as a component:
+
+Edit conf/local.conf
+IMAGE_INSTALL_append = " qtbase qtbase-tools qtbase-plugins qtbase-fonts"
+
+<em>Step 3 - Clone changes for Qt5.0.1 and patchset for eglfs:
+
+git clone git@github.com:prabindh/meta-qt5.git
+
+<em>Step 4 - Add qt5 layers to Arago build:
+
+Edit conf/bblayers.conf
+Add the below line (points to folder where meta-qt5 was cloned into):
+<ARAGO-DIR>/arago/sources/meta-qt5 \
+
+<em>Step 5 - Create the image
+MACHINE=am335x-evm bitbake tisdk-rootfs-image
+
+<em>Step 6 - Create the SD card for booting:
+
+Use the mkmmc.sh script (or other scripts) to generate the SD card boot image, from the files created at,
+
+arago/build/arago-tmp-external-arago-toolchain/deploy/images
+
+The mkmmc.sh file can be downloaded from, or other scripts can be used.
+https://gforge.ti.com/gf/download/docmanfileversion/319/6550/mkmmc.sh
+
+<em>Step 7 - Boot the board:
+
+Bootargs that can be used (or store into uEnv.txt)
+setenv bootargs 'console=ttyO0,115200n8 root=/dev/mmcblk0p2 mem=128M rootwait ip=dhcp'
+setenv bootcmd 'mmc rescan; fatload mmc 0 0x82000000 uImage; bootm 0x82000000'
+boot
+
+Login password: root
+
+<em>Step 8 - Run examples:
+
+On target, execute the examples at /usr/bin/qt5/examples.  An example invocation is below.
+
+/usr/bin/qt5/examples/widgets/painting/composition/composition -platform eglfs
+
+This has been tested on AM335x-EVM.
+
+<em>Related posts:
+
+Qt5.1 Alpha - http://gpupowered.org/node/21
+
+Qt5 built from Yocto on Beaglebone - http://gpupowered.org/node/20
+
+Qt5.1.0 built from AMSDK 6.00 - http://gpupowered.org/node/24

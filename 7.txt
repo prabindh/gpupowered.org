@@ -1,0 +1,21 @@
+Below is some of the feedback from the GFX 2011 Workshop, held in December, from the participants:
+
+<...>The Labs were really good, This is the best mix of the Practical and theoretical trainings
+
+<...>The simple yet very useful to understand the openGL labs. The best thing happened was it was arranged in between theory sessions so that we can immediately link/map the understanding to practicals. Unlike most of the trainings it was not arranged at the end, for which most of the people neglect the lab sessions. 
+
+<...>as a part of applications team we wanted to explore ways to leverage opengl. This workshop was the best opportunity to get the idea of scope and hands on experience in opengl. 
+
+<...>Instructor knew the material and was able to answer all questions. Workshop was fully technical (no fluff).
+
+<...>If the time could be extended for 2days. Because it was very compact. 
+
+
+<strong>Pictures of the event
+
+Pictures of the event have been uploaded to the webpage at,
+
+<a href="http://www.flickr.com/photos/71344617@N02/">Flickr link</a>
+
+<strong>Full report of the event is available at http://ewh.ieee.org/r10/bangalore/ces/CE_Bangalore_Report_GFX2011.pdf
+====

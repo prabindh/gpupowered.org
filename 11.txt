@@ -1,0 +1,65 @@
+<em><ul>Introduction
+
+While going through the responsiveness of the WebGL framework at gpupowered.org, it is seen that optimisation of transfer (and some processing) large data sets can be achieved by running these in worker threads. However, there is no single code base available that met the needs below:
+
+- Should be reusable to download any type of object
+
+- Should be able to que requests, and callback asynchronously after processing is done
+
+This is useful in use-cases like background loading of textures used in webGL systems, computing animation.
+
+<em><ul>Workers
+
+Workers provide a mechanism for performing computations in the background, thereby allowing the foreground UI to be responsive. However, there are restrictions in the type of functions workers can do today, and there are significant inefficiencies in transfer of data from main to worker and back. These should be addressed before workers can be used to really perform the intended background processing.
+
+Using available information and specifications, a reusable JS function has been written.  The code and inbuilt documentation is available at
+
+https://github.com/prabindh/gpupowered.gl
+
+The code has been tested on Firefox 14, and Chrome 20. There is a visible improvement seen in the responsiveness of the user interface after integrating this.
+
+<em> <ul>The proxy code (worker_object_loader.js)
+
+  This js wrapper function loads object files using workers.
+  The function maintains state of pending transactions, and needs 
+  to be reinitialised for clearing the state.
+  The function provides mechanism to query the state, 
+  reinitialise, and terminate the worker.
+  This function does not block after contacting the server.
+  
+  Typical invocation below:
+<code>   var loader = new WORKER_object_loader()
+  loader.init
+loader.post_transaction (this will callback asynchronously)
+loader.is_complete
+loader.destroy / loader.reinitialise
+</code>
+
+  Binary file formats handled - png, jpg, gif
+  Text - tested with Xml, but should work for all
+  
+  Tested on Firefox 14.0.1, Chrome 20.0.1132.57 m
+
+
+
+
+<em> <ul> The worker code (tworker.js)
+
+ Worker to load object via http and respond with mime+bytearray. This is called from the proxy function, and is not to be called directly.
+  
+  Typical invocation below:
+
+<code>   tworker.postMessage(
+{'fileName':server_path, - Full path to file
+'objectParam':someParam}); - This is unused, will be returned as-is. This
+avoids caller keeping track of associated data of object
+</code>   
+
+
+<em><ul>References
+
+Mozilla reference - https://developer.mozilla.org/en/DOM/Worker
+
+W3C reference - http://www.w3.org/TR/workers/
+
+https://github.com/prabindh/gpupowered.gl

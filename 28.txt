@@ -1,0 +1,41 @@
+<em> Introduction
+
+In unified memory systems, the GPU needs to access the data in buffers allocated by the CPU. Usually, the OS kernel APIs are used to get the real physical addresses of buffers allocated by the CPU, and then map it to the GPU's virtual memory space. In this context, it is important to understand how two level tables for virtual address translations work.
+
+For an introduction to how one-level page table is built to meet ARM Memory Management specifications, and the steps required for basic initialisation, refer to “Turning on an ARM MMU and Living to tell the tale”
+located at http://www.embedded-bits.co.uk/2011/mmucode/ . Two level tables are required to support 4kB small page allocations in ARMv7, and gives more control to allocators. Linux uses 4kB pages for most of the allocations on ARM.
+
+<em> Mapping of level one tables
+The first level table (Translation table in ARM parlance) consists of 4096, 32 bit entries
+Each entry covers 1 MB of ARM address space
+Each entry points to physical address of a level2 table
+
+<em> Mapping of level two table
+This table (Page table in ARM parlance) consists of 256 entries in each
+Each entry covers 4kB of ARM address space
+Each entry points to a 4kB block of physical memory
+
+<em>Mapping virtual to physical address
+Since there can be many “virtual” views of the system physical memory, the ARM HW needs to know which “view” to choose
+This is accomplished by writing to a register named TTBR, when switching contexts
+In Linux, refer to proc-v7-2level.S
+http://lxr.free-electrons.com/source/arch/arm/mm/proc-v7-2level.S?a=arm 
+The TTBR (Translation Table Base) register points to the level one table for that process
+
+<em>Mapping virtual to physical address
+The simplest mapping in two level translation is to have a 1:1 virtual:physical mapping
+In an operating system like Linux, each process has its own set of tables, and is switched to the right table whenever there is a process (context) switch using TTBR
+
+<em>Algorithm for first level page table
+Given the address (A) of a small page (4kB) in physical memory,
+Offset (O) of entry in Level one table = (A >> 20), ie  1 MBth index in which “A” falls in the full 4GB memory space
+level1_table[O] = address of Oth Level two table | flags
+
+<em>Algorithm for second level page table
+Given the address (A) of a small page (4kB) in physical memory,
+Offset (O2) of entry in Level two table = Offset of  the 4kB page within the 1 MB section
+level2_table[O2] = (Top 20 bits of A)  | flags
+
+For more details, refer to http://www.slideshare.net/prabindh/enabling-two-level-translation-tables-in-armv7-mmu
+
+-Prabindh Sundareson, 2013

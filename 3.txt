@@ -1,0 +1,39 @@
+Traditional Graphics is focused on areas that involve methods to display different kinds of visual content, on display devices. This includes the below:
+ 
+- Hardware that can perform Graphics operations / acceleration - Ex, Graphics Processing Unit (GPU), 2D accelerators, CPU, dedicated FPGA
+
+- Driver software that monitor, control, and change the state of the Hardware, based on different user inputs - ex, drivers that handle input devices like pointer devices, mouse
+
+- Framework software that monitor, control and change the state of the overall system - and provide support for visually pleasing display of content, and utilities/ applications working closely with driver software. Examples of this include frameworks like the Xorg framework, Android UI/ Surfaceflinger system, Qt Windowing system, Silverlight etc.
+
+However, with recent advances, the role of Graphics has changed to include other areas that are non-display related, ex, computation.
+
+<strong> Industries that use Graphics Hardware
+
+- Traditionally, the high end visualisation industry has driven the Graphics performance limits (origins of the OpenGL specification lie in Sun's work). 
+
+- The consumer electronics industry is a major driver today, with portable devices embracing OpenGL ES2.0
+
+- The medical imaging industry
+
+- The animation/ movie industry
+
+- Virtual / Augmented reality industry
+
+In summary, any industry that needs high data processing throughput is significantly impacted by changes in current Graphics hardware, and API specifications..
+
+<strong>Introduction to Graphics Hardware
+
+Graphics hardware can be broadly classified under 3 categories based on target applications - Desktops, Mobile, and Computational.
+
+<em>Desktop Graphics Hardware
+
+Desktop Graphics Hardware are primarily tasked with interfacing between the physical display available on the desktop (ex, LCD monitor, or VGA device, LVDS etc), and the host CPU. The task partitioning between the CPU and the GPU is more and more becoming thin, but in general - the CPU (ie, the OS running on the CPU - ex, Microsoft Windows) is responsible for compositing (ie, placing the different windowed applications in their orientation) and generating the "Frame Buffer". The GPU is responsible for supplying this Framebuffer to the Display at the appropriate time, without causing visible artifacts in the display. If there are multiple monitors, the GPU also enables this.
+
+The GPU and the CPU are typically separate entities, and the GPU is connected to the CPU via a high bandwidth bus like the PCI, and data transfer accomplished through DMA's without CPU intervention. Since the Framebuffer is accessed directly with DMA's - most often a separate area of memory is allocated in the main memory, and shared between the CPU and the GPU.
+
+Desktop Graphics hardware expose different APIs to the host operating system - viz, DirectX, OpenGL, CUDA etc.
+
+A key point to note is - the desktop Graphics hardware also typically incorporate video acceleration - and large format H264 encode/ decode support.
+
+Part2 - Embedded Graphics hardware and Software frameworks - http://gpupowered.org/node/37

@@ -1,0 +1,219 @@
+This is a temporary location for this post, and would ideally move to a Qt blog, or tigraphics post - please do not link directly here
+
+<strong>Introduction:
+
+This short post covers the background of Qt5, architectural details, configuring for xcb build with TI SGX Graphics drivers, building, and known issues. This post does not cover building QtWebkit. If looking for an eglfs build and related information refer to the previous post at below link. http://gpupowered.org/node/8.
+
+(Updated 2013) Post on Qt5 Final 5.0 build instructions: (http://tigraphics.blogspot.in/2013/01/qt-500-final-dec-2012-available-on-ti.html), and for Qt5 Webkit2 refer to (http://www.gpupowered.org/node/15)
+
+<strong>Qt5 Architecture:
+
+(updated link after the Digia takeover) http://blog.qt.digia.com/wp-content/uploads/2011/05/Qt5.pdf
+
+<strong>Qt5 differences with Qt4:
+
+Qt4 (Qt-embedded) exposed the capabilities of HW in 2 ways - HW that can accelerate rendering of widget surfaces (QPainter operations), and HW that can accelerate screen updates (of QScreen). So if for example an OpenGLES engine was used to accelerate screen display operations (using for example -display powervr), the same engine could not be used for accelerating rendering operations. So essentially, 3D and 2D acceleration mechanisms could not co-exist.
+
+Qt5 tries to eliminate this gap. With the platform plugin approach - the HW "platform" is expected to provide OpenGL ES2, and any other additional HW acceleration on top of that as part of the platform. In essence - with GLES2 - every screen update in Qt5 happens via an OpenGL ES texturing operation, rather than any other means. In addition to this fundamental change, Qt5 brings in another major programming model update - that of QML, Qt3D etc.
+
+A key thing specific to TI (SGX based) platforms - With the elimination of the display plugin, Qt5 no longer uses or supports blits via pvr2d or wsegl, and instead directly uses the egl (or window) capabilities exposed by the GL driver. This eliminates immediately a large portion of pvr2d/wsegl version related issues that cropped up in earlier Qt versions. 
+(ex patch for Qt4 in below link is not needed anymore)
+https://github.com/prabindh/qt-configs/blob/master/qt4.8/001_wsegl2.patch
+
+
+The below platform plugins are available in the Qt5 Alpha package. Only "eglfs" and "minimal" are built by default in qtbase.
+
+cocoa     eglfs  linuxfb   minimal   openvglite  platforms.pro  qvfb    windows
+directfb  kms   openkode  openwfd     qnx             xcb
+
+<strong>Qt5 Alpha source package overview:
+
+Qt5 contains the absolute minimum required functionality - in "qtbase" folder. All other additional components (including Qt3D) are split into separate folders. Below is the folder structure of Qt5 (Alpha package)
+
+<>$ ls
+build               qtdeclarative       qt.pro     qtwayland
+build.dependencies  qtdoc               qtquick1   qtwebkit
+configure           qtgraphicaleffects  qtscript   qtwebkit-examples-and-demos
+configure.bat       qtimageformats      qtsensors  qtwebkit.pri
+gnuwin32            qtjsbackend         qtsvg      qtxmlpatterns
+qt3d                qtlocation          qtsystems  README
+qtbase              qtmultimedia        qttools
+
+<strong>Pre-requisites for Qt5 build (non-webkit):
+
+<em>- Qt5 alpha source package
+http://releases.qt-project.org/qt5.0/alpha/
+
+<em>- TI Graphics SDK (4.05 or later), with Xorg support
+http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/latest/index_FDS.html
+http://processors.wiki.ti.com/index.php/AM35x-OMAP35x_Graphics_SDK_Getting_Started_Guide
+<em>- Recent filesystem (based on GCC 4.5 or later) with X11. Dependencies are listed below
+libxcb1 libxcb1-dev libx11-xcb1 libx11-xcb-dev libxcb-keysyms1 libxcb-keysyms1-dev libxcb-image0 libxcb-image0-dev libxcb-shm0 libxcb-shm0-dev libxcb-icccm4 libxcb-icccm4-dev libxcb-sync0 libxcb-sync0-dev libxcb-xfixes0-dev libxrender-dev libxcb-shape0-dev libx11-dev
+
+<em>- ARM cross Toolchain (GCC 4.5 or later), example from below:
+http://people.linaro.org/~michaelh/incoming/binaries/
+
+<strong>Configuring Qt5:
+
+Configuring Qt5 is fairly easy - and can be done without messing with creating new mkspecs, if the below are met:
+
+<em>- a linaro toolchain (linux-arm-gnueabi-)
+<em>- sgxconfiguro is used (package config for TI Graphics SDK - egl and x11)
+https://github.com/prabindh/sgxconfiguro
+<em>- force-pkg-config is used
+
+If this does not seem clear, the older tried-and-tested-method of specifying all possible (and needed) paths in the qmake.conf as below will also work :
+https://github.com/prabindh/qt-configs/tree/master/qt5.0_mar2012
+
+Modified Qt5 configure script that includes sgxconfiguro support is provided in github.
+https://github.com/prabindh/qt-configs/tree/master/qt5_alpha
+
+The below method adopts the first approach and uses the standard Qt5 supplied linux-arm-gnueabi-g++ mkspec without change
+
+$cd qtbase
+$export PATH=/opt/linaro/gcc-linaro-arm-linux-gnueabi-2012.03-20120326_linux/bin:/home/prabindh/work1/arm-qt5-tar/qt-everywhere-opensource-src-5.0.0/qtbase/bin:
+$export PKG_CONFIG=./x86-cross-ubuntu-pkg-config
+$./configure -prefix /home1/prabu/qt5_xcb_install -release -make libs -xplatform linux-TIarmv7-sgx-g++ -opengl es2 -confirm-license -opensource -xcb -no-wayland -force-pkg-config -make examples -make demos -verbose
+
+From the logs, configure should have detected the below functionality - key are NEON, OpenGL, and Xcb support
+
+Build ..................  libs examples demos
+Configuration ..........  cross_compile release shared dll qpa largefile stl precompile_header neon pcre  minimal-config small-config medium-config large-config full-config fontconfig libudev evdev xlib xrender xcb-xlib accessibility egl eglfs opengl opengles2 qpa reduce_exports reduce_relocations clock-gettime clock-monotonic mremap getaddrinfo ipv6ifname getifaddrs inotify png system-freetype system-zlib nis iconv glib xcb alsa icu concurrent audio-backend v8 v8snapshot release
+Debug .................. no
+QtDBus module .......... no
+QtConcurrent code ...... yes
+QtGui module ........... yes
+QtWidgets module ....... yes
+JavaScriptCore JIT ..... To be decided by JavaScriptCore
+Declarative debugging ...yes
+STL support ............ yes
+PCH support ............ yes
+iWMMXt support ......... no
+NEON support ........... yes
+IPv6 ifname support .... yes
+getaddrinfo support .... yes
+getifaddrs support ..... yes
+Accessibility .......... yes
+NIS support ............ yes
+CUPS support ........... no
+Iconv support .......... yes
+Glib support ........... yes
+GStreamer support ...... no
+PulseAudio support ..... no
+Large File support ..... yes
+GIF support ............ plugin
+JPEG support ........... plugin (qt)
+PNG support ............ yes (qt)
+zlib support ........... system
+Session management ..... auto
+libudev support ........ yes
+OpenGL support ......... yes (OpenGL ES 2.x)
+OpenVG support ......... no
+XShape support ......... auto
+XVideo support ......... auto
+XSync support .......... auto
+Xinerama support ....... runtime
+Xcursor support ........ runtime
+Xfixes support ......... runtime
+Xrandr support ......... runtime
+Xi support ............. runtime
+MIT-SHM support ........ auto
+FontConfig support ..... auto
+XKB Support ............ auto
+immodule support ....... yes
+GTK theme support ...... auto
+SQLite support ......... plugin (qt)
+OpenSSL support ........ no 
+Alsa support ........... yes
+libICU support ......... yes
+PCRE support ........... qt
+Xcb support ............ limited (old version)
+Xrender support ........ yes
+EGLFS support .......... yes
+
+After configure, make && make install are to be done. This is important, as qmake needs to be in the install path for the next steps of building other modules outside of qtbase.
+
+<strong>Steps to build Qt3D :
+
+To build Qt3D, in addition to qtbase also need to build the below:
+
+<em>qtjsbackend (has v8)
+<em>qtdeclarative
+<em>qt3d
+
+To build the above, enter the directory, then perform (assuming qmake is in the path as specified earlier)
+$ qmake && make && make install
+
+<strong>Checking the build output:
+
+As a result of the build, the QtCore libraries, QtGui etc are all built. Also, the "eglfs" and "minimal" platform plugins are built by default. Note that "eglfs" draws onscreen using egl, while "minimal" draws to an offscreen pixmap image. The Xcb platform relies on presence of a X server in the system.
+
+<strong>Example precompiled binary of Qt5:
+
+A set of binaries built from above approach is provided below. To use this in the target filesystem, extract the below archive into /home1/prabu/ (Qt expects the same path while executing). Any filesystem with a recent enough libc (from >= gcc4.5) should be sufficient.
+
+https://gforge.ti.com/gf/download/docmanfileversion/298/5546/qt5_xcb_install.tar.gz
+
+<strong>Screen captures of live demos on 3730:
+
+Pictures and videos are posted at,
+
+Stickman and colliding mice demos:
+
+https://www.youtube.com/watch?v=4jsd0FnFcrk
+
+https://www.youtube.com/watch?v=kyEXhfzY4OA
+
+<strong>Executing demos on target:
+
+Compared to eglfs approach, since the rendering is handled by Xserver, there is no need to set QPA basics (for ex. resolution).
+
+1) Ensure SGX drivers are installed, and standard GLES2 3D demos are functional without Qt (refer to below link for more details on Xorg build)
+
+http://processors.wiki.ti.com/index.php/Graphics_SDK_Quick_installation_and_user_guide#Xorg_build
+
+2) With the Graphics SDK correctly installed, the /etc/powervr.ini file will have the correct WindowSystem already set.
+WindowSystem=libpvrPVR2D_DRIWSEGL.so
+
+3) Running QML demos:
+
+QMLScene can be used to run QML demos, with a command similar to below:
+<INSTALLDIR>/bin/qmlscene examples/qtdeclarative/qtquick/animation/pathanimation/pathanimation.qml
+
+Note that if the SGX accelerated Xserver is not running on the system, the below message will be printed, and the demo will not run
+
+No platform plugin argument was specified, defaulting to "xcb".                 
+QXcbConnection: Could not connect to display                                    
+Aborted  
+
+4) Running standalone demos:
+
+Standalone qt5 demos (including qt3d demos, as well as classic qtbase demos like animatedtiles) can be invoked as below for Xcb platform (default), after entering into the demo folder
+
+./<QT5 DEMO>
+
+ex, ./collidingmice
+
+No arguments are necessary as Xcb platform is the default.
+
+<strong>Tslib support:
+Provided by default
+
+<strong>Cursor support:
+Provided by default
+
+<strong>Screen Rotation support:
+
+TODO
+
+<strong>CPU Loading:
+
+TODO
+
+<strong>Notes:
+
+- Qt5 documentation for the APIs still need to be updated. All Qt5 docs ex, below are misleading (they point to Qtembedded docs)
+http://doc.qt.nokia.com/qt5/qt-embedded-pointer.html
+
+========
+prabindh@yahoo.com, April 2012

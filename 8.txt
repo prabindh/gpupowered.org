@@ -1,0 +1,194 @@
+<strong>Introduction:
+
+This short post covers the background of Qt5, architectural details, configuring for eglfs with Graphics drivers, building, and known issues. This is to be used for porting Qt5 on ARM based platforms.
+
+<strong>Qt5.2 (standalone) and QtWebEngine(preview) build steps available now at http://gpupowered.org/node/31
+
+<strong> (Nov 2013 update) It is now possible to build Qt5 directly from Yocto with meta-ti recipes for AMSDK, as most of the standalone patches are pulled into meta-arago.
+
+http://arago-project.org/pipermail/meta-arago/2013-October/002103.html
+
+<strong>5.1.0 final version (Aug 2013) information and build based on TI Sitara AMSDK/OMAP5 GLSDK is available at,
+
+http://gpupowered.org/node/24
+
+<strong>5.1.0 final version - build without SGX
+
+http://gpupowered.org/node/25
+
+<strong> Qt5 and C++, migrating widget applications / porting from Qt4 to Qt5:
+
+http://www.gpupowered.org/node/23
+
+<strong>5.1 version (Alpha, Beta1) information is available at,
+
+http://gpupowered.org/node/21
+
+<strong> For Qt5 (Dec 2012) release update, refer to
+
+http://gpupowered.org/node/16
+
+<strong>For Qt5 Webkit2 build, refer to
+
+http://www.gpupowered.org/node/15
+
+<strong> For Xcb builds, refer to the next post - 
+
+http://gpupowered.org/node/10
+
+<strong>Qt5 Architecture:
+
+http://labs.qt.nokia.com/wp-content/uploads/2011/05/Qt5.pdf
+
+<strong>Qt5 differences with Qt4:
+
+Qt4 (Qt-embedded) exposed the capabilities of HW in 2 ways - HW that can accelerate rendering of widget surfaces (QPainter operations), and HW that can accelerate screen updates (of QScreen). So if for example an OpenGLES engine was used to accelerate screen display operations (using for example -display powervr), the same engine could not be used for accelerating rendering operations. So essentially, 3D and 2D acceleration mechanisms could not co-exist.
+
+Qt5 tries to eliminate this gap. With the platform plugin approach - the HW "platform" is expected to provide OpenGL ES2, and any other additional HW acceleration on top of that as part of the platform. In essence - with GLES2 - every screen update in Qt5 happens via an OpenGL ES texturing operation, rather than any other means. In addition to this fundamental change, Qt5 brings in another major programming model update - that of QML, Qt3D etc.
+
+A key note specific to our (SGX based) platforms - With the elimination of the display plugin, Qt5 no longer uses or supports blits via pvr2d or wsegl, and instead directly uses the egl (or window) capabilities exposed by the GL driver. This eliminates immediately a large portion of pvr2d/wsegl version related issues that cropped up in earlier Qt versions. 
+(ex patch for Qt4 in below link is not needed anymore)
+https://github.com/prabindh/qt-configs/blob/master/qt4.8/001_wsegl2.patch
+
+The below platform plugins are available in the Qt5 Alpha package. Only "eglfs" and "minimal" are built by default in qtbase.
+
+cocoa     eglfs  linuxfb   minimal   openvglite  platforms.pro  qvfb    windows
+directfb  kms   openkode  openwfd     qnx             xcb
+
+<strong>Qt5 Alpha source package overview:
+
+Qt5 contains the absolute minimum required functionality - in "qtbase" folder. All other additional components (including Qt3D) are split into separate folders. Below is the folder structure of Qt5 (Alpha package)
+
+<>$ ls
+build               qtdeclarative       qt.pro     qtwayland
+build.dependencies  qtdoc               qtquick1   qtwebkit
+configure           qtgraphicaleffects  qtscript   qtwebkit-examples-and-demos
+configure.bat       qtimageformats      qtsensors  qtwebkit.pri
+gnuwin32            qtjsbackend         qtsvg      qtxmlpatterns
+qt3d                qtlocation          qtsystems  README
+qtbase              qtmultimedia        qttools
+
+<strong>Pre-requisites for Qt5 build:
+
+<em>- Qt5 alpha source package
+http://releases.qt-project.org/qt5.0/alpha/
+
+<em>- TI Graphics SDK (4.05 or later)
+http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/latest/index_FDS.html
+http://processors.wiki.ti.com/index.php/AM35x-OMAP35x_Graphics_SDK_Getting_Started_Guide
+<em>- Recent filesystem (GCC 4.5 or later)
+<em>- ARM cross Toolchain (GCC 4.5 or later), example from below:
+http://people.linaro.org/~michaelh/incoming/binaries/
+
+<strong>Configuring Qt5:
+
+Configuring Qt5 is fairly easy - and can be done without messing with creating new mkspecs, if the below are met:
+
+<em>- a linaro toolchain (linux-arm-gnueabi-)
+<em>- sgxconfiguro is used (package config for TI Graphics SDK - egl and x11)
+https://github.com/prabindh/sgxconfiguro
+<em>- force-pkg-config is used
+
+If this does not seem clear, the older tried-and-tested-method of specifying all possible (and needed) paths in the qmake.conf as below will also work :
+
+https://github.com/prabindh/qt-configs/tree/master/qt5.0_mar2012
+
+The below method adopts the first approach and uses the standard Qt5 supplied linux-arm-gnueabi-g++ mkspec without change
+
+$cd qtbase
+$export PATH=/opt/linaro/gcc-linaro-arm-linux-gnueabi-2012.03-20120326_linux/bin:/home/prabindh/work1/arm-qt5-tar/qt-everywhere-opensource-src-5.0.0/qtbase/bin:
+$export PKG_CONFIG=./x86-cross-ubuntu-pkg-config
+$./configure -prefix /home1/prabu/qt5_install -release -make libs -xplatform linux-arm-gnueabi-g++ -opengl es2 -confirm-license -opensource -no-xcb -no-wayland -force-pkg-config -make examples -make demos -verbose
+
+From the logs, configure should have detected the functionality - key are NEON, OpenGL, and EGLFS support
+After configure, make && make install are to be done. This is important, as qmake needs to be in the install path.
+
+Note: QtWebkit requires ICU support to be present. Refer QtWebkit build page mentioned earlier in the post.
+
+<strong>Steps to build Qt3D :
+
+To build Qt3D, in addition to qtbase also need to build the below:
+
+<em>qtjsbackend (has v8)
+<em>qtdeclarative
+<em>qt3d
+
+To build the above, enter the directory, then perform (assuming qmake is in the path as specified earlier)
+$ qmake && make && make install
+
+<strong>Checking the build output:
+
+As a result of the build, the QtCore libraries, QtGui etc are all built. Also, the "eglfs" and "minimal" platform plugins are built by default. Note that "eglfs" draws onscreen using egl, while "minimal" draws to an offscreen pixmap image.
+
+<strong>Example precompiled binary of Qt5:
+
+A set of binaries built from above approach is provided below. To use this in the target filesystem, copy the below archive into /home1/prabu/ (Qt expects the same path while executing). Any filesystem with a recent enough libc (from >= gcc4.5) should be sufficient.
+
+https://gforge.ti.com/gf/download/docmanfileversion/296/5515/qt5_install_qt3d.tar.gz
+
+<strong>Screen captures of live demos on 3730:
+
+Pictures and videos are posted at,
+
+<a href="http://www.flickr.com/photos/71344617@N02/sets/72157629396050260/">Flickr link http://www.flickr.com/photos/71344617@N02/sets/72157629396050260/</a>
+
+<strong>Executing demos on target:
+
+1) Running QML demos:
+
+QMLScene can be used to run QML demos, with a command similar to below:
+<INSTALLDIR>/bin/qmlscene examples/qtdeclarative/qtquick/animation/pathanimation/pathanimation.qml -platform eglfs
+
+2) Running standalone demos:
+
+Standalone qt5 demos (including qt3d demos, as well as classic qtbase demos like animatedtiles) can be invoked as below for eglfs platform plugin
+
+<QT5 DEMO> -platform eglfs
+
+Note that applications using eglfs platform will not have any window decorations and will show full screen only.
+
+
+<strong>Tslib support:
+
+Apply this patch - https://github.com/prabindh/qt-configs/blob/master/qt5_1.0_Feb13/tslib.patch - refer to http://tigraphics.blogspot.in/2013/03/correct-tslib-operation-with-qt5-on.html for correct usage.
+
+tslib (or other input plugins) is NOT built by default, need to do below steps (ensure tslib.h is present in standard <crosscompile rootdir>/usr/include folders)
+
+cd qtbase/src/plugins/generic/tslib
+make && make install
+
+The above step will generate and install "libqlinuxinputplugin.so" into plugins folder which will be detected by Qt5. The tslib plugin is invoked as below:
+
+<QT5 APP> -platform eglfs -plugin Tslib
+
+For other input devices (udev based), evdev* projects need to be built, and are present in the qtbase/src/plugins/generic/ folder.
+
+<strong>Cursor support:
+
+With above configuration with eglfs, cursor will not be shown on screen. 
+
+<strong> Hiding mouse pointer in Qt5:
+
+Even if cursor is configured, it can be hidden disabled at run time by exporting the below variable.
+
+export QT_QPA_EGLFS_HIDECURSOR=1
+
+<strong>Screen Rotation support:
+
+TODO
+
+<strong>CPU Loading:
+
+With pageflick qt3d demo, CPU loading is < 10% on 3730 for VGA LCD screen, with eglfs
+
+With flickr3d qt3d demo, CPU loading is upto 50% on 3730 for VGA LCD screen, with eglfs
+
+<strong>Notes:
+
+- Qt5 documentation for the APIs still need to be updated. All Qt5 docs ex, below are misleading (they point to Qtembedded docs)
+http://doc.qt.nokia.com/qt5/qt-embedded-pointer.html
+
+========
+Prabindh Sundareson, 2014
+
+(Archived Discus comments on the Qt5 work are here - http://gpupowered.org/node/34)

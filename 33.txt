@@ -1,0 +1,19 @@
+Developing OpenGL ES2.0 applications with EGL, on Windows
+
+For developing applications based on OpenGL ES2.0 API with an EGL context, it is necessary to have a platform that supports this API for development as well for execution. While a Windows PC is the easiest to get hold of and run sample applications, it is not generally the most convenient for EGL/ OpenGLES2.0 based development. This post tries to address this issue.
+
+ANGLE build/ development setup on Windows (without NuGet):
+
+- Follow the steps in http://gpupowered.org/node/29, to build ANGLE from source
+- After building ANGLE with Visual Studio (or with mingW or any other PC compiler), libEGL.dll/libGLESv2.dll are available in the Debug or Release folders.
+- Create a new project in Visual Studio (File -> New)
+- Now add the .c/.cpp files from any existing OpenGLES2 project that needs to rebuilt for Windows, in this project in Visual Studio
+- Add the include file path for egl.h and other headers from ANGLE source folder (Right click on project name -> Properties)
+- Add libEGL/libGLESv2 as linker inputs in Project properties
+- Compile this project
+- Copy the libEGL.dll / libGLESv2.dll into the same folder as the .exe file, and run.
+- Depending on the Windows platform/OS, it might become necessary to have Windows DLL (msvcp120d.dll and msvcr120d.dll), and DirectX DLL (known through a runtime error message popup, or "Assertion failed: renderer ..." in the command line). Install the DirectX SDK corresponding to the platform to solve this problem. Specifically the files d3dcompiler_47.dll" and "d3dcompiler_46.dll" need to be installed on the PC to run ANGLE.
+
+- Prabindh Sundareson
+2016
+

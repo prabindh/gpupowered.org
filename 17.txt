@@ -1,0 +1,36 @@
+Below is a short comparison of where performance of different Web rendering engines stand (Webkit and Gecko) - on cost effective A8 platforms like AM335x. This also provides a comparison of softfp and hardfp on this platform.
+
+Dependencies:
+
+Root filesystem, and images can be downloaded from
+
+<li>Gecko/ b2g framebuffer port of Firefox 19 (softfp) - 
+
+https://gforge.ti.com/gf/download/docmanfileversion/303/6367/16Jan-2013.tar.gz
+
+<li> Firefox 18 - Ubuntu 12.04 (hardfp) - filesystem (need to apt-get install firefox)
+
+http://cdimage.ubuntu.com/releases/12.04/release/ubuntu-12.04-preinstalled-desktop-armhf+omap.img.gz
+
+<li> Qt5 + Webkit
+
+https://gforge.ti.com/gf/download/docmanfileversion/303/6367/16Jan-2013.tar.gz
+
+
+<em>HTML5test.com
+
+Firefox18 hardfp = 393+10 bonus (with multimedia enabled)
+
+Firefox 19 b2g softfp = 381+10 bonus (without multimedia)
+
+Qt5 Webkit2 softfp = 301+10 bonus (without multimedia)
+
+WebGL is supported on all the platforms.
+
+<em>Sunspider benchmark
+
+Firefox18 hardfp = 4688
+
+Firefox 19 b2g softfp = 4455
+
+Qt5 Webkit2 final = 4341

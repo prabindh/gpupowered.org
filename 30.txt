@@ -1,0 +1,28 @@
+OpenGL performance improvement recommendations:
+
+This short set of links provide different areas in which performance improvement can be done - specifically on CPU-GPU interaction, memory mapping/locking, batching, usage of extensions to improve performance, drawing of translucent objects, to list a few.
+
+Imagination Technologies:
+
+http://www.imgtec.com/factsheets/SDK/POWERVR%20SGX.OpenGL%20ES%202.0%20Application%20Development%20Recommendations.1.1f.External.pdf
+
+Nvidia
+
+- http://www.slideshare.net/CassEveritt/beyond-porting
+
+Intel
+
+http://software.intel.com/sites/default/files/4th_Generation_Core_Graphics_Developers_Guide_Final.pdf
+
+Generic GPU algorithms - ex bitonic sort
+
+http://cs.utsa.edu/~qitian/seminar/Spring11/03_04_11/GPU.pdf
+
+ARM Mali
+
+http://community.arm.com/docs/DOC-7668
+http://community.arm.com/docs/DOC-6937 (Unite 2013 - Optimizing Unity Games for Mobile Platforms)
+http://community.arm.com/docs/DOC-7825 (Performance analysis and debugging with Mali)
+Forward pixel elimination - FPK - http://malideveloper.arm.com/engage-with-mali/mali-blog/killing-pixels-a-new-optimization-for-shading-on-arm-mali-gpus/  (In an FPK-enabled GPU, the threads that colour the pixels are not irrevocably committed to complete once they are launched. Calculations already in flight can be terminated at any time)
+
+http://limadriver.org/T6xx+ISA/  (Reverse engineered information about Midgard architecture, and ARM patents regarding the GPU architecture)
