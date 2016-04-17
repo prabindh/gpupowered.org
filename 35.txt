@@ -1,0 +1,910 @@
+The below is a summary of latest discussions on Qt5 on these pages.
+
+Qt 5.1.0 on ARM platforms (AM335x, OMAP5 and other SGX platforms)
+
+spduraippm • 6 days ago
+
+Hi Prabu,
+
+Thanks for posting technical note. I'm porting QT5.1.0-alpha for AVM335x Platform and followed the above procedure. It seems ./configure is ok but when I give the make it gives following error,
+
+.obj/release-shared/qguiapplication.o: In function `QGuiApplicationPrivate::init()':
+qguiapplication.cpp:(.text+0x1c80): undefined reference to `qInitDrawhelperAsm()'
+.obj/release-shared/qdrawhelper_neon.o: In function `comp_func_solid_SourceOver_neon(unsigned int*, int, unsigned int, unsigned int)':
+qdrawhelper_neon.cpp:(.text+0x1090): undefined reference to `qt_memfill32'
+.obj/release-shared/qdrawhelper_neon.o: In function `qt_fetch_radial_gradient_neon(unsigned int*, Operator const*, QSpanData const*, int, int, int)':
+qdrawhelper_neon.cpp:(.text+0x1ba4): undefined reference to `qt_memfill32'
+.obj/release-shared/qimage.o: In function `convert_generic(QImageData*, QImageData const*, QFlags<qt::imageconversionflag>)':
+qimage.cpp:(.text+0x414): undefined reference to `qPixelLayouts'
+qimage.cpp:(.text+0x418): undefined reference to `qStorePixels'
+qimage.cpp:(.text+0x41c): undefined reference to `qFetchPixels'
+.obj/release-shared/qimage.o: In function `QImage::pixel(int, int) const':
+qimage.cpp:(.text+0x1088): undefined reference to `qPixelLayouts'
+qimage.cpp:(.text+0x108c): undefined reference to `qFetchPixels'
+.obj/release-shared/qimage.o: In function `QImage::allGray() const':
+qimage.cpp:(.text+0x12d4): undefined reference to `qPixelLayouts'
+qimage.cpp:(.text+0x12d8): undefined reference to `qFetchPixels'
+.obj/release-shared/qimage.o: In function `QImage::fill(unsigned int)':
+qimage.cpp:(.text+0x4f28): undefined reference to `qt_memfill32'
+qimage.cpp:(.text+0x4f2c): undefined reference to `qt_memfill16'
+.obj/release-shared/qimage.o: In function `QImage::setPixel(int, int, unsigned int)':
+qimage.cpp:(.text+0x52cc): undefined reference to `qPixelLayouts'
+qimage.cpp:(.text+0x52d0): undefined reference to `qStorePixels'
+.obj/release-shared/qimage.o: In function `QImage::rgbSwapped() const':
+qimage.cpp:(.text+0x6000): undefined reference to `qPixelLayouts'
+qimage.cpp:(.text+0x6004): undefined reference to `qFetchPixels'
+qimage.cpp:(.text+0x6008): undefined reference to `qStorePixels'
+.obj/release-shared/qpixmap_raster.o: In function `QRasterPlatformPixmap::fill(QColor const&)':
+qpixmap_raster.cpp:(.text+0x60c): undefined reference to `qPixelLayouts'
+.obj/release-shared/qpixmap_blitter.o: In function `QBlittablePlatformPixmap::fill(QColor const&)':
+qpixmap_blitter.cpp:(.text+0x424): undefined reference to `qPixelLayouts'
+.obj/release-shared/qpaintengine_raster.o: In function `QSpanData::adjustSpanMethods()':
+qpaintengine_raster.cpp:(.text+0x3404): undefined reference to `qBlendTexture(int, QT_FT_Span_ const*, void*)'
+.obj/release-shared/qpaintengine_raster.o: In function `QRasterBuffer::prepare(QImage*)':
+qpaintengine_raster.cpp:(.text+0x6224): undefined reference to `qDrawHelper'
+collect2: error: ld returned 1 exit status
+make[3]: *** [../../lib/libQt5Gui.so.5.1.0] Error 1
+make[3]: Leaving directory `/home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha/qtbase/src/gui'
+make[2]: *** [sub-gui-make_first] Error 2
+make[2]: Leaving directory `/home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha/qtbase/src'
+make[1]: *** [sub-src-make_first] Error 2
+make[1]: Leaving directory `/home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha/qtbase'
+make: *** [module-qtbase-make_first] Error 2
+root@labubuntu-desktop://home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha#
+
+It will be very kind if you give me some suggestions for above error.
+
+Thanks in Advance
+
+Regards
+Durai
+
+see more
+•
+Reply
+•
+Share ›
+
+    Avatar
+    prabindh Mod spduraippm • 4 days ago
+
+    Can you please post the full command line used for configure, and the final log after finishing configure ? It looks like an issue with configure step.
+    •
+    Edit
+    •
+    Reply
+    •
+    Share ›
+        Avatar
+        spduraippm prabindh • 3 days ago
+
+        Hi Prabu,
+
+        Thanks for support! Please find the full config
+
+        ./configure -prefix /home/labubuntu/qt5.1.0_install -release -make libs -xplatform linux-arm-gnueabi-ti-g++ -opengl es2 -confirm-license -opensource -no-xcb -no-pch -make examples -verbose
+
+        Please find the attached log file.
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o xlib.o xlib.cpp
+        xlib.cpp:42:22: fatal error: X11/Xlib.h: No such file or directory
+        compilation terminated.
+        make: *** [xlib.o] Error 1
+        XLib disabled.
+        Xrender auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o xrender.o xrender.cpp
+        xrender.cpp:42:22: fatal error: X11/Xlib.h: No such file or directory
+        compilation terminated.
+        make: *** [xrender.o] Error 1
+        Xrender disabled.
+        DirectFB auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -D_REENTRANT -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi/usr/include/directfb -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o directfb.o directfb.cpp
+        directfb.cpp:45:2: error: #error DirectFB headers are unclean and cannot compile
+        make: *** [directfb.o] Error 1
+        DirectFB disabled.
+        LinuxFB auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o linuxfb.o linuxfb.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o linuxfb linuxfb.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        LinuxFB enabled.
+        KMS auto-detection... ()
+        Project ERROR: Package libdrm not found
+        make: *** No targets specified and no makefile found. Stop.
+        KMS disabled.
+        EGL auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/sgx/OGLES2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o egl.o egl.cpp
+        egl.cpp: In function ‘int main(int, char**)’:
+        egl.cpp:46:12: warning: unused variable ‘x’ [-Wunused-variable]
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o egl egl.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/ -lEGL -lIMGegl -lsrv_um -lGLESv2 -lGLES_CM -lusc -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        EGL enabled.
+        STL auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o stltest.o stltest.cpp
+        stltest.cpp: In function ‘int main()’:
+        stltest.cpp:136:13: warning: variable ‘first’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:138:16: warning: variable ‘second’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:109:9: warning: variable ‘v1size’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:111:9: warning: variable ‘v1capacity’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:115:10: warning: variable ‘v1notfound’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:119:10: warning: variable ‘v1found’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:124:9: warning: variable ‘v2size’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:132:9: warning: variable ‘m1size’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:142:9: warning: variable ‘m2size’ set but not used [-Wunused-but-set-variable]
+        stltest.cpp:146:9: warning: unused variable ‘n’ [-Wunused-variable]
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o stl stltest.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        STL enabled.
+        POSIX clock_gettime() auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o clock-gettime.o clock-gettime.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o clock-gettime clock-gettime.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lrt
+        POSIX clock_gettime() enabled.
+        POSIX Monotonic Clock auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o clock-monotonic.o clock-monotonic.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o clock-monotonic clock-monotonic.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lrt
+        POSIX Monotonic Clock enabled.
+        mremap auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o mremap.o mremap.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o mremap mremap.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        mremap enabled.
+        getaddrinfo auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o getaddrinfotest.o getaddrinfotest.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o getaddrinfo getaddrinfotest.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        getaddrinfo enabled.
+        inotify auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o inotifytest.o inotifytest.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o inotify inotifytest.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        inotify enabled.
+        eventfd auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o main.o main.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o eventfd main.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        eventfd enabled.
+        IPv6 interface name auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o ipv6ifname.o ipv6ifname.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o ipv6ifname ipv6ifname.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        IPv6 interface name enabled.
+        getifaddrs auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o getifaddrs.o getifaddrs.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o getifaddrs getifaddrs.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        getifaddrs enabled.
+        OpenSSL auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o openssl.o openssl.cpp
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o openssl openssl.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        OpenSSL enabled.
+        PCRE auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o pcre.o pcre.cpp
+        pcre.cpp:42:18: fatal error: pcre.h: No such file or directory
+        compilation terminated.
+        make: *** [pcre.o] Error 1
+        PCRE disabled.
+        OpenVG auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o openvg.o openvg.cpp
+        openvg.cpp:48:23: fatal error: VG/openvg.h: No such file or directory
+        compilation terminated.
+        make: *** [openvg.o] Error 1
+        OpenVG disabled.
+        OpenVG auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o openvg.o openvg.cpp
+        openvg.cpp:48:23: fatal error: VG/openvg.h: No such file or directory
+        compilation terminated.
+        make: *** [openvg.o] Error 1
+        OpenVG disabled.
+        OpenVG (lc includes) auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -DQT_LOWER_CASE_VG_INCLUDES -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o openvg.o openvg.cpp
+        openvg.cpp:46:23: fatal error: vg/openvg.h: No such file or directory
+        compilation terminated.
+        make: *** [openvg.o] Error 1
+        OpenVG (lc includes) disabled.
+        OpenVG (lc includes) auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -DQT_LOWER_CASE_VG_INCLUDES -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o openvg.o openvg.cpp
+        openvg.cpp:46:23: fatal error: vg/openvg.h: No such file or directory
+        compilation terminated.
+        make: *** [openvg.o] Error 1
+        OpenVG (lc includes) disabled.
+        alsa auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o alsatest.o alsatest.cpp
+        alsatest.cpp:47:5: warning: unused parameter ‘argc’ [-Wunused-parameter]
+        alsatest.cpp:47:5: warning: unused parameter ‘argv’ [-Wunused-parameter]
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o alsa alsatest.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lasound
+        alsa enabled.
+        javascriptcore-jit auto-detection... ()
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o hwcap_test.o hwcap_test.cpp
+        hwcap_test.cpp:43:5: warning: unused parameter ‘argc’ [-Wunused-parameter]
+        hwcap_test.cpp:43:5: warning: unused parameter ‘argv’ [-Wunused-parameter]
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -Wl,-O1 -o javascriptcore-jit hwcap_test.o -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -L/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib -lxml2 -lz -lts -lasound -lfreetype -lexpat -lfontconfig -lpng -lpthread -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib
+        javascriptcore-jit enabled.
+        Testing size of pointers ... (/home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha/qtbase/mkspecs/linux-arm-gnueabi-ti-g++ yes /home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha/qtbase /home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha/qtbase)
+        rm -f ptrsizetest.o
+        rm -f *~ core *.core
+        /home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/lib/glib-2.0/include/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/libxml2/ -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/freetype2 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/filesystem/usr/include/dbus-1.0/dbus -o ptrsizetest.o ptrsizetest.cpp
+        ptrsizetest.cpp: In function ‘int main(int, char**)’:
+        ptrsizetest.cpp:59:12: error: ‘PointerSize’ is not a member of ‘QPointerSizeTest<4>’
+        make: *** [ptrsizetest.o] Error 1
+        Pointer size: 4
+
+        Building on: linux-g++
+        Building for: linux-arm-gnueabi-ti-g++
+        Architecture: arm, features:
+        Host architecture: i386, features:
+        Platform notes:
+
+        - Also available for Linux: linux-kcc linux-icc linux-cxx
+
+        qmake vars .......... styles += mac fusion windows QT_CFLAGS_DBUS = -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/dbus-1.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/lib/dbus-1.0/include QT_LIBS_DBUS = -ldbus-1 QT_CFLAGS_GLIB = -pthread -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/lib/glib-2.0/include QT_LIBS_GLIB = -pthread -lgthread-2.0 -lrt -lglib-2.0 QT_CFLAGS_GSTREAMER = -pthread -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/gstreamer-0.10 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/glib-2.0 -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/lib/glib-2.0/include -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/libxml2 QT_LIBS_GSTREAMER = -pthread -lgstreamer-0.10 -lgobject-2.0 -lgmodule-2.0 -lgthread-2.0 -lrt -lxml2 -lglib-2.0 QMAKE_CFLAGS_FONTCONFIG = -I/home/labubuntu/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/freetype2 QMAKE_LIBS_FONTCONFIG = -lfontconfig -lfreetype QMAKE_INCDIR_LIBUDEV = QMAKE_LIBS_LIBUDEV = -ludev DEFINES += QT_NO_XCB PRECOMPILED_DIR = .pch/release-shared OBJECTS_DIR = .obj/release-shared MOC_DIR = .moc/release-shared RCC_DIR = .rcc/release-shared UI_DIR = .uic/release-shared sql-drivers = sql-plugins = sqlite qmake switches .........
+        Build .................. libs examples
+        Configuration .......... cross_compile qpa largefile neon pcre minimal-config small-config medium-config large-config full-config fontconfig libudev evdev linuxfb c++11 accessibility egl eglfs opengl opengles2 shared qpa reduce_exports reduce_relocations clock-gettime clock-monotonic mremap getaddrinfo ipv6ifname getifaddrs inotify eventfd system-jpeg system-png png system-freetype system-zlib nis iconv glib gstreamer dbus openssl rpath alsa concurrent audio-backend v8 v8snapshot release
+        Debug .................. no
+        C++11 support .......... yes
+        pkg-config ............. yes
+        Qt D-Bus module ........ yes (run-time)
+        Qt Concurrent code ..... yes
+        Qt GUI module .......... yes
+        Qt Widgets module ...... yes
+        JavaScriptCore JIT ..... To be decided by JavaScriptCore
+        QML debugging .......... yes
+        PCH support ............ no
+        iWMMXt support ......... no
+        NEON support ........... yes
+        IPv6 ifname support .... yes
+        getaddrinfo support .... yes
+        getifaddrs support ..... yes
+        Accessibility .......... yes
+        NIS support ............ yes
+        CUPS support ........... no
+        Iconv support .......... yes
+        Glib support ........... yes
+        GStreamer support ...... yes
+        PulseAudio support ..... no
+        Large File support ..... yes
+        GIF support ............ plugin
+        JPEG support ........... plugin (system)
+        PNG support ............ yes (system)
+        zlib support ........... system
+        Session management ..... auto
+        libudev support ........ yes
+        Use system proxies ..... no
+        OpenGL support ......... yes (OpenGL ES 2.x)
+        OpenVG support ......... no
+        XShape support ......... auto
+        XVideo support ......... auto
+        XSync support .......... auto
+        Xinerama support ....... runtime
+        Xcursor support ........ runtime
+        Xfixes support ......... runtime
+        Xrandr support ......... runtime
+        Xi support ............. runtime
+        Xi2 support ............ auto
+        MIT-SHM support ........ auto
+        FontConfig support ..... yes
+        XKB support ............ auto
+        GTK theme support ...... no
+        SQLite support ......... plugin (qt)
+        OpenSSL support ........ yes (run-time)
+        Alsa support ........... yes
+        libICU support ......... no
+        PCRE support ........... qt
+        Xcb support ............ no
+        Xrender support ........ no
+        EGLFS support .......... yes
+        DirectFB support ....... no
+        LinuxFB support ........ yes
+        KMS support ............ no
+
+        Qt is now configured for building. Just run 'make'.
+        Once everything is built, you must run 'make install'.
+        Qt will be installed into /home/labubuntu/qt5.1.0_install
+
+        To reconfigure, run 'make confclean' and 'configure'.
+
+        + /home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha/qtbase/bin/qmake /home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha/qt.pro
+        root@labubuntu-desktop://home/labubuntu/qt-everywhere-opensource-src-5.1.0-alpha# ./configure -prefix /home/labubuntu/qt5.1.0_install -release -make libs -xplatform linux-arm-gnueabi-ti-g++ -opengl es2 -confirm-license -opensource -no-xcb -no-pch -make examples -verbose
+
+        It seems some files are missing in dbus but compilation went good.
+
+        Please correct me if any thing I'm missing.
+
+        Regards
+        Durai
+        see more
+        •
+        Reply
+        •
+        Share ›
+            Avatar
+            prabindh Mod spduraippm • 3 days ago
+
+            This seems ok, have you also set the correct path for qmake (match the generated qtdir/bin/qmake), and removed QMAKESPEC from env if present ?
+            •
+            Edit
+            •
+            Reply
+            •
+            Share ›
+                Avatar
+                spduraippm prabindh • a day ago
+
+                Hi Prabu,
+
+                Thanks Lot! I moved to Qt5.2 and followed the instruction you given the following link
+                http://gpupowered.org/node/31
+
+                it seems compiled successfully and created the "qt5.2rc1_install" directory.
+
+                Could you please advice me how to install the "qt5.2rc1_install" to sdcard?
+
+                or Do we need to copy the all "qt5.2rc1_install" folders into sdcard rootfs directory?
+
+                Please help on this.
+
+                -Durai
+                •
+                Reply
+                •
+                Share ›
+                    Avatar
+                    prabindh Mod spduraippm • a day ago
+
+                    It is better to tar the full package and untar the full package recreating the complete directory structure (same path as specified in configure) on the target. ie, if your host path looks like /some_dir/qt5.2rc1_install/, it has to be the same on target.
+                    •
+                    Edit
+                    •
+                    Reply
+                    •
+                    Share ›
+                        Avatar
+                        spduraippm prabindh • a day ago
+
+                        Hi Prabu,
+
+                        Thanks for support! I did same as what you mentioned. It seems app is not running and got the following error,
+
+                        root@am335x-evm://home/durai/qt5.2rc1_install/examples/opengl/hellowindow#/hellowindow# ./hellowindow -platform eglfs
+
+                        QIconvCodec::convertFromUnicode:
+                        using Latin-1 for conversion, iconv_open failed
+
+                        QIconvCodec::convertToUnicode: using
+                        Latin-1 for conversion, iconv_open failed
+
+                        This application failed to start because it
+                        could not find or load the Qt platform plugin "eglfs".
+
+                        Available platform plugins are: eglfs, linuxfb,
+                        minimal, minimalegl, offscreen.
+
+                        Reinstalling the application may fix this problem.
+
+                        Aborted
+
+                        root@am335x-evm://home/durai/qt5.2rc1_install/examples/opengl/hellowindow#
+
+                        Please suggest me I'm missing something.
+
+                        -Durai
+                        •
+                        Reply
+                        •
+                        Share ›
+                            Avatar
+                            prabindh Mod spduraippm • 10 hours ago
+
+                            export QT_DEBUG_PLUGINS=1, then run the application, will indicate why the plugin is not getting loaded.
+                            •
+                            Edit
+                            •
+                            Reply
+                            •
+                            Share ›
+                                Avatar
+                                spduraippm prabindh • 4 hours ago
+
+                                Hi Prabu,
+                                Thanks! it seems qt5.2 working when we give the following Path
+
+                                "export LD_LIBRARY_PATH="
+                                "export LD_PLUGIN_PATH="
+
+                                for example directory.
+
+                                We really appreciate your support.
+
+                                Thanks Lot!
+
+                                -Durai
+                                •
+                                Reply
+                                •
+                                Share ›
+
+Avatar
+Steven Ziuchkovski • 20 days ago
+
+Out of curiosity, why is this not part of Texas Instruments' documentation???
+
+•
+Reply
+•
+Share ›
+
+Avatar
+Michael • 4 months ago
+
+Hi Prabindh,
+thank you very much for sharing your knowledge. I'm a programmer with qt experience, but with less linux embedded experience ( I'm trying to change this ;-) ).
+I was following your steps above, but the configure command ends with:
+
+Running configuration tests...
+Failed to process makespec for platform 'linux-arm-gnueabi-ti-g++'
+Could not find qmake configuration file linux-arm-gnueabi-ti-g++.
+Error processing project file: /dev/null
+
+I would be pleased, if you could say me what step was missed or what I have done wrong. Thank you in advance.
+Best regards,
+Michael
+
+•
+Reply
+•
+Share ›
+
+    Avatar
+    prabindh Mod Michael • 4 months ago
+
+    Did you apply the patches from the link provided ? Do you see the folder <qtdir>/qtbase/mkspecs/linux-arm-gnueabi-ti-g++ ?
+    •
+    Edit
+    •
+    Reply
+    •
+    Share ›
+        Avatar
+        Michael prabindh • 4 months ago
+
+        Thanks a lot, I had copied the folder into a wrong folder. I saw, you left some /home/prabindh in qmake.conf, that was easy to fix, I got a step further. I'm sorry, but now I've got the following configure result:
+        ICU auto-detection... ()
+        /usr/local/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/glib-2.0 -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/lib/glib-2.0/include/ -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/libxml2/ -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/freetype2 -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/dbus-1.0 -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/dbus-1.0/dbus -o icu.o icu.cpp
+        icu.cpp:42:28: fatal error: unicode/utypes.h: No such file or directory
+        compilation terminated.
+        make: *** [icu.o] Error 1
+        ICU disabled.
+        The ICU library support cannot be enabled.
+        Turn on verbose messaging (-v) to ./configure to see the final report.
+        If you believe this message is in error you may use the continue
+        switch (-continue) to ./configure to continue.
+        What can I do?
+        •
+        Reply
+        •
+        Share ›
+            Avatar
+            prabindh Mod Michael • 4 months ago
+
+            The AMSDK filesystem does not include libicu as mentioned in the post. Please remove -icu from the configure options.
+            •
+            Edit
+            •
+            Reply
+            •
+            Share ›
+
+Avatar
+prabindh Mod • 4 months ago
+
+Great to know Dean, thanks for the comment.
+
+•
+Edit
+•
+Reply
+•
+Share ›
+
+    −
+
+Avatar
+deanezra • 4 months ago
+
+Just a quick note to say thanks Prabindh for helping me get qt5 cross compiled (excellent post). Only changes I had to do was make sure the target dir on the host was exactly the same dir on the beagle. E.g. I specified /opt/qt5_arm_install as the prefix in the configure. So when transferring to the beagle, I must also copy to /opt/qt5_arm_install. Then it all just works with a simple export LD_LIBRARY_PATH=/opt/qt5_arm_install/lib. Thanks again. Im off to work out why qt dbus modules wont get enabled in the configure next.
+
+
+
+============
+
+Qt5.2 and QtWebEngine build summary on ARM platforms
+
+
+
+Harini • 22 days ago
+
+Hi, I am trying to compile QT5.2 for am335x evm with ti SDK6.0. I have followed the above mentioned procedure. I have modified the qmake.conf file replacing the existing tool chain with linaro tool chain. I have added the qmake.conf file to 'linux-arm-gnueabi-g++' directory and I get the following when i run configure. I have searched online and haven't found anything different from the procedure mentioned above.
+
+./configure -prefix /home/qt5.2arm -release -make libs -xplatform linux-arm-gnueabi-g++ -opengl es2 -glib -confirm-license -opensource -no-xcb -no-pch -force-pkg-config -make examples -verbose
+
+This is the Qt Open Source Edition.
+
+You are licensed to use this software under the terms of
+the Lesser GNU General Public License (LGPL) versions 2.1.
+
+You have already accepted the terms of the license.
+
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -fvisibility=hidden fvisibility.c
+Symbol visibility control enabled.
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -o libtest.so -shared -Wl,-Bsymbolic-functions -fPIC bsymbolic_functions.c
+Symbolic function binding enabled.
+DEFAULT_INCDIRS=".
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/include/c++/4.7.3
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/include/c++/4.7.3/arm-linux-gnueabihf
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/include/c++/4.7.3/backward
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/4.7.3/include
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/4.7.3/include-fixed
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/include
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/usr/include
+"
+DEFAULT_LIBDIRS="/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/lib
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/lib/arm-linux-gnueabihf/4.7.3
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/lib
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/lib/arm-linux-gnueabihf
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/usr/lib/arm-linux-gnueabihf/4.7.3
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/usr/lib
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/usr/lib/arm-linux-gnueabihf
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/4.7.3
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf
+"
+
+Creating qmake...
+make: Nothing to be done for `first'.
+Running configuration tests...
+Failed to process makespec for platform 'linux-arm-gnueabi-g++'
+./configure: line 4041: /qt_src_path/qt-everywhere-opensource-src-5.2.0-rc1/qtbase/bin/qmake: cannot execute binary file
+
+What am i missing here?
+
+see more
+•
+Reply
+•
+Share ›
+
+    Avatar
+    prabindh Mod Harini • 22 days ago
+
+    Can you attach the qmake.conf ? Is the new toolchain accessible in PATH ?
+    •
+    Edit
+    •
+    Reply
+    •
+    Share ›
+        Avatar
+        Harini prabindh • 20 days ago
+
+        After trying the source from git, I am able to configure. but running 'make' gives me the following error.
+        bin/ld: cannot find -lQt5Multimedia
+        Should I install libqt5multimedia package separately?
+        •
+        Reply
+        •
+        Share ›
+        Avatar
+        Harini prabindh • 21 days ago
+
+        Hi, Yes the new toolchain is accessible in the PATH. When I copy the below qmake.conf to the qtbase/mkspecs/linux-arm-gnueabi-g++/ i get the error mentioned in the post- cannot execute qmake. But if i create a new folder inside mkspecs as linux-arm-gnueabi-ti-g++ and add the qmake.conf file to it, it says compiler not supported. And here is the qmake.conf.
+        #
+        # qmake configuration for building with arm-linux-gnueabi-g++
+        #
+
+        MAKEFILE_GENERATOR = UNIX
+        CONFIG += incremental gdb_dwarf_index
+        QMAKE_INCREMENTAL_STYLE = sublib
+
+        include(../common/linux.conf)
+        include(../common/gcc-base-unix.conf)
+        include(../common/g++-unix.conf)
+
+        ROOTFS_PATH=/home/ti-sdk-am335x-evm/filesystem/tisdk-rootfs-image-am335x-evm
+        TOOLCHAIN_PREFIX=/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf
+
+        # Change the required paths here
+        QMAKE_INCDIR = $${ROOTFS_PATH}/usr/include $${ROOTFS_PATH}/usr/include/glib-2.0 $${ROOTFS_PATH}/usr/lib/glib-2.0/include/ $${ROOTFS_PATH}/usr/include/libxml2/ $${ROOTFS_PATH}/usr/include/freetype2 $${ROOTFS_PATH}/usr/include/dbus-1.0 $${ROOTFS_PATH}/usr/include/dbus-1.0/dbus
+
+        QMAKE_LIBDIR = $${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi $${ROOTFS_PATH}/usr/lib
+
+        QMAKE_INCDIR_OPENGL_ES2 = $${ROOTFS_PATH}/usr/include/sgx/OGLES2
+        QMAKE_LIBDIR_OPENGL_ES2 = $${ROOTFS_PATH}/usr/lib/
+        QMAKE_INCDIR_EGL = $${QMAKE_INCDIR_OPENGL_ES2}
+        QMAKE_LIBDIR_EGL = $${QMAKE_LIBDIR_OPENGL_ES2}
+
+        # libs
+        QMAKE_LIBS = -lxml2 -lz -lts -lasound -lfreetype -lexpat \
+        -lfontconfig -lpng -lpthread -Wl,-rpath-link=$${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=$${ROOTFS_PATH}/usr/lib
+
+        QMAKE_LIBS_OPENGL_ES2= -lEGL -lIMGegl -lsrv_um -lGLESv2 -lGLES_CM -lusc -Wl,-rpath-link=/home/ti-sdk-am335x-evm/filesystem/targetNFS/usr/lib -L/home/ti-sdk-am335x-evm/filesystem/targetNFS/usr/lib
+
+        QMAKE_LIBS_EGL= $${QMAKE_LIBS_OPENGL_ES2}
+        QMAKE_LIBS_THREAD = -lpthread
+
+        QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CFLAGS_RELEASE
+
+        QMAKE_CC = $${TOOLCHAIN_PREFIX}-gcc
+        QMAKE_CXX = $${TOOLCHAIN_PREFIX}-g++
+        QMAKE_LINK = $${QMAKE_CXX}
+        QMAKE_LINK_SHLIB = $${QMAKE_CXX}
+
+        QMAKE_AR = $${TOOLCHAIN_PREFIX}-ar cqs
+        QMAKE_OBJCOPY = $${TOOLCHAIN_PREFIX}-objcopy
+        QMAKE_STRIP = $${TOOLCHAIN_PREFIX}-strip
+
+        load(qt_config)
+        see more
+        •
+        Reply
+        •
+        Share ›
+            Avatar
+            Harini Harini • 21 days ago
+
+            I had initially tried with qt5.2 rc1 downloaded from http://download.qt-project.org...
+            I then tried getting the qt 5.2 source by using git clone. I am able to run configure with the qt source from git. But when i run make I get the following error:
+
+            /usr/bin/ld: this linker was not configured to use sysroots
+            collect2: ld returned 1 exit status
+            make[3]: *** [../../../bin/moc] Error 1
+            make[3]: Leaving directory `/home/ERT/QT/qt5.2/qtbase/src/tools/moc'
+            make[2]: *** [sub-moc-make_first] Error 2
+            make[2]: Leaving directory `/home/ERT/QT/qt5.2/qtbase/src'
+            make[1]: *** [sub-src-make_first] Error 2
+            make[1]: Leaving directory `/home/ERT/QT/qt5.2/qtbase'
+            make: *** [module-qtbase-make_first] Error 2
+
+            I have searched online and found no solution to it. My PATH variable contains /usr/bin. Is it some problem with the host settings? I am using Ubuntu 12.04.
+            But the same procedure doesn't work with the source downloaded from the link http://download.qt-project.org...
+            •
+            Reply
+            •
+            Share ›
+                Avatar
+                prabindh Mod Harini • 18 days ago
+
+                - Please always use the single tarball, containing all packages
+                - No, QtMultimedia is not needed for the base plugins
+                - Have you installed TI SDK in the host before this ? If so, you need to do perform "export QMAKESPEC=" in the command line, before you try ./configure for Qt5
+
+                I just downloaded Qt5.3 from latest, and it configures fine with GLES2 with the above procedure on host Ubuntu12.04. If you are still facing issue, please paste your env settings.
+                •
+                Edit
+                •
+                Reply
+                •
+                Share ›
+                    Avatar
+                    Harini prabindh • 15 days ago
+
+                    Hi I am now able to configure qt5.2 source without glib. with glib, it gives the following error.
+
+                    glib.o: In function `main':
+                    glib.cpp:(.text.startup+0x2): undefined reference to `g_main_context_default'
+                    glib.cpp:(.text.startup+0xa): undefined reference to `g_source_new'
+                    glib.cpp:(.text.startup+0x10): undefined reference to `g_source_add_poll'
+                    collect2: error: ld returned 1 exit status
+                    make: *** [glib] Error 1
+                    Glib disabled.
+                    Glib support cannot be enabled due to functionality tests!
+
+                    In my qmake.conf, I have set the path to glib2 include dir as follows:
+                    LIB_PATH=/home/ti-sdk-am335x-evm/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi
+                    QMAKE_INCDIR = $${LIB_PATH}/usr/include $${LIB_PATH}/usr/include/glib-2.0 $${LIB_PATH}/usr/lib/glib-2.0/include/ $${LIB_PATH}/usr/include/libxml2/ $${LIB_PATH}/usr/include/freetype2 $${LIB_PATH}/usr/include/dbus-1.0 $${LIB_PATH}/usr/include/dbus-1.0/dbus
+                    I have set the correct PKG_CONFIG_LIBDIR variable. What am I missing here?
+
+                    QMAKE_LIBDIR in the qmake.conf should be set to what?
+                    The path where the qt libraries are to be installed or the path of some already existing libarraies?
+                    My qmake.conf has the following:
+                    QMAKE_LIBDIR = $${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi $${ROOTFS_PATH}/usr/lib
+                    But there is no arm-linux-gnueabi inside rootfs/usr/lib.
+
+                    And from the above post of yours,
+                    export PKG_CONFIG=/home/prabindh/work1/arm-qt5-5.2a-gst/qt-everywhere-opensource-src-5.2.0-alpha/qtbase/x86-cross-pkg-config
+                    I don't understand this statement. Should I place the x86-cross-pkg-config from sqxconfiguo in the qt alpha source code?
+                    see more
+                    •
+                    Reply
+                    •
+                    Share ›
+                        Avatar
+                        prabindh Mod Harini • 15 days ago
+
+                        This is a linker error, so ensure that you do have required dependencies in the paths you provided. Soft links sometimes can point to /usr/lib (of the host) causing issues. You can keep the pkg-config file anywhere as long as you point PKG_CONFIG.
+                        •
+                        Edit
+                        •
+                        Reply
+                        •
+                        Share ›
+                            Avatar
+                            Harini prabindh • 15 days ago
+
+                            Okay... QMAKE_LIBDIR in the qmake.conf should point to which directory?
+                            •
+                            Reply
+                            •
+                            Share ›
+                                Avatar
+                                prabindh Mod Harini • 15 days ago
+
+                                All the directories that have libraries you need to link to. See description at - http://qt-project.org/doc/qt-5...
+                                •
+                                Edit
+                                •
+                                Reply
+                                •
+                                Share ›
+                                    Avatar
+                                    Harini prabindh • 14 days ago
+
+                                    I want to replace the qt4.8 libs in the sitare linux ezsdk 6.0 sdk rootfs with that of qt5.2. I am not clear about where to add the libs. Is it correct to remove the qt4.8 libs from targetNFS/usr/lib and add the qt5.2 libs to the same? What else should i add from the qt5.2 installation directory to the rootfs? And where should I place them in the rootfs?
+                                    •
+                                    Reply
+                                    •
+                                    Share ›
+                        Avatar
+                        Harini Harini • 15 days ago
+
+                        My qmake.conf for your reference,
+
+                        #
+                        # qmake configuration for building with arm-linux-gnueabi-g++
+                        #
+
+                        MAKEFILE_GENERATOR = UNIX
+                        CONFIG += incremental gdb_dwarf_index
+                        QMAKE_INCREMENTAL_STYLE = sublib
+
+                        include(../common/linux.conf)
+                        include(../common/gcc-base-unix.conf)
+                        include(../common/g++-unix.conf)
+
+                        ROOTFS_PATH=/home/ERT/ti-sdk-am335x-evm/targetNFS
+                        TOOLCHAIN_PREFIX=/home/ERT/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf
+                        LIB_PATH=/home/ERT/ti-sdk-am335x-evm/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi
+
+                        # Change the required paths here
+                        #QMAKE_INCDIR = $${ROOTFS_PATH}/usr/include $${ROOTFS_PATH}/usr/include/glib-2.0 $${ROOTFS_PATH}/usr/lib/glib-2.0/include/ $${ROOTFS_PATH}/usr/include/libxml2/ $${ROOTFS_PATH}/usr/include/freetype2 $${ROOTFS_PATH}/usr/include/#dbus-1.0 $${ROOTFS_PATH}/usr/include/dbus-1.0/dbus
+
+                        QMAKE_INCDIR = $${LIB_PATH}/usr/include $${LIB_PATH}/usr/include/glib-2.0 $${LIB_PATH}/usr/lib/glib-2.0/include/ $${LIB_PATH}/usr/include/libxml2/ $${LIB_PATH}/usr/include/freetype2 $${LIB_PATH}/usr/include/dbus-1.0 $${LIB_PATH}/usr/include/dbus-1.0/dbus
+
+                        QMAKE_LIBDIR = $${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi $${ROOTFS_PATH}/usr/lib
+                        #QMAKE_LIBDIR = $${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi $${LIB_PATH}/usr/lib
+
+                        QMAKE_INCDIR_OPENGL_ES2 = $${ROOTFS_PATH}/usr/include/sgx/OGLES2
+                        QMAKE_LIBDIR_OPENGL_ES2 = $${ROOTFS_PATH}/usr/lib/
+                        QMAKE_INCDIR_EGL = $${QMAKE_INCDIR_OPENGL_ES2}
+                        QMAKE_LIBDIR_EGL = $${QMAKE_LIBDIR_OPENGL_ES2}
+
+                        # libs
+                        QMAKE_LIBS = -lxml2 -lz -lts -lasound -lfreetype -lexpat \
+                        -lfontconfig -lpng -lpthread -Wl,-rpath-link=$${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=$${ROOTFS_PATH}/usr/lib
+
+                        QMAKE_LIBS_OPENGL_ES2= -lEGL -lIMGegl -lsrv_um -lGLESv2 -lGLES_CM -lusc -Wl,-rpath-link=/home/ERT/ti-sdk-am335x-evm/targetNFS/usr/lib -L/home/ERT/ti-sdk-am335x-evm/targetNFS/usr/lib
+
+                        QMAKE_LIBS_EGL= $${QMAKE_LIBS_OPENGL_ES2}
+                        QMAKE_LIBS_THREAD = -lpthread
+
+                        QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CFLAGS_RELEASE
+
+                        QMAKE_CC = $${TOOLCHAIN_PREFIX}-gcc
+                        QMAKE_CXX = $${TOOLCHAIN_PREFIX}-g++
+                        QMAKE_LINK = $${QMAKE_CXX}
+                        QMAKE_LINK_SHLIB = $${QMAKE_CXX}
+
+                        QMAKE_AR = $${TOOLCHAIN_PREFIX}-ar cqs
+                        QMAKE_OBJCOPY = $${TOOLCHAIN_PREFIX}-objcopy
+                        QMAKE_STRIP = $${TOOLCHAIN_PREFIX}-strip
+
+                        load(qt_config)
+                        see more
+                        •
+                        Reply
+                        •
+                        Share ›
+                            Avatar
+                            Harini Harini • a day ago
+
+                            Hi Prabindh,
+                            I am able to cross compile qt5.2 successfully and load it to the eval board AM335x EVM. However if we run any example application in the target, we see the following error:
+
+                            root@am335x-evm://usr# ./hellowindow
+                            QIconvCodec::convertFromUnicode: using Latin-1 for conversion, iconv_open failed
+                            QIconvCodec::convertToUnicode: using Latin-1 for conversion, iconv_open failed
+                            This application failed to start because it could not find or load the Qt platform plugin "xcb".
+
+                            Am I missing something?
+                            •
+                            Reply
+                            •
+                            Share ›
+                                Avatar
+                                prabindh Mod Harini • a day ago
+
+                                You are missing the arguments specifying the plugin. Need to use like "./app -platform eglfs". Also ensure the installation path matches what you specified at configure.
+                                •
+                                Edit
+                                •
+                                Reply
+                                •
+                                Share ›
+                                    Avatar
+                                    Harini prabindh • a day ago
+
+                                    Hi,
+
+                                    Thanks for the response. We tried "./app -platform eglfs" and we got the following error:
+
+                                    root@am335x-evm:/usr# ./hellowindow -platform eglfs
+                                    QIconvCodec::convertFromUnicode: using Latin-1 for conversion, iconv_open failed
+                                    QIconvCodec::convertToUnicode: using Latin-1 for conversion, iconv_open failed
+                                    This application failed to start because it could not find or load the Qt platform plugin "eglfs".
+
+                                    Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen.
+
+                                    Reinstalling the application may fix this problem.
+                                    Aborted
+                                    What could be the reason for this?
+                                    •
+                                    Reply
+                                    •
+                                    Share ›
+                                        Avatar
+                                        prabindh Mod Harini • 10 hours ago
+
+                                        you can "export QT_DEBUG_PLUGINS=1" on target, then run the application, will indicate why the plugin is not getting loaded.
+                                        •
+                                        Edit
+                                        •
+                                        Reply
+                                        •
+                                        Share ›
+
+Avatar
+janu • 3 months ago
+
+Hi , I worked on Odroid-x2 . I want to crosscompile Qt-5.2.1 on it . While doing that I got an error has libxcb error but I already install all related libraries.
+can u please help me? I cross compiled by using -no-xcb. it was successful.After loading it on target platform, while executing the program I got an error as "This application failed to start because it could not find or load the Qt platform plugin "xcb" ". so please help me
+
+•
+Reply
+•
+Share ›
+
+    Avatar
+    prabindh Mod janu • 3 months ago
+
+    Providing the logs of configure, and environment variables at runtime on the target, would be helpful (as mentioned in http://gpupowered.org/node/27) . Also setting QT_DEBUG_PLUGINS=1 in the environment will help in identifying plugin load issues.
+    •
+    Edit
+    •
+    Reply
+    •
+    Share ›
+
+Avatar
+Myzhar • 4 months ago
+
+Hi, on which board have you successfully compiled Qt5.2? I'm going to buy a new "Pandaboard ES" like board, but more powerful, and I would like to find one that has no problems with Qt5 ^_^
+
+•
+Reply
+•
+Share ›
+
+    Avatar
+    prabindh Mod Myzhar • 4 months ago
+
+    I generally do crosscompile on the host (Ubuntu desktop), generate the binaries and run it on the board. If you intend to native compile on the board itself, buy one that has Ubuntu support, and can run Wayland, or atleast X11, and has a recent toolchain support. The OMAP5 EVM does have support for these.
+    •
+    Edit
+    •
+    Reply
+    •
+    Share ›
+            −
+        Avatar
+        Myzhar prabindh • 4 months ago
+
+        Sorry, I mismatched a "on" with a "for" :)
+        I cross-compile to, but for my pandaboard I had a few problems.
+        I'm going to search for OMAP5 EVM

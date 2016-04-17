@@ -1,0 +1,32 @@
+<em>Enabling 3D Texturing support with glfw3 and GLES2
+
+Sometimes it is required to enable 3D texture support in an OpenGLES 2.0 context. It is possible to do this, if the underlying platform supports the 3D texturing extension.
+
+Steps:
+
+- When using glfw3, extension headers need to be enabled in the build, through below step in header files:
+
+#define GLFW_INCLUDE_ES2 1
+#define GLFW_INCLUDE_GLEXT 1
+#include <GLFW/glfw3.h>
+
+- Check if the 3D texturing extension support exists in the platform, by using  glfwExtensionSupported, with the query parameter of "GL_OES_texture_3D". Note that, a common mistake is doing this check before a context is created. This can only be queried after a context is created.
+
+- Get the extension proc address through below:
+
+glfwGetProcAddress("glTexImage3DOES");
+
+- Create and load the 3D textures using the proc address obtained in earlier step. Parameters for this API are explained in the below extension specification.
+
+https://www.khronos.org/registry/gles/extensions/OES/OES_texture_3D.txt 
+
+- Load the shaders with 3D texture lookup, similar to below:
+
+color = texture3D(uSampler0, texcoords)
+
+Note that uSampler0 is to be of "sampler3D" type, and the OES extension has to be enabled through use of "#extension GL_OES_texture_3D : enable" in the shader.
+
+- Draw objects as usual
+
+
+Prabindh Sundareson 2015

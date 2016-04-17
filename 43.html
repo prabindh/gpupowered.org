@@ -1,0 +1,35 @@
+Rendering translucent materials like Glass, involves taking care of both reflection and refraction, to get realistic results. This also needs specific OpenGL functionality on render to texture, cube-maps, and different types of transformation and blending to get the final effect.
+
+Below is a summary of the components and techniques used for rendering materials like glass and water: 
+
+<em> OpenGL/GLSL API for reflect, refract functionality
+https://www.opengl.org/sdk/docs/man/html/reflect.xhtml
+
+<em>Cube-maps are commonly used for obtaining a lookup of the environment for reflection, hence an introduction to the same:
+http://www3.di.uminho.pt/uce-cg/wp-content/uploads/2014/10/6-CubeMapping.pdf
+
+<em>One of the earliest OpenGL (using fixed function) water shaders by Michael Horsch:
+http://blog.bonzaisoftware.com/tnp/gl-water-tutorial/
+This has a good description of the workflow involved - normal terms, Fresnel factors, Reflection and Refraction.
+
+<em>GPU Gems - Using Refraction and Normal maps by Tiago Sousa:
+This provides some more theoretical background on the effects involved.
+http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter19.html
+
+<em>Glass shader: Blender 2.7:
+Blender 2.74 (Turkish language) - https://www.youtube.com/watch?v=AQq-ZTgdfsQ
+For this article, also refer to the background material on Blender shaders at,
+https://www.blender.org/manual/render/cycles/nodes/shaders.html
+
+<em>OpenGL shader course by Villar:
+https://www.opengl.org/sdk/docs/tutorials/TyphoonLabs/Chapter_4.pdf
+
+<em>GLSL Book chapter on Refraction and shaders:
+https://www.scss.tcd.ie/Michael.Manzke/CS7055/GLSL/GLSL-3rdEd-refraction.pdf
+
+<em>Viktor Lidholt's presentation in GDC2015 on effects in 2D games, not just refraction, but a whole bunch of effects including particle systems:
+http://twvideo01.ubm-us.net/o1/vault/gdc2015/presentations/ViktorLidholt_Advanced_Visual_Effects_in_2D_Games.pdf
+
+<em>Rendering glass with PoVRay:
+With global illumination, Photon mapping, Kd-trees, with lots of references
+http://www.cs.umd.edu/~mount/Indep/Alisa_Chen/caustics.html

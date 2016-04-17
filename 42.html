@@ -1,0 +1,36 @@
+In order to be realistic and as close to the physical skin view of their natural environment, graphics rendering needs to account for what is termed as "sub-surface scattering", needed because of the physical fact that human skin is ~translucent in the upper layer. This is in addition to the usual Reflectance factors that are commonly being used. Most of the below algorithms, use a shadow map and use it for further processing.
+
+Since hair is closely associated with skin (even small hair), it is important to see both of these together.  Some of the techniques being used today:
+
+Skin and Hair rendering with Shadows by Adam Martinez - Information on Open Shading Language:
+http://blog.selfshadow.com/publications/s2013-shading-course/martinez/s2013_pbs_osl_slides.pdf
+
+Hair rendering by AMD in TressFX3.0 (2015):
+http://cdn.wccftech.com/wp-content/uploads/2015/03/Augmented-Hair-in-Deus-Ex-Universe-Projects-TressFX-3-0.pdf
+
+Crytek paper on their engine with Physically based shading techniques (Nicholas Schulz):
+http://www.crytek.com/download/2014_03_25_CRYENGINE_GDC_Schultz.pdf
+
+Poster paper on skin rendering
+http://developer.amd.com/wordpress/media/2012/10/Sander_SkinSketch.pdf
+
+GPU Gems (Eugene d'Eon and David Luebke):
+http://http.developer.nvidia.com/GPUGems3/gpugems3_ch14.html
+
+Associated video of the actual technique used in the Nvidia article by Luebke - This is really useful:
+http://luebke.us/publications/egsr2007.skin.wmv
+
+Thesis on the realtime possibilities in rendering:
+http://infoscience.epfl.ch/record/164966/files/Real-timeSkinRendering.pdf
+
+Original papers on BRDF and Translucency:
+http://graphics.ucsd.edu/~henrik/papers/
+
+Antony Ward - Setting up Maya shaders for sub-surface scattering (uses mi Scatter Radius attribute):
+http://www.creativebloq.com/create-believable-skin-maya-7134081
+
+Another thesis on material rendering
+http://www.dice.se/wp-content/uploads/2014/12/LightingAndMaterialsThesis.pdf
+
+Hair rendering by Nvidia with Hairworks (with shadowing):
+https://developer.nvidia.com/hairworks

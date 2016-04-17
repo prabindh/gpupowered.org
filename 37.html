@@ -1,0 +1,80 @@
+<em> Mobile/ Embedded Graphics Hardware
+
+Mobile Graphics Hardware relates to the category of GPUs used in portable, embedded devices. Current examples of these devices include the iPhone/ iPad, Android phones/ tablets etc. This category of devices lack some features that are found in the desktop computers, like full OpenGL or CUDA support. The most common factor in these devices is the wide prevalence of OpenGL ES2.0 support to such an extent that most software frameworks have moved to support this API.
+
+An additional point of difference is, the GPU is typically integrated into the SOC (System-on-chip) itself, sharing common memory map in most cases.
+
+Mobile GPUs typically focus only on Graphics, and do not include aspects of Video which are then done by specialised video IPs.
+
+<em> GPUs that target computational capabilities
+
+With the high pixel throughput possible with high end GPUs, this new market has emerged. These systems are tuned to deliver the highest possible pixel throughput, and provide programming models that are now simple to use and more standardised. Devices of this type are even used to build super-computer class systems, by tying multiple units together.
+
+<strong>Software frameworks for Graphics
+
+It is unusual to find a software framework that does not somehow use features of the GPU. Almost all frameworks have moved, or have published roadmaps to make use of a GLES2.0 backend in the portable/embedded space. In the desktop space, CUDA or DirectX are widely used APIs. OpenGL on the desktop is widely used for HPC applications. GPUs are used to accelerate all aspects of Graphics rendering - including rendering of fonts, blitting, Porter-Duff operations, scaling.
+
+- Qt 5 will exclusively support OpenGL ES 2.0 only, for acceleration of 2D operations
+
+- Android uses GLES in all areas of its UI, video processing, and with Renderscript - can even handle computation (see this Google I/O slide set for details - https://io2011-opengl-for-android.googlecode.com/svn/trunk/slides.html#1). As per <a href="http://www.google.com/events/io/2011/static/presofiles/android_market_for_developers.pdf"> this Google I/O 2011 presentation </a>, 90% of all Android devices accessing Google market were OpenGL ES 2.0 enabled, showing how far devices have matured.
+
+- Microsoft Silverlight dropped support for DirectXMobile and moved to support OpenGL ES 2.0 backend. In 2013, it also released its own WebGL implementation.
+
+- iOS uses OpenGL ES 2.0 for all operations of its UI and video processing. Recently, Apple started using their Metal API.
+
+- Mesa3D supports OpenGL ES2.0 / 3.0 API
+
+- Various Xorg protocols can be accelerated with OpenGL/ OpenGL ES based drivers
+
+- Adobe's Starling (2D), and Molehill (3D) attempt to use the GPU for acceleration of graphics operations
+
+- With the publication of WebGL, there are many Javascript engines that are now actively developed that use the GPU from the browser (including the labs in this site). Worker threads will allow good responsiveness of systems through background processing of tasks ex http://gpupowered.org/node/11
+
+- Khronos announced Vulkan API, for next generation Graphics support, with active participation from Google.
+
+The list is quite long. In addition, many GPU's support acceleration of Vector Graphics operations (OpenVG API) as well, though its application is reducing.
+
+<strong> Specifications and standardisation of Graphics
+
+The Khronos consortium is a group of companies coming together to establish and drive standards for Graphics and Multimedia. The most visible and adopted standard is the OpenGL, and OpenGL ES standards. OpenMAX is a standard for interoperation of multimedia (video/ audio) processing - promoted by Khronos. The Microsoft operating system natively supports the DirectX family of standards.
+
+Latest versions of the below standards (including proposed standards) are available at the Khronos website:
+
+-    OpenCL,     OpenGL,     OpenGL ES,     OpenGL SC,     WebGL,     WebCL,     COLLADA,     OpenVG,     OpenSL ES,     OpenMAX AL,     OpenMAX IL,     OpenMAX DL,     EGL,     OpenKODE,     StreamInput,     OpenWF
+
+<strong> Differences between OpenGL ES1 and OpenGL ES2
+
+In terms of functionality, OpenGL ES2 brings a very flexible programmable pipeline, using a programming language called GLSL (Shading Language), compared to fixed functionality present in OpenGL ES1. It also removes certain functionality like Fog API, and hence is not backward compatible with ES1. OpenGL ES3.0 brings in additional optimisations to reduce draw calls that reduce interaction between the CPU and the GPU. 
+
+To be able to program in OpenGL ES2.0 or beyond, the developer needs to be (a) Aware of the new APIs in ES2.0 (b) Be able to write a shader in shader language for both vertex and fragment shaders.
+
+The below website from Univ of Michigan has a detailed comparison between the APIs all the way upto ES3.0.
+
+http://web.eecs.umich.edu/~sugih/courses/eecs487/common/notes/APITables.xml
+
+Extensions available for OpenGL / ES are available in the sheet at,
+
+https://docs.google.com/spreadsheet/ccc?key=0At5QLa2ZAYZBdHFLbEtvOHF5S1NobWJFbmpDUHZSWWc&usp=sharing#gid=0
+
+<strong> Learning Graphics standards
+
+Learning to program for GPU (with OpenGL or other Graphics API standards), is to a large extent very different from programming on the CPU. GPUs are very parallel, adopt very different programming paradigms, and have peculiar performance characteristics that are not immediately obvious for programmers in the Von-Neumann world.
+
+Though OpenGL, OpenGL ES, DirectX and other Graphics standards have been around for quite some time, little or no complete material exists, that help in understanding of Graphics in a pedagogical manner with self-evaluation. The personal labs provided here, are expected to fill the gap. Read more here <a href="http://www.gpupowered.org/node/2"> About this site </a>.
+
+<strong> References
+
+- http://www.nvidia.com/object/tesla_computing_solutions.html - Computing solutions from Nvidia
+- http://downloadcenter.intel.com/ - Drivers for Intel Graphics chipsets - the GMA families and others
+- http://www.imgtec.com/ - Imagination Technologies, an IP vendor
+- http://www.vivantecorp.com/ - Vivante Corporation, an IP vendor
+- http://www.futuremark.com/ - Desktop performance benchmarking suite
+- http://www.kishontiinformatics.com/  - Makers of the popular GLBenchMark suite for mobile devices (Egypt, ..)
+- <a href="http://processors.wiki.ti.com/index.php/AM35x-OMAP35x_Graphics_SDK_Getting_Started_Guide">TI Graphics information</a>
+- http://www.arm.com - Makes the Mali GPU core (http://www.arm.com/products/multimedia/mali-graphics-hardware/index.php)
+- http://www.freescale.com/webapp/sps/site/overview.jsp?code=IMX6X_SERIES - Freescale iMX6 series
+- <a href="http://www.slideshare.net/prabindh/introduction-to-2d3d-graphics"> Tutorial provides a brief overview </a>  of 2D and 3D graphics concepts, and applications
+- Qt5 build and optimisation <a href="http://www.gpupowered.org/node/8">information for various Qt5 releases with GPU acceleration  </a>
+- Using ANGLE for Windows <a href="http://gpupowered.org/node/29">http://gpupowered.org/node/29</a>
+- Key EU patent for tile based GPU systems (IMGTECH)  MULTI-CORE GEOMETRY PROCESSING IN A TILE BASED RENDERING SYSTEM - https://data.epo.org/publication-server/pdf-document?pn=2227781&ki=B1&cc=EP, US version - http://www.google.co.in/patents/US8310487
+- OpenGL and OpenGL ES features - http://on-demand.gputechconf.com/siggraph/2013/presentation/SG3104-Future-Visual-Computing-OpenGL-ARM.pdf
