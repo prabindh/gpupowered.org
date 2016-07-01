@@ -1,0 +1,95 @@
+A History of the GPU, and What We Dont See
+Published on July 1, 2016
+
+Prabindh Sundareson
+Author at GPUPowered.Org
+
+Back in the 2000's, I was enthralled by the visualisation possibilities of using an API called OpenGL, drawing arbitrary shapes in realtime on the screen, and then blending streaming video on top of it (sure, we started with a cube (https://github.com/prabindh/sgxperf/blob/master/screenshots/IMAG0273.jpg) ). But demonstrating this on the PC, and trying to move this implementation to an OpenGLES system proved to be a nightmare. Reasons for this were 2 fold - OpenGLES1.1 and OpenGL differed in many ways, and the GPU cores found in embedded devices just about managed to haul VGA buffers at 25 fps, forget about blending full screen planes.
+
+<em>Processor status in the 2000's
+
+Specifications of 14 M.Triangles/s and 200 M.Pixels/s (https://en.wikipedia.org/wiki/PowerVR#Series5) was considered top of the line in the non-PC industry (Mobiles and embedded devices with QVGA/VGA panels). Embedded GPUs were still evolving. Anisotropic filtering was spoken in hush hush tones never to be taken up in customer meetings. Display controllers handled blending of planes, and blending in the GPU was unheard of. The embedded-GPU space was almost completely occupied by Imagination Technologies, and the CPU space by ARM9/11.
+
+It was widely believed that Windows Embedded will become the de-facto standard in Embedded devices also, just like the PC space. Linux was something to look and read about for the future and use for server farms, not on the mainstream embedded devices. Boards like the FriendlyARM below were the embedded designs of the day (http://www.aliexpress.com/item/FriendlyARM-Development-Board-ARM-Kit-MINI2440-3-5-inch-320-240-touch-screen-64M-Ram-256M/636561708.html).
+
+The main success criterion for the processors at that time - was the CPU performance, and peripheral support. The more peripherals you could support, the more OEM manufacturers chose your processor. Flash, ATA, MMC, SD, Display controllers, were all required. Most of the Graphics functionality was on the Display controller, and a separate GPU was not required.
+
+But Microsoft did not support OpenGL ES2.0 in their framework, and NEON in their ARM compilers, and slowly Windows began to lose its edge in the mobile and embedded world.
+
+<em>GPUs find their niche
+
+When resolutions began to expand beyond QVGA, it was deemed necessary to require a separate processor for rendering the Graphics with a meaningful performance rate. GPU cores began to be used in the integrated processors. Though many of the UI (User Interface) frameworks still relied on Vector Graphics rendered on the CPU, raster operations with OpenGLES slowly began to penetrate the mainstream. It was really the increase in display resolutions that finally broke the CPU's lordship over the complete processor pipeline. And around that time, vendors started supporting OpenGLES2 on Linux, and when Android came in, time was ripe for finally shrugging off the CPU and moving onto the GPU.
+
+<em>UI Frameworks
+
+Out of all the UI software frameworks that existed at that time, I should specially mention Qt (spelt Cute) as the "only" software that has continued to evolve over decades, adding functionalities and device support, crucially both Vector and Raster support, maintaining compatibility across rendering APIs (mostly), and running on Linux, Windows, Android, iOS, x86 and ARM... Qt framework emerged out of Trolltech in the late 90's, later acquired by Nokia, then Digia, then went on to Open-governance, and still very actively maintained and supported in 2016.
+
+Qt is the only software that has evolved over decades, supporting wide variety of OSs, backends, and graphics and system functionalities
+A history of time (and multimedia)
+
+<em>The case for UI and customer value:
+
+Interestingly, I first learnt the critical role of the User Interface and Multimedia technologies in a product, when interacting with the key players in the portable device space at that time - Dell, Creative Labs, multitude of other vendors, and later Apple.
+
+Dell and Creative built Multimedia players (play MP3 and MP4 files) that overtly focused on functionality - Best audio quality, Best post processing effects (like cross-fade, Time-warp, Equalisation ..), and power consumption. The form-factor, and UI were usually afterthoughts.
+
+<https://www.engadget.com/2007/01/05/dell-prepping-a-sideshow-enabled-mp3-player/> 
+
+There were many other players at the time that built an unimaginable (and perhaps unsustainable) variety of such devices, and TI (Texas Instruments) supplied processors with all of them. Sony built a MP3 player in the form factor of a Pen. (http://www.mp3newswire.net/stories/sonyclip.html).
+
+One of them (Rio) even had speech recognition built in, to make moving to the next track easier.
+
+<http://anythingbutipod.com/2008/03/10th-anniversay-of-the-mp3-player/>
+
+Apple was late to this market. But when Apple designed their product for audio playback - the iPod, the focus was instead on the weight, the form factor, the User interface, Quality, and Color. A visual history of the iPod-classic is available in the below link
+
+<http://www.theverge.com/2014/9/9/4715274/ipod-classic-discontinued-a-visual-history>
+
+Unfortunately, TI could not supply the AV processors for the Apple device, and Apple ultimately ended up owning this industry completely. The industry blood-bath continued all the way till 2005, and the below chart shows how this market turned out. 
+
+< from http://macdailynews.com/2005/09/02/apple_stomps_competitors_in_flash_based_mp3_player_market/comment-page-2/>
+
+This push (or Kick) from Apple made the pure-MP3 player manufacturers venture into Video players (ex, Archos). By that time however, the next arsenal in the Apple bandwagon was ready - the iPhone. Though some of the players in the video player business were the best in their field - for ex Archos, the volumes did not add up. These manufacturers either exited, or became ODMs to other vendors (ex, Archos). 
+
+The reasons for TI not in Apple product were not all technical. but the seed for Apple's success was sown in the focus on the User's value proposition - Make the portable fashionable.
+
+And making the "portable fashionable" meant Touch screen, Full color, Thin form factor, Flash storage no HDD, WiFi
+
+<em>The rise of the Samsung brand
+
+Interestingly, there was another player waiting in the wings and even became better than Apple in the same metrics that we saw earlier. Samsung - famously pivoting around their CEO's quality push by burning huge number of phones in 1995, went on to become the world's largest player in not one, but almost all electronics fields they ventured into - Mobile phones (first curved edge device in Galaxy S6 and a full quarter of world market share in Smartphones), DRAM business, Flash, Foundries. Samsung's strength lies in leveraging a very diverse portfolio of inhouse technologies in camera, processors, displays, storage, and manufacturing. The Galaxy S7 is already in the market, and the S8 to be announced promises to take the exciting field of Mobiles into completely new dimensions.
+
+Samsung's Mobile centric strategy of IoT, combined with their acquisition of Node.js vendor Joyent, and SmartThings, and their innate Asian aggressive business and development techniques will yield great results in the future.
+
+A history of Samsung's innovation is showcased in the below link:
+
+http://www.samsunginnovationmuseum.com/index.jsp
+
+<em>GPU Performance and Processors
+
+
+Today, processors have become much more powerful in terms of the GPU, as well as the CPU.
+
+Windows CE6.0 on ARM11 has given way to Linux in the form of Android and Ubuntu on ARM, and full fledged Windows 10 on all devices.
+
+Comparing the capabilities of ARM CPU cores (starting from the Cortex-A8 series, not the venerable ARM9/11) shows a 3x increase in performance (measured in Reinhold's DMIPS/MHz/core). GPU performance has exploded compared to the CPU, to say the least. Referring to the below infographic (Taken from https://imgtec.com/blog/the-rise-of-gpu-compute/) shows a non-linear growth in GPU performance compared to the CPU. As with all GPU performance comparisons, GFLOPS have to be taken with a pinch of salt, but it shows the general trend.
+
+As seen, GPUs have become very powerful, and will continue to become more powerful by adding more cores and frame buffer compression techniques.
+
+<em>GPUs have arrived. Do we need more ?
+
+- There can never be too-much of GPU performance in a device. Just when you think UI's have become mature, comes along VR and 360 videos. 4K and 120Hz displays are being discussed even in the mobile world. Content resolutions and Display resolutions will continue to increase till 4K in the mobile world.
+- What you can see will begin to come from what you cannot see (Through the network, from the cloud). Android Game streaming (Refer Chuo-Ling's talk at Google I/O 2016 - https://www.youtube.com/watch?v=T93bcJh4oSQ) promises to change the future of gaming in a mobile device. So is Shadowplay, and other technologies already established in the PC world. Growth of 5G networks can pave the way for remote streaming in a much more latency insensitive way than what is currently possible (~60-100 mSec roundtrip) today.
+- Programmability through C++ (and thence other languages including the functional ones)  will be key for making use of the GPU's processing power by non-Graphics programmers. HSA promises to be key for this, though little progress has been made across the industry in the last 4 years. Meanwhile, cache coherency continues to be a source of bottleneck and data hazards between CPU and the GPU.
+- Significant progress has to be made in connecting GPUs with other Accelerators. Not much work has been done in this regard. Recent heterogenous architecture advances like combined FPGA + GPU cores show promise in this regard.
+ 
+The future has never been so exciting in the field of Technology and Computing.
+ 
+Fundamental contributions continue to be made in making the world a better place, by making people more productive, feel closer to each other irrespective of their location, getting things done faster, all with devices we may not even notice. With improvements in power consumption, process nodes and yields, as Developers we just need to look at finding new and new applications that utilise the power of the Hardware platforms (GPU, CPU and other accelerators), for the betterment of the human kind and that solve Real-Problems.
+
+<em>What do you think ?
+
+Reach out to me with your comments at 
+
+prabindh@gpupowered.org
+
