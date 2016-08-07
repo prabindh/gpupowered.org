@@ -1,5 +1,9 @@
 1. Install the AMD64 ISO on the VM using standard procedure
 
+http://releases.ubuntu.com/16.04/ubuntu-16.04.1-desktop-amd64.iso
+
+VMWare version - 5.1.2 r108956
+
 2. sudo apt-get install build-essential
 
 3. sudo apt-get install linux-headers-`uname -r`
