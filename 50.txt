@@ -1,0 +1,273 @@
+From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support
+By prabindh 13 / Aug / 2016
+
+From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support (Replicated from https://github.com/prabindh/Lasagne/wiki/From-Zero-to-Lasagne-on-Windows...(64-bit),-on-Dell-Precision-with-Quadro-GPU,-with-CUDNN-support till the Wiki gets mainlined)
+
+This guide provides step-by-step instructions to get Lasagne up and running on Windows 10 (and possibly others), including BLAS and CUDA support. It is by far not the only way, but one that is known to work. Furthermore, it uses a portable Python distribution that will not interfere with whatever Python environment you may already have set up.
+
+If you run into trouble or have any suggestions for improvements, please let us know on the mailing list:
+Also let us know if you successfully used or adapted the steps for other versions of Windows, or other Python distributions.
+
+## Basics
+
+This installs the bare minimum needed: A Python distribution including the prerequisites, Theano and Lasagne.
+
+### WinPython
+
+For the Python distribution, we chose WinPython, as it can live independently of existing Python installations and comes with all batteries included. Download the latest release of WinPython 3.4 from .
+At the time of writing, this was version 3.4.4.3: [WinPython-64bit-3.4.4.3.exe](https://sourceforge.net/projects/winpython/files/WinPython_3.4/3.4.4.3/W...) (289 MiB). Note that Theano is not compatible with Python 3.5 under Windows yet.
+
+After downloading, install to a location of your choice.
+
+Note - Do NOT install this package in c:\program files.
+
+For the rest of this guide, we assume it has been installed at `C:\Lasagne\WinPython`.
+
+**Note:** The download is rather large as it links numpy against (and includes) the Intel MKL libraries for fast linear algebra.
+There is also a *Zero* edition of WinPython at 22 MiB, but it requires installing numpy and scipy manually, which does not seem to work out of the box on Windows.
+
+### Theano and Lasagne
+
+Start the WinPython command prompt from the installation directory and enter:
+```bash
+pip install --upgrade --no-deps https://github.com/Theano/Theano/archive/master.zip
+pip install --upgrade --no-deps https://github.com/Lasagne/Lasagne/archive/master.zip
+```
+The zip files can also be installed from local files, like below:
+
+```bash
+pip install --upgrade --no-deps Theano-master.zip
+pip install --upgrade --no-deps Lasagne-master.zip
+```
+
+This will install the bleeding-edge versions of Theano and Lasagne.
+Whenever you want to update to the latest version, just run the two commands again.
+
+### Testing
+
+To test your installation, download Lasagne's MNIST example: [mnist.py](https://github.com/Lasagne/Lasagne/raw/master/examples/mnist.py)
+Save it to a local directory of your choice, we will assume `C:\Lasagne\code`.
+
+Start the WinPython command prompt, navigate to the directory and run it:
+```bash
+cd C:\Lasagne\code
+python mnist.py mlp 5
+```
+If everything was installed correctly, this will download the MNIST dataset (11 MiB) and train a simple network on it for 5 epochs. Including compilation, this should take between 1 and 5 minutes.
+
+## BLAS
+
+BLAS (Basic Linear Algebra Subprograms) is a specification for a set of linear algebra building blocks that many other libraries depend on, including numpy and Theano. Several vendors and open-source projects provide optimized implementations of these routines. WinPython bundles one such implementation (Intel MKL) to be used by numpy. Unfortunately, it cannot be used by Theano, as the header files and import libraries are neither included nor freely available. For most linear algebra operations, Theano can fall back to calling numpy (at minimal loss of performance), but if you plan to train ConvNets on a CPU, installing a BLAS library will help tremendously.
+
+### OpenBLAS (precompiled)
+
+The easiest variant is to download a precompiled version of OpenBLAS, an open-source implementation.
+Compiling a version yourself, targeted at your specific CPU, will make things faster, but is more complicated (*please feel free to extend this guide if you know how*).
+
+Download the latest precompiled version ("Binary Package") from .
+At the time of writing, this was version 0.2.15: [OpenBLAS-v0.2.15-Win64-int32.zip](https://sourceforge.net/projects/openblas/files/v0.2.15/OpenBLAS-v0.2.15...) (19 MiB) and [mingw64_dll.zip](https://sourceforge.net/projects/openblas/files/v0.2.15/mingw64_dll.zip/...) (0.5 MiB). **Note:** At the time of writing, more recent OpenBLAS versions were only available in source form (OpenBlas...version.zip), not as precompiled packages.
+
+After downloading, extract the first file, we assume to `C:\Lasagne\OpenBLAS`.
+Open the second file. You will find three DLLs inside: `libgcc_s_seh-1.dll`, `libgfortran-3.dll`, `libquadmath-0.dll`.
+Copy all of them to a directory on your PATH. A convenient option is to place them inside your WinPython installation at `C:\Lasagne\WinPython\python-3.4.4.amd64\DLLs` (if you installed a different version, adapt it accordingly).
+Move `C:\Lasagne\OpenBLAS\bin\libopenblas.dll` to the same directory.
+
+Launch the WinPython command prompt, and enter the following:
+```bash
+notepad ..\settings\.theanorc
+```
+If it asks whether to create a new file, say "Yes".
+Paste the following lines (adapting paths as needed) and save:
+```
+[blas]
+ldflags=-lopenblas
+
+[gcc]
+cxxflags=-IC:\Lasagne\OpenBLAS\include -LC:\Lasagne\OpenBLAS\lib
+```
+
+### Testing
+
+To test whether Theano can use OpenBLAS, download Theano's BLAS check: [check_blas.py](https://github.com/Theano/Theano/raw/master/theano/misc/check_blas.py)
+We assume you put it in `C:\Lasagne\code`.
+
+Start the WinPython command prompt, navigate to the directory and run it:
+```bash
+cd C:\Lasagne\code
+python check_blas.py
+```
+If everything works correctly, near the end of the output, it should say:
+```
+Total execution time: 31.37s on CPU (with direct Theano binding to blas).
+```
+The execution time may be very different, the important point is `direct Theano binding to blas`.
+
+## Nvidia GPU support (CUDA)
+
+To be able to train networks on an Nvidia GPU using CUDA, we will need to install CUDA and a suitable C compiler, then adapt some configuration files.
+
+### CUDA
+
+Download the latest version of CUDA from for the correct version of Windows. If you're setting up a single machine, we recommend the network installer (called "exe (network)") which will download required components on demand.
+
+Run the installer and follow the on-screen instructions. If your GPU driver is too old, it can be upgraded by the CUDA installer. If you want to save space, install the CUDA toolkit only and leave out the examples.
+
+**Note:** If you happen to have an old GPU with Compute Capability 1.x (i.e., it is not listed among the [CUDA GPUs](https://developer.nvidia.com/cuda-gpus), but the [CUDA Legacy GPUs](https://developer.nvidia.com/cuda-legacy-gpus)), you'll need CUDA v6.5 and driver 340.62, anything more recent will not work.
+
+### C Compiler
+
+`nvcc`, Nvidia's compiler front-end for CUDA code, requires the MSVC compiler in a version that's neither too old nor too new (e.g., for CUDA 7.5, it supports MSVC 2008, 2010, 2012 and 2013).
+The free Visual Studio Express or Community editions only include the 32-bit compiler, though, and provide a full IDE that we do not need.
+The cheapest option (in terms of download and installation size) seems to be the Windows SDK, which we will use here.
+
+Note: The configuration steps mentioned below do not apply if you have the Professional version of Visual studio installed.
+
+Download the [Microsoft Windows SDK for Windows 7 and .NET Framework 4](https://www.microsoft.com/en-us/download/details.aspx?id=8279) and run the installer.
+Note that any different version of the SDK may not include the correct compilers.
+For the installation directory, we assume you choose `C:\Lasagne\Microsoft SDKs\Windows\v7.1`, although it will install some components elsewhere (at `C:\Program Files (x86)`) regardless of what you select.
+Only the following components are required: Windows Headers, x64 Libraries, Visual C++ Compilers (see screenshot).
+
+[[winsdk71_components.png]]
+
+If you cannot select the compilers (they are grayed out), you will need to install .NET Framework 4 first.
+
+### Configuration
+
+In the start menu, find the Command Prompt. Right-click it and choose "Run as administrator". Then enter the following commands:
+```bash
+cd C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64
+notepad vcvars64.bat
+```
+If it asks you whether to create a new file, say "Yes", paste the following line (adapting the path if needed) and save:
+```
+CALL "C:\Lasagne\Microsoft SDKs\Windows\v7.1\Bin\SetEnv" /x64
+```
+If the `vcvars64.bat` file already exists, it's because you installed a full version of MSVC 2013 Professional -- in this case, you probably do not need to change it.
+
+Now launch the WinPython command prompt, and enter:
+```bash
+notepad ..\settings\.theanorc
+```
+Paste the following (in addition to what's in the file already) and save:
+```
+[global]
+device=gpu
+floatX=float32
+
+[nvcc]
+compiler_bindir="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64"
+flags=--cl-version=2013
+```
+
+Note: Ensure to escape the path string with quotes, if the path name has space in it.
+
+### Testing
+
+If you didn't follow the BLAS installation, download Theano's BLAS check [check_blas.py](https://github.com/Theano/Theano/raw/master/theano/misc/check_blas.py) and save it locally, we assume to `C:\Lasagne\code`. Launch the WinPython prompt and enter:
+```bash
+cd C:\Lasagne\code
+python check_blas.py
+```
+Near the end, it should say:
+```
+Total execution time: 0.61s on GPU.
+```
+Again, the execution time varies wildly depending on the GPU (it could be over 10 seconds), the critical part is `on GPU`.
+
+### Debugging
+
+If it doesn't work, try testing `nvcc` separately. Download [cuda_check.c](https://gist.github.com/f0k/0d6431e3faa60bffc788f8b4daa029b1/raw/2e37a83...) and save it locally, we assume to `C:\Lasagne\code`.
+Launch the WinPython command prompt, and enter:
+```
+cd C:\Lasagne\code
+nvcc -o cuda_check.exe cuda_check.c --compiler-bindir="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64" --cl-version=2010 -lcuda -lcudart -lcublas
+```
+If it doesn't work, you should get better error messages. Try adapting or removing the last three command line switches until it works, then adapt the `.theanorc` file accordingly. In the end, you should obtain a `cuda_check.exe` that you can run from the command prompt to list your installed devices, e.g.:
+```
+Found 2 device(s).
+Device: 0
+Name: GeForce GTX 970
+Compute Capability: 5.2
+Multiprocessors: 13
+CUDA Cores: 2496
+Concurrent threads: 26624
+GPU clock: 1329 MHz
+Memory clock: 3505 MHz
+Total Memory: 4093 MiB
+Free Memory: 4014 MiB
+Device: 1
+Name: Tesla K40c
+Compute Capability: 3.5
+Multiprocessors: 15
+CUDA Cores: 2880
+Concurrent threads: 30720
+GPU clock: 875.5 MHz
+Memory clock: 3004 MHz
+Total Memory: 11519 MiB
+Free Memory: 11421 MiB
+```
+
+### cuDNN
+
+Finally, for improved performance especially for ConvNets, you should install Nvidia's cuDNN library.
+After registering at , you can download it from .
+
+The below steps are validated for CUDA 8.0 RC, and with latest CUDNN 5.1 for 64bit.
+
+Open the downloaded zip file. Inside, you will find a directory called `cuda` with three subdirectories `bin`, `include` and `lib`. Copy these subdirectories to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v?.?` (where `?.?` is your CUDA version), merging files with the three existing subdirectories of the same names.
+
+Theano and Lasagne should now be able to use cuDNN. To check, start a WinPython command prompt and enter:
+```
+python -c "from theano.sandbox.cuda.dnn import dnn_available as da; print(da() or da.msg)"
+```
+If everything is configured correctly, it will say something like:
+```
+Using gpu device 0: GeForce GTX 970 (CNMeM is disabled, CuDNN 4007)
+True
+```
+Otherwise you will receive an error message you can search for online.
+
+For somewhat improved performance, you can adapt your `.theanorc` file to include some additional flags. Open a WinPython command prompt and enter:
+```bash
+notepad ..\settings\.theanorc
+```
+Paste the following lines:
+```
+[dnn.conv]
+algo_fwd = time_once
+algo_bwd_data = time_once
+algo_bwd_filter = time_once
+
+[lib]
+cnmem = .45
+```
+For more configuration options, consult the [Theano documentation](http://deeplearning.net/software/theano/library/config.html#config-attri...).
+
+Note:
+
+Complete scripts and logs are linked below:
+
+1. Log of check_blas script run
+
+2. The .theanorc script
+
+```
+[global]
+device=gpu
+floatX=float32
+[nvcc]
+compiler_bindir=C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64
+flags=--cl-version=2013
+[blas]
+ldflags=-lopenblas
+[gcc]
+cxxflags=-I"C:\Users\psundareson\TOOLS\OpenBLAS-v0.2.15-Win64-int32\OpenBLAS-v0.2.15-Win64-int32\include" -L"C:\Users\psundareson\TOOLS\OpenBLAS-v0.2.15-Win64-int32\OpenBLAS-v0.2.15-Win64-int32\lib"
+```
+3. Output of cuda.dnn import check
+
+```bash
+python -c "from theano.sandbox.cuda.dnn import dnn_available as da; print(da() or da.msg)"
+Using gpu device 0: Quadro M1000M (CNMeM is disabled, cuDNN 5005)
+True
+```
+
