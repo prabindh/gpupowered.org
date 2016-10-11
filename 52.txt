@@ -1,0 +1,21 @@
+Introduction:
+Euclid is a tool for manual labelling of data - sets, such as those found in Deep learning systems that employ Caffe. This includes systems like DIGITS.
+
+https://github.com/prabindh/euclid/
+
+This tool runs on Linux and Windows, and is based on Python 2.7/Tkinter. Though the UI is a bit clunky it is functional at this point.
+
+Label format support:
+
+The tool supports Kitti data-set output format at this time.
+
+For the actual format, see the below link, or the Kitti dataset development kit.
+
+https://github.com/NVIDIA/DIGITS/tree/master/examples/object-detection
+
+Screenshot:
+
+https://github.com/prabindh/euclid/blob/master/euclid.png
+
+See also, http://sloth.readthedocs.org/en/latest/
+ 	
