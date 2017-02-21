@@ -1,3 +1,7 @@
+Qt 5.1.0 on ARM platforms (AM335x, OMAP5 and other SGX platforms)
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:38  / /
+
 It is now possible to run Qt5, on TI ARM platforms with OpenGLES2.0 support like AM335x, OMAP5, from the respective Linux Development kits.
 
 (Jan 2014 update) Qt5.2 build instructions posted at http://gpupowered.org/node/31

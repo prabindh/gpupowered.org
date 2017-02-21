@@ -1,0 +1,73 @@
+SGX HW accelerated WebGL with Firefox14 on 3730
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:25  / /
+Introduction
+
+This post introduces acceleration capabilities of 3730, used in smooth rendering of WebGL in Firefox14 (from mozilla-central trunk), with egl backend on Linux. Binaries and builds are provided, along with screen captures and performance information. For WebGL on Android information refer to http://gpupowered.org/node/12
+
+Videos of Accelerated WebGL in action:
+
+http://www.youtube.com/watch?v=hSgXHM2CW3U&list=PL66AC0634D40C9FF2&featu...
+
+Performance
+
+It is possible to achieve upto 15 fps on below demos that have been tested with this build, rendering onto a VGA surface.
+
+http://learningwebgl.com/lessons/lesson05/index.html
+http://dl-developer.sonyericsson.com/demo/webgl/blog/webgl_materials_cub...
+http://mrdoob.github.com/three.js/examples/webgl_materials_cubemap_balls...
+
+Target requirements:
+4.06.xx Graphics driver package. Download from
+http://processors.wiki.ti.com/index.php/AM35x-OMAP35x_Graphics_SDK_Getti...
+Firefox14 b2g package
+https://gforge.ti.com/gf/download/docmanfileversion/297/5516/b2g-prabu-e...
+Filesystem with atleast gcc4.5 or greater. The b2g pre-built package is built with 4.6 Linaro toolchain.
+
+Execution on target:
+
+Untar the below archive to target:
+https://gforge.ti.com/gf/download/docmanfileversion/297/5516/b2g-prabu-e...
+
+Set the below windowsystem mode for B2G - below are needed - b2g egl acceleration doesnt work in FRONT mode. Set in "/etc/powervr.ini" file.
+
+[default]
+#WindowSystem=libpvrPVR2D_FRONTWSEGL.so
+WindowSystem=libpvrPVR2D_FLIPWSEGL.so
+
+DisableHWTextureUpload=1 needs to be added for drivers upto 4.05.xx version. For the latest graphics package 4.06.xx this is not required.
+
+To launch a webpage, perform below action inside the b2g-prabu folder after extraction of archive:
+B2G_HOMESCREEN=http://www.examplewebgl.com ./b2g
+
+Configuration and Building
+
+The firefox14 b2g can be built by using below tools and sgxconfiguro.
+
+https://github.com/prabindh/mozilla-embedded/blob/master/patches/2Apr/mo...
+https://github.com/prabindh/mozilla-embedded/blob/master/patches/3Apr/wh...
+https://github.com/prabindh/mozilla-embedded/blob/master/patches/26Mar/0...
+Crosscompile toolchain from Linaro, or other, atleast 4.5
+Host machine should have atleast 2GB RAM
+
+sgxconfiguro provides pkgconfig information for cross-compilation. This tool can be obtained from
+https://github.com/prabindh/sgxconfiguro/
+
+Further patch sets
+Watch the below repo for future changes, and further embedding work
+https://github.com/prabindh/mozilla-embedded
+
+HTML5 WebGL capabilities
+
+Per html5test.com, Firefox14 on 3730 Linux scored 344 points, and full WebGL capabilities. This is significantly better than WebKit, where I am struggling to get Webkit recognise the GLES2 driver and create a WebGL context, though it is configured for WebGL support.
+
+Acknowledgements:
+Thanks to :romaxa for the tips. Solved a number of problems together to get to this stage. A list of changes submitted to mozilla trunk can be seen at bugz below. Atleast one patch has gone into trunk already.
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=735598
+https://bugzilla.mozilla.org/show_bug.cgi?id=735594
+==> Landed in trunk [https://hg.mozilla.org/mozilla-central/rev/41143e1cae85]
+https://bugzilla.mozilla.org/show_bug.cgi?id=741289
+==> Landed in trunk [https://hg.mozilla.org/mozilla-central/rev/810e8295b080]
+https://bugzilla.mozilla.org/show_bug.cgi?id=732340
+----prabu@ti.com, Mar 2012

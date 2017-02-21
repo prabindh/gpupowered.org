@@ -1,3 +1,6 @@
+Qt5 and C++, moving from Qt4 | GPUpowered.Org
+
+
 Introduction:
 
 Recently, the xgxperf C++ package (Utility to draw common 2D objects using Qt, and measure performance) was moved from the earlier Qt4 to Qt5. (Qt5.1 Alpha1). This post summarises the changes that were required for this purpose. This post can be used as a general guideline of how to port applications from Qt4 to Qt5, specially applications that are widget based. An introduction to xgxperf is available at (https://gforge.ti.com/gf/download/docmanfileversion/237/3977/XgxPerfToolkit_v2.pdf)

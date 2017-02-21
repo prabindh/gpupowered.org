@@ -1,4 +1,5 @@
 From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support
+
 By prabindh 13 / Aug / 2016
 
 From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support (Replicated from https://github.com/prabindh/Lasagne/wiki/From-Zero-to-Lasagne-on-Windows...(64-bit),-on-Dell-Precision-with-Quadro-GPU,-with-CUDNN-support till the Wiki gets mainlined)

@@ -1,3 +1,7 @@
+Introduction:
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:23  / /
+
 Traditional Graphics is focused on areas that involve methods to display different kinds of visual content, on display devices. This includes the below:
  
 - Hardware that can perform Graphics operations / acceleration - Ex, Graphics Processing Unit (GPU), 2D accelerators, CPU, dedicated FPGA

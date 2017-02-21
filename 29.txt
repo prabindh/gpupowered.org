@@ -1,3 +1,7 @@
+Using ANGLE for Windows and using the OpenGLES2.0 API
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:40  / /
+
 <em>Introduction
 
 ANGLE (Almost Native Graphics Layer Engine) is a software wrapper, that provides a Khronos certified OpenGLES2.0 implementation on Windows platforms. This is a good tool to understand how 3D Graphics APIs work internally. Qt5 also uses ANGLE internally on windows builds, to be able to run the SceneGraph framework using OpenGLES2.0 across all platforms, including windows, in all versions from Qt5.1, Qt5.2 and further.

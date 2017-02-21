@@ -1,0 +1,111 @@
+Qt5 (minimal) on Beaglebone, with Yocto
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:36  / /
+Introduction:
+
+This post publishes the method to build Qt5 for Beaglebone. To build Qt5 for Beaglebone, the below repos are needed:
+
+poky
+meta-oe
+meta-ti
+meta-qt5
+
+Downloading the configuration files:
+
+git clone git://git.yoctoproject.org/poky
+cd poky
+git clone https://github.com/openembedded/meta-oe
+git clone git://git.yoctoproject.org/meta-ti
+git clone git@github.com:prabindh/meta-qt5.git
+
+Adding qt5 to minimal image (conf/local.conf):
+
+Add below line to conf/local.conf (notice the space at start of the appended package names)
+
+IMAGE_INSTALL_append = " qtbase qtbase-tools qtbase-plugins"
+
+Setting Beaglebone as target (conf/local.conf):
+
+Specify Beaglebone as target, as below, in conf/local.conf
+
+MACHINE ?= "beaglebone"
+BBMASK ?= ".*/meta-ti/recipes-misc/(images|payload)/"
+
+Adding meta-ti and meta-oe layers to Bitbake build system:
+
+Add meta-oe and meta-ti, so that it looks like below in conf/bblayers.conf
+
+BBFILES ?= ""
+BBLAYERS ?= " \
+${TOPDIR}/../meta \
+${TOPDIR}/../meta-yocto \
+${TOPDIR}/../meta-yocto-bsp \
+${TOPDIR}/../meta-oe/meta-oe \
+${TOPDIR}/../meta-ti \
+"
+
+Building the image:
+
+source oe-init-build-env
+bitbake core-image-minimal
+
+Creating SD card:
+
+The images (MLO, u-boot, dt, uImage, and rootfs) are available at below folder,
+
+<>/poky/build/tmp/deploy/images
+
+Use mkmmc scripts (or any other standard SD format scripts) to burn these images to SD card.
+
+Running the Qt5 examples with minimal plugin:
+
+Boot the Beaglebone, and login in as root.
+
+$>export QT_DEBUG_BACKINGSTORE=1
+$>export QT_QPA_PLATFORM=minimal
+$>cd /usr/bin/qt5/examples/
+
+UI/widget examples (ex, calculator) can be run and output observed from the png file stored in the same folder.
+
+Yocto build configuration used:
+
+There was an update after this, but below should give a reference.
+
+BB_VERSION = "1.17.1"
+BUILD_SYS = "i686-linux"
+NATIVELSBSTRING = "Ubuntu-12.04"
+TARGET_SYS = "arm-poky-linux-gnueabi"
+MACHINE = "beaglebone"
+DISTRO = "poky"
+DISTRO_VERSION = "1.3+snapshot-20130403"
+TUNE_FEATURES = "armv7a vfp neon"
+TARGET_FPU = "vfp-neon"
+meta
+meta-yocto = "master:c0910f26ea0d692c6d22f2e3f87cf710b31fdf0a"
+meta-oe = "master:af6c39379dbe6822d1457498e53747ed63bdbb65"
+meta-ti = "master:ca0f68d71b08de156c4424324466aab0ebc7296f"
+meta-yocto-bsp = "master:c0910f26ea0d692c6d22f2e3f87cf710b31fdf0a"
+
+TODO:
+
+- fonts are not installed to target, so no text appears
+
+- eglfs with virtual/gles2 configuration update
+
+- wayland update
+
+- Qt 5.1 update
+
+- webkit update
+
+- Beaglebone itself runs only at 250 MHz (!) in the default Yocto core-image-minimal. To update with TI scripts for a better performance profile
+
+References:
+
+https://gist.github.com/errordeveloper/4056193
+https://github.com/meta-qt5/
+
+Qt5 using all dependencies from Sitara AMSDK 6.00
+Refer to http://www.gpupowered.org/node/24
+
+- prabindh@yahoo.com

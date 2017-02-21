@@ -1,0 +1,7 @@
+Introduction
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:13  / /
+
+GPUPowered.org contains labs and quiz material for learning advanced Graphics technologies in an easy and interactive manner, with just a browser as a tool.
+
+The Course Material, Lab and the OpenGL quiz can be accessed [from this page http://www.gpupowered.org/node/13].

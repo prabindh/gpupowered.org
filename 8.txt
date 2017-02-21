@@ -1,3 +1,5 @@
+Qt5 on ARM platforms - Introduction | GPUpowered.Org
+
 <strong>Introduction:
 
 This short post covers the background of Qt5, architectural details, configuring for eglfs with Graphics drivers, building, and known issues. This is to be used for porting Qt5 on ARM based platforms.

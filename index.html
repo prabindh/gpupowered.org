@@ -1,0 +1,134 @@
+<html>
+
+<h1>Introduction </h1>
+ Submitted by prabindh on Fri, 01/15/2016 - 20:13  / /
+<br>
+GPUPowered.org contains labs and quiz material for learning advanced Graphics technologies in an easy and interactive manner, with just a browser as a tool.
+<br>
+The Course Material, Lab and the OpenGL quiz can be accessed [from <a href="http://gpupowered.org/node/13">http://gpupowered.org/node/13</a>].
+
+
+<h1>C++ Port of Darknet (of YOLO fame)</h1>
+ 
+Submitted by prabindh on Sat, 02/11/2017 - 13:35  / /
+<br>
+OpenCV3 failures when working with C based DL frameworks, like DeepNet (Made famous by YOLO - http://pjreddie.com/darknet/yolo/) is a common issue.
+<br>
+Here is the latest version of Darknet, ported to C++, fixing many coding bugs along the way. Work involved primarily encapsulation of APIs with C linkages, including undefined headers, bug fixes, and typecasting various allocations to actual types, and using correct Error detection types for CUBLAS.
+<br>
+For training with own dataset, and detection, refer to the updated README at,
+<br>
+machine learningyolocaffedarknetc++
+<br>
+<a href = "http://gpupowered.org/node/53">Read more about C++ Port of Darknet (of YOLO fame)</a> 0 Comments
+
+<h1>Introducing Euclid, a labeller for image-datasets</h1>
+
+ Submitted by prabindh on Sat, 02/04/2017 - 18:57  / /
+<br>
+Introduction:
+<br>
+Euclid is a tool for manual labelling of data - sets, such as those found in Deep learning systems that employ Caffe. This includes systems like DIGITS, and YOLO. It is an object / class labelling tool for machine learning frameworks.
+<br>
+https://github.com/prabindh/euclid/
+<br>
+This tool runs on Linux and Windows, and is based on Python 2.7/Tkinter. Though the UI is a bit clunky it is functional at this point.
+<br>
+Label format support:
+<br>
+digitsdetectnetcaffelabellingeuclid
+<br>
+<a href="http://gpupowered.org/node/52">Read more about Introducing Euclid, a labeller for image-datasets </a	> 0 Comments
+
+
+<h1>Integrating Darknet/Yolo and OpenCV3, with Qt5</h1>
+
+
+ Submitted by prabindh on Sun, 01/08/2017 - 19:05  / /
+
+<br>
+Just added a shared-library port of latest Darknet/Yolo framework, that enables easy integration into other frameworks like Qt5.
+<br>
+An example Qt5 application, with OpenCV3, and Darknet is built in below repository.
+<br>
+https://github.com/prabindh/qt5-opencv3-darknet
+<br>
+qt5yoloopencv3
+<br>
+<A href="http://gpupowered.org/node/56">Read more about Integrating Darknet/Yolo and OpenCV3, with Qt5 </a> 0 Comments
+
+<h1>Impact of Qualcomm-NXP-Freescale on the GPU Ecosystem</h1>
+
+ Submitted by prabindh on Wed, 11/02/2016 - 19:27  / /
+<br>
+Its been a busy week in the markets, with the announcement of the Qualcomm-NXP deal. As is common in such big ticket announcements, a lot of detail gets shoved behind for later discussion.
+<br>
+One of these "little" things is the number of GPU architectures that this combined entity will support at start, and where it will end up later. The same applies to the CPU architectures, but given that it is still coming from an ARM based family it might be less of an issue. On the DSP side, Freescale and Qualcomm also have their own separate DSP engines that need to have their own roadmaps.
+<br>
+
+<a href="http://gpupowered.org/node/39">Read more about Impact of Qualcomm-NXP-Freescale on the GPU Ecosystem</a> 0 Comments
+
+<h1>GTX960 vs Quadro 1000M (CUDA Bandwidth)</h1>
+
+ Submitted by prabindh on Mon, 08/29/2016 - 15:25  / /
+<br>
+GTX960 summary:
+<br>
+Device 0: GeForce GTX 960
+Quick Mode
+<br>
+Host to Device Bandwidth, 1 Device(s)
+PINNED Memory Transfers
+Transfer Size (Bytes) Bandwidth(MB/s)
+33554432 12540.5
+<br>
+Device to Host Bandwidth, 1 Device(s)
+PINNED Memory Transfers
+Transfer Size (Bytes) Bandwidth(MB/s)
+33554432 12839.7
+<br>
+<a href="http://gpupowered.org/node/51">Read more about GTX960 vs Quadro 1000M (CUDA Bandwidth)</a> 0 Comments
+
+
+<h1>From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support</h1>
+
+ Submitted by prabindh on Sat, 08/13/2016 - 23:16  / /
+<br>
+From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support (Replicated from https://github.com/prabindh/Lasagne/wiki/From-Zero-to-Lasagne-on-Windows...(64-bit),-on-Dell-Precision-with-Quadro-GPU,-with-CUDNN-support till the Wiki gets mainlined)
+<br>
+cudacudnnlasagnewindows10theanowinpython
+<br>
+<a href="http://gpupowered.org/node/50">Read more about From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support </a> 0 Comments
+
+
+<h1>Caffe on Ubuntu 16.04 with VirtualBox + Windows 10 x64 Dell Precision + Quadro 1000</h1>
+
+ Submitted by prabindh on Sun, 08/07/2016 - 08:37  / /
+<br>
+Note: Detailed installation steps of Nvidia DIGITS on Ubuntu 16.04 (native, not VMWare on Windows10), is at https://github.com/prabindh/deepnotes/tree/master/ubuntu16.04.1
+<br>
+Steps
+<br>
+1. Install the AMD64 ISO on the VM using standard procedure
+<br>
+http://releases.ubuntu.com/16.04/ubuntu-16.04.1-desktop-amd64.iso
+<br>
+VMWare version - 5.1.2 r108956
+<br>
+2. sudo apt-get install build-essential
+<br>
+caffemlpythonubuntu 16.04vmwarewindows10quadrocuda
+<br>
+<A href="http://gpupowered.org/node/49">Read more about Caffe on Ubuntu 16.04 with VirtualBox + Windows 10 x64 Dell Precision + Quadro 1000 </a>0 Comments
+
+<h1>Virtual Reality - 9 issues</h1>
+
+Introduction
+<br>
+As VR (Virtual Reality) begins its second (or third) cycle of push into the realms of technology, it is worthwhile to check what problems remain to be solved. This article is a review of past research on fundamental issues that have not yet been solved.
+<br>
+Note: In this article, VR will primarily refer to immersiveness in the Visual domain, and specifically with HMDs (Head Mounted Displays).
+<br>
+<a href="http://gpupowered.org/node/46">Read more about Virtual Reality - 9 issues</a> 0 Comments
+<br>
+</html>

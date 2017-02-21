@@ -1,0 +1,29 @@
+WebGL with Firefox for Android on AM335x (EVM/SK/Beaglebone)
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:29  / /
+In an earlier post, it was shown how to playback WebGL content using Mozilla Firefox 14, on Linux, with B2G platform. Since then, the Mozilla Firefox for Android has become available, and has become more stable with support for WebGL.
+
+Note: With versions of Firefox for Android earlier than specified in link below, matrix uniforms are not properly parsed by the JS wrapper in Firefox. This will result in errors like below. Hence it is advised to use 15.0.1 or later for WebGL on Android with Firefox.
+logcat message:
+==> E/GeckoConsole( 853): [JavaScript Warning: "Error: WebGL: UniformMatrix4fv: this function expected a uniform of element size 16, got a uniform of element size 0"
+
+Android package for AM335x:
+Download Android package for AM335x from below link
+http://processors.wiki.ti.com/index.php/AM335X_EVM-SK_Android_Devkit_Guide
+
+Mozilla Firefox for Android:
+Download Mozilla Firefox for Android from below link:
+http://ftp.mozilla.org/pub/mozilla.org/mobile/releases/15.0.1/android/en...
+
+Install the apk via ADB on to the target platform. By default, WebGL is enabled, unlike on Linux. Hence WebGL content will work directly on the browser. Firefox also supports the latest standards in terms of support for Worker threads, CSS, and Canvas effects, in addition to WebGL, on the AM335x ICS Android platform.
+
+Platform tested:
+AM335x EVMSK with ICS, applicable for Beaglebone (with LCD cape), EVM and other SGX530 based platforms. The ARM is running at 720MHz, and SGX is running at 200 MHz.
+
+Demo Video
+http://www.youtube.com/watch?v=yohXTfaanRs
+
+WebGL on B2G on Linux on DM3730
+Refer to the link http://gpupowered.org/node/9
+
+- prabu@ti.com, Sep 2012/2013

@@ -1,3 +1,7 @@
+Webkit and Gecko - rendering engine performance comparison on AM335x
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:34  / /
+
 Below is a short comparison of where performance of different Web rendering engines stand (Webkit and Gecko) - on cost effective A8 platforms like AM335x. This also provides a comparison of softfp and hardfp on this platform.
 
 Dependencies:

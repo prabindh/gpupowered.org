@@ -1,3 +1,11 @@
+Caffe on Ubuntu 16.04 with VirtualBox + Windows 10 x64 Dell Precision + Quadro 1000
+
+ Submitted by prabindh on Sun, 08/07/2016 - 08:37  / /
+
+Note: Detailed installation steps of Nvidia DIGITS on Ubuntu 16.04 (native, not VMWare on Windows10), is at https://github.com/prabindh/deepnotes/tree/master/ubuntu16.04.1
+
+Steps
+
 1. Install the AMD64 ISO on the VM using standard procedure
 
 http://releases.ubuntu.com/16.04/ubuntu-16.04.1-desktop-amd64.iso

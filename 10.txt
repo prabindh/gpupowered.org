@@ -1,3 +1,8 @@
+
+Qt5 on TI platforms - with Xcb (part 2)
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:27  / /
+
 This is a temporary location for this post, and would ideally move to a Qt blog, or tigraphics post - please do not link directly here
 
 <strong>Introduction:

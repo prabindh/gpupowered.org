@@ -1,0 +1,424 @@
+Qt5 Discus comments on this site
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:43  / /
+Hi, I am trying to compile QT5.2 for am335x evm with ti SDK6.0. I have followed the above mentioned procedure. I have modified the qmake.conf file replacing the existing tool chain with linaro tool chain. I have added the qmake.conf file to 'linux-arm-gnueabi-g++' directory and I get the following when i run configure. I have searched online and haven't found anything different from the procedure mentioned above.
+
+./configure -prefix /home/qt5.2arm -release -make libs -xplatform linux-arm-gnueabi-g++ -opengl es2 -glib -confirm-license -opensource -no-xcb -no-pch -force-pkg-config -make examples -verbose
+
+This is the Qt Open Source Edition.
+
+You are licensed to use this software under the terms of
+the Lesser GNU General Public License (LGPL) versions 2.1.
+
+You have already accepted the terms of the license.
+
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -fvisibility=hidden fvisibility.c
+Symbol visibility control enabled.
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -o libtest.so -shared -Wl,-Bsymbolic-functions -fPIC bsymbolic_functions.c
+Symbolic function binding enabled.
+DEFAULT_INCDIRS=".
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/include/c++/4.7.3
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/include/c++/4.7.3/arm-linux-gnueabihf
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/include/c++/4.7.3/backward
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/4.7.3/include
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/4.7.3/include-fixed
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/include
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/usr/include
+"
+DEFAULT_LIBDIRS="/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/lib
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/lib/arm-linux-gnueabihf/4.7.3
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/lib
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/lib/arm-linux-gnueabihf
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/usr/lib/arm-linux-gnueabihf/4.7.3
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/usr/lib
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/arm-linux-gnueabihf/libc/usr/lib/arm-linux-gnueabihf
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf/4.7.3
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc
+/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/lib/gcc/arm-linux-gnueabihf
+"
+
+Creating qmake...
+make: Nothing to be done for `first'.
+Running configuration tests...
+Failed to process makespec for platform 'linux-arm-gnueabi-g++'
+./configure: line 4041: /qt_src_path/qt-everywhere-opensource-src-5.2.0-rc1/qtbase/bin/qmake: cannot execute binary file
+
+What am i missing here?
+
+see more
+•
+Reply
+•
+Share ›
+
+Avatar
+prabindh Mod Harini • 10 days ago
+
+Can you attach the qmake.conf ? Is the new toolchain accessible in PATH ?
+•
+Edit
+•
+Reply
+•
+Share ›
+Avatar
+Harini prabindh • 8 days ago
+
+After trying the source from git, I am able to configure. but running 'make' gives me the following error.
+bin/ld: cannot find -lQt5Multimedia
+Should I install libqt5multimedia package separately?
+•
+Reply
+•
+Share ›
+Avatar
+Harini prabindh • 9 days ago
+
+Hi, Yes the new toolchain is accessible in the PATH. When I copy the below qmake.conf to the qtbase/mkspecs/linux-arm-gnueabi-g++/ i get the error mentioned in the post- cannot execute qmake. But if i create a new folder inside mkspecs as linux-arm-gnueabi-ti-g++ and add the qmake.conf file to it, it says compiler not supported. And here is the qmake.conf.
+#
+# qmake configuration for building with arm-linux-gnueabi-g++
+#
+
+MAKEFILE_GENERATOR = UNIX
+CONFIG += incremental gdb_dwarf_index
+QMAKE_INCREMENTAL_STYLE = sublib
+
+include(../common/linux.conf)
+include(../common/gcc-base-unix.conf)
+include(../common/g++-unix.conf)
+
+ROOTFS_PATH=/home/ti-sdk-am335x-evm/filesystem/tisdk-rootfs-image-am335x-evm
+TOOLCHAIN_PREFIX=/home/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf
+
+# Change the required paths here
+QMAKE_INCDIR = $${ROOTFS_PATH}/usr/include $${ROOTFS_PATH}/usr/include/glib-2.0 $${ROOTFS_PATH}/usr/lib/glib-2.0/include/ $${ROOTFS_PATH}/usr/include/libxml2/ $${ROOTFS_PATH}/usr/include/freetype2 $${ROOTFS_PATH}/usr/include/dbus-1.0 $${ROOTFS_PATH}/usr/include/dbus-1.0/dbus
+
+QMAKE_LIBDIR = $${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi $${ROOTFS_PATH}/usr/lib
+
+QMAKE_INCDIR_OPENGL_ES2 = $${ROOTFS_PATH}/usr/include/sgx/OGLES2
+QMAKE_LIBDIR_OPENGL_ES2 = $${ROOTFS_PATH}/usr/lib/
+QMAKE_INCDIR_EGL = $${QMAKE_INCDIR_OPENGL_ES2}
+QMAKE_LIBDIR_EGL = $${QMAKE_LIBDIR_OPENGL_ES2}
+
+# libs
+QMAKE_LIBS = -lxml2 -lz -lts -lasound -lfreetype -lexpat \
+-lfontconfig -lpng -lpthread -Wl,-rpath-link=$${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=$${ROOTFS_PATH}/usr/lib
+
+QMAKE_LIBS_OPENGL_ES2= -lEGL -lIMGegl -lsrv_um -lGLESv2 -lGLES_CM -lusc -Wl,-rpath-link=/home/ti-sdk-am335x-evm/filesystem/targetNFS/usr/lib -L/home/ti-sdk-am335x-evm/filesystem/targetNFS/usr/lib
+
+QMAKE_LIBS_EGL= $${QMAKE_LIBS_OPENGL_ES2}
+QMAKE_LIBS_THREAD = -lpthread
+
+QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CFLAGS_RELEASE
+
+QMAKE_CC = $${TOOLCHAIN_PREFIX}-gcc
+QMAKE_CXX = $${TOOLCHAIN_PREFIX}-g++
+QMAKE_LINK = $${QMAKE_CXX}
+QMAKE_LINK_SHLIB = $${QMAKE_CXX}
+
+QMAKE_AR = $${TOOLCHAIN_PREFIX}-ar cqs
+QMAKE_OBJCOPY = $${TOOLCHAIN_PREFIX}-objcopy
+QMAKE_STRIP = $${TOOLCHAIN_PREFIX}-strip
+
+load(qt_config)
+see more
+•
+Reply
+•
+Share ›
+Avatar
+Harini Harini • 9 days ago
+
+I had initially tried with qt5.2 rc1 downloaded from http://download.qt-project.org...
+I then tried getting the qt 5.2 source by using git clone. I am able to run configure with the qt source from git. But when i run make I get the following error:
+
+/usr/bin/ld: this linker was not configured to use sysroots
+collect2: ld returned 1 exit status
+make[3]: *** [../../../bin/moc] Error 1
+make[3]: Leaving directory `/home/ERT/QT/qt5.2/qtbase/src/tools/moc'
+make[2]: *** [sub-moc-make_first] Error 2
+make[2]: Leaving directory `/home/ERT/QT/qt5.2/qtbase/src'
+make[1]: *** [sub-src-make_first] Error 2
+make[1]: Leaving directory `/home/ERT/QT/qt5.2/qtbase'
+make: *** [module-qtbase-make_first] Error 2
+
+I have searched online and found no solution to it. My PATH variable contains /usr/bin. Is it some problem with the host settings? I am using Ubuntu 12.04.
+But the same procedure doesn't work with the source downloaded from the link http://download.qt-project.org...
+•
+Reply
+•
+Share ›
+Avatar
+prabindh Mod Harini • 5 days ago
+
+- Please always use the single tarball, containing all packages
+- No, QtMultimedia is not needed for the base plugins
+- Have you installed TI SDK in the host before this ? If so, you need to do perform "export QMAKESPEC=" in the command line, before you try ./configure for Qt5
+
+I just downloaded Qt5.3 from latest, and it configures fine with GLES2 with the above procedure on host Ubuntu12.04. If you are still facing issue, please paste your env settings.
+•
+Edit
+•
+Reply
+•
+Share ›
+Avatar
+Harini prabindh • 3 days ago
+
+Hi I am now able to configure qt5.2 source without glib. with glib, it gives the following error.
+
+glib.o: In function `main':
+glib.cpp:(.text.startup+0x2): undefined reference to `g_main_context_default'
+glib.cpp:(.text.startup+0xa): undefined reference to `g_source_new'
+glib.cpp:(.text.startup+0x10): undefined reference to `g_source_add_poll'
+collect2: error: ld returned 1 exit status
+make: *** [glib] Error 1
+Glib disabled.
+Glib support cannot be enabled due to functionality tests!
+
+In my qmake.conf, I have set the path to glib2 include dir as follows:
+LIB_PATH=/home/ti-sdk-am335x-evm/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi
+QMAKE_INCDIR = $${LIB_PATH}/usr/include $${LIB_PATH}/usr/include/glib-2.0 $${LIB_PATH}/usr/lib/glib-2.0/include/ $${LIB_PATH}/usr/include/libxml2/ $${LIB_PATH}/usr/include/freetype2 $${LIB_PATH}/usr/include/dbus-1.0 $${LIB_PATH}/usr/include/dbus-1.0/dbus
+I have set the correct PKG_CONFIG_LIBDIR variable. What am I missing here?
+
+QMAKE_LIBDIR in the qmake.conf should be set to what?
+The path where the qt libraries are to be installed or the path of some already existing libarraies?
+My qmake.conf has the following:
+QMAKE_LIBDIR = $${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi $${ROOTFS_PATH}/usr/lib
+But there is no arm-linux-gnueabi inside rootfs/usr/lib.
+
+And from the above post of yours,
+export PKG_CONFIG=/home/prabindh/work1/arm-qt5-5.2a-gst/qt-everywhere-opensource-src-5.2.0-alpha/qtbase/x86-cross-pkg-config
+I don't understand this statement. Should I place the x86-cross-pkg-config from sqxconfiguo in the qt alpha source code?
+see more
+•
+Reply
+•
+Share ›
+Avatar
+prabindh Mod Harini • 3 days ago
+
+This is a linker error, so ensure that you do have required dependencies in the paths you provided. Soft links sometimes can point to /usr/lib (of the host) causing issues. You can keep the pkg-config file anywhere as long as you point PKG_CONFIG.
+•
+Edit
+•
+Reply
+•
+Share ›
+Avatar
+Harini prabindh • 3 days ago
+
+Okay... QMAKE_LIBDIR in the qmake.conf should point to which directory?
+•
+Reply
+•
+Share ›
+Avatar
+prabindh Mod Harini • 3 days ago
+
+All the directories that have libraries you need to link to. See description at - http://qt-project.org/doc/qt-5...
+•
+Edit
+•
+Reply
+•
+Share ›
+Avatar
+Harini prabindh • 2 days ago
+
+I want to replace the qt4.8 libs in the sitare linux ezsdk 6.0 sdk rootfs with that of qt5.2. I am not clear about where to add the libs. Is it correct to remove the qt4.8 libs from targetNFS/usr/lib and add the qt5.2 libs to the same? What else should i add from the qt5.2 installation directory to the rootfs? And where should I place them in the rootfs?
+•
+Reply
+•
+Share ›
+Avatar
+Harini Harini • 3 days ago
+
+My qmake.conf for your reference,
+
+#
+# qmake configuration for building with arm-linux-gnueabi-g++
+#
+
+MAKEFILE_GENERATOR = UNIX
+CONFIG += incremental gdb_dwarf_index
+QMAKE_INCREMENTAL_STYLE = sublib
+
+include(../common/linux.conf)
+include(../common/gcc-base-unix.conf)
+include(../common/g++-unix.conf)
+
+ROOTFS_PATH=/home/ERT/ti-sdk-am335x-evm/targetNFS
+TOOLCHAIN_PREFIX=/home/ERT/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf
+LIB_PATH=/home/ERT/ti-sdk-am335x-evm/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi
+
+# Change the required paths here
+#QMAKE_INCDIR = $${ROOTFS_PATH}/usr/include $${ROOTFS_PATH}/usr/include/glib-2.0 $${ROOTFS_PATH}/usr/lib/glib-2.0/include/ $${ROOTFS_PATH}/usr/include/libxml2/ $${ROOTFS_PATH}/usr/include/freetype2 $${ROOTFS_PATH}/usr/include/#dbus-1.0 $${ROOTFS_PATH}/usr/include/dbus-1.0/dbus
+
+QMAKE_INCDIR = $${LIB_PATH}/usr/include $${LIB_PATH}/usr/include/glib-2.0 $${LIB_PATH}/usr/lib/glib-2.0/include/ $${LIB_PATH}/usr/include/libxml2/ $${LIB_PATH}/usr/include/freetype2 $${LIB_PATH}/usr/include/dbus-1.0 $${LIB_PATH}/usr/include/dbus-1.0/dbus
+
+QMAKE_LIBDIR = $${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi $${ROOTFS_PATH}/usr/lib
+#QMAKE_LIBDIR = $${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi $${LIB_PATH}/usr/lib
+
+QMAKE_INCDIR_OPENGL_ES2 = $${ROOTFS_PATH}/usr/include/sgx/OGLES2
+QMAKE_LIBDIR_OPENGL_ES2 = $${ROOTFS_PATH}/usr/lib/
+QMAKE_INCDIR_EGL = $${QMAKE_INCDIR_OPENGL_ES2}
+QMAKE_LIBDIR_EGL = $${QMAKE_LIBDIR_OPENGL_ES2}
+
+# libs
+QMAKE_LIBS = -lxml2 -lz -lts -lasound -lfreetype -lexpat \
+-lfontconfig -lpng -lpthread -Wl,-rpath-link=$${ROOTFS_PATH}/usr/lib/arm-linux-gnueabi -Wl,-rpath-link=$${ROOTFS_PATH}/usr/lib
+
+QMAKE_LIBS_OPENGL_ES2= -lEGL -lIMGegl -lsrv_um -lGLESv2 -lGLES_CM -lusc -Wl,-rpath-link=/home/ERT/ti-sdk-am335x-evm/targetNFS/usr/lib -L/home/ERT/ti-sdk-am335x-evm/targetNFS/usr/lib
+
+QMAKE_LIBS_EGL= $${QMAKE_LIBS_OPENGL_ES2}
+QMAKE_LIBS_THREAD = -lpthread
+
+QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CFLAGS_RELEASE
+
+QMAKE_CC = $${TOOLCHAIN_PREFIX}-gcc
+QMAKE_CXX = $${TOOLCHAIN_PREFIX}-g++
+QMAKE_LINK = $${QMAKE_CXX}
+QMAKE_LINK_SHLIB = $${QMAKE_CXX}
+
+QMAKE_AR = $${TOOLCHAIN_PREFIX}-ar cqs
+QMAKE_OBJCOPY = $${TOOLCHAIN_PREFIX}-objcopy
+QMAKE_STRIP = $${TOOLCHAIN_PREFIX}-strip
+
+load(qt_config)
+see more
+•
+Reply
+•
+Share ›
+
+Avatar
+janu • 2 months ago
+
+Hi , I worked on Odroid-x2 . I want to crosscompile Qt-5.2.1 on it . While doing that I got an error has libxcb error but I already install all related libraries.
+can u please help me? I cross compiled by using -no-xcb. it was successful.After loading it on target platform, while executing the program I got an error as "This application failed to start because it could not find or load the Qt platform plugin "xcb" ". so please help me
+
+•
+Reply
+•
+Share ›
+
+Avatar
+prabindh Mod janu • 2 months ago
+
+Providing the logs of configure, and environment variables at runtime on the target, would be helpful (as mentioned in http://gpupowered.org/node/27) . Also setting QT_DEBUG_PLUGINS=1 in the environment will help in identifying plugin load issues.
+•
+Edit
+•
+Reply
+•
+Share ›
+
+Avatar
+Myzhar • 3 months ago
+
+Hi, on which board have you successfully compiled Qt5.2? I'm going to buy a new "Pandaboard ES" like board, but more powerful, and I would like to find one that has no problems with Qt5 ^_^
+
+•
+Reply
+•
+Share ›
+
+Avatar
+prabindh Mod Myzhar • 3 months ago
+
+I generally do crosscompile on the host (Ubuntu desktop), generate the binaries and run it on the board. If you intend to native compile on the board itself, buy one that has Ubuntu support, and can run Wayland, or atleast X11, and has a recent toolchain support. The OMAP5 EVM does have support for these.
+•
+Edit
+•
+Reply
+•
+Share ›
+-
+Avatar
+Myzhar prabindh • 3 months ago
+
+Sorry, I mismatched a "on" with a "for" :)
+I cross-compile to, but for my pandaboard I had a few problems.
+I'm going to search for OMAP5 EVM
+
+Steven Ziuchkovski • 7 days ago
+
+Out of curiosity, why is this not part of Texas Instruments' documentation???
+
+•
+Reply
+•
+Share ›
+
+Avatar
+Michael • 4 months ago
+
+Hi Prabindh,
+thank you very much for sharing your knowledge. I'm a programmer with qt experience, but with less linux embedded experience ( I'm trying to change this ;-) ).
+I was following your steps above, but the configure command ends with:
+
+Running configuration tests...
+Failed to process makespec for platform 'linux-arm-gnueabi-ti-g++'
+Could not find qmake configuration file linux-arm-gnueabi-ti-g++.
+Error processing project file: /dev/null
+
+I would be pleased, if you could say me what step was missed or what I have done wrong. Thank you in advance.
+Best regards,
+Michael
+
+•
+Reply
+•
+Share ›
+
+Avatar
+prabindh Mod Michael • 4 months ago
+
+Did you apply the patches from the link provided ? Do you see the folder /qtbase/mkspecs/linux-arm-gnueabi-ti-g++ ?
+•
+Edit
+•
+Reply
+•
+Share ›
+Avatar
+Michael prabindh • 4 months ago
+
+Thanks a lot, I had copied the folder into a wrong folder. I saw, you left some /home/prabindh in qmake.conf, that was easy to fix, I got a step further. I'm sorry, but now I've got the following configure result:
+ICU auto-detection... ()
+/usr/local/ti-sdk-am335x-evm/linux-devkit/sysroots/i686-arago-linux/usr/bin/arm-linux-gnueabihf-g++ -c -pipe -O2 -Wall -W -fPIE -I../../../mkspecs/linux-arm-gnueabi-ti-g++ -I. -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/glib-2.0 -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/lib/glib-2.0/include/ -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/libxml2/ -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/freetype2 -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/dbus-1.0 -I/usr/local/ti-sdk-am335x-evm/filesystem//usr/include/dbus-1.0/dbus -o icu.o icu.cpp
+icu.cpp:42:28: fatal error: unicode/utypes.h: No such file or directory
+compilation terminated.
+make: *** [icu.o] Error 1
+ICU disabled.
+The ICU library support cannot be enabled.
+Turn on verbose messaging (-v) to ./configure to see the final report.
+If you believe this message is in error you may use the continue
+switch (-continue) to ./configure to continue.
+What can I do?
+•
+Reply
+•
+Share ›
+Avatar
+prabindh Mod Michael • 4 months ago
+
+The AMSDK filesystem does not include libicu as mentioned in the post. Please remove -icu from the configure options.
+•
+Edit
+•
+Reply
+•
+Share ›
+
+Avatar
+prabindh Mod • 4 months ago
+
+Great to know Dean, thanks for the comment.
+
+•
+Avatar
+deanezra • 4 months ago
+
+Just a quick note to say thanks Prabindh for helping me get qt5 cross compiled (excellent post). Only changes I had to do was make sure the target dir on the host was exactly the same dir on the beagle. E.g. I specified /opt/qt5_arm_install as the prefix in the configure. So when transferring to the beagle, I must also copy to /opt/qt5_arm_install. Then it all just works with a simple export LD_LIBRARY_PATH=/opt/qt5_arm_install/lib. Thanks again. Im off to work out why qt dbus modules wont get enabled in the configure next.

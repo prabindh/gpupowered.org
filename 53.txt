@@ -1,5 +1,7 @@
 C++ Port of Darknet (of YOLO fame)
 
+ Submitted by prabindh on Sat, 02/11/2017 - 13:35  / /
+
 OpenCV3 failures when working with C based DL frameworks, like DeepNet (Made famous by YOLO - http://pjreddie.com/darknet/yolo/) is a common issue.
 
 Here is the latest version of Darknet, ported to C++, fixing many coding bugs along the way. Work involved primarily encapsulation of APIs with C linkages, including undefined headers, bug fixes, and typecasting various allocations to actual types, and using correct Error detection types for CUBLAS.

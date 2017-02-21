@@ -1,0 +1,151 @@
+Qt5.2 and QtWebEngine build summary on ARM platforms
+
+ Submitted by prabindh on Fri, 01/15/2016 - 20:41  / /
+
+Qt5.2 rc1 can be cross compiled for ARM with OpenGLES2 support, with sgxconfiguro (https://github.com/prabindh/sgxconfiguro). The steps below outline this method.
+
+Extract qt5.2 sources from the source package. Then perform below steps.
+
+cd qtbase
+export PKG_CONFIG_SYSROOT_DIR=/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi
+export PKG_CONFIG_DIR=
+export PKG_CONFIG_LIBDIR=/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi/usr/lib/pkgconfig
+export PKG_CONFIG_PATH=/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi/usr/lib/pkgconfig
+export PKG_CONFIG=/home/prabindh/work1/arm-qt5-5.2a-gst/qt-everywhere-opensource-src-5.2.0-alpha/qtbase/x86-cross-pkg-config
+
+export QMAKESPEC=
+export PATH=/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/i686-arago-linux/usr/bin:/home/prabindh/work2/arm-qt5.2rc1/qt-everywhere-opensource-src-5.2.0-rc1/qtbase/bin:$PATH
+
+./configure -prefix /home1/prabu/qt5.2rc1_install -release -make libs -xplatform linux-arm-gnueabi-ti-g++ -opengl es2 -glib -confirm-license -opensource -no-xcb -no-pch -force-pkg-config -make examples -verbose
+
+The output of configure will be a configure summary with OpenGLES2 support properly configured as below:
+
+=====
+Configure summary
+
+Building on: linux-g++ (i386, CPU features:)
+Building for: linux-arm-gnueabi-ti-g++ (arm, CPU features:)
+Platform notes:
+
+- Also available for Linux: linux-kcc linux-icc linux-cxx
+
+qmake vars .......... styles += mac fusion windows QT_CFLAGS_DBUS = -I/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/dbus-1.0 -I/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/lib/dbus-1.0/include QT_LIBS_DBUS = -ldbus-1 QT_CFLAGS_GLIB = -pthread -I/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/glib-2.0 -I/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/lib/glib-2.0/include QT_LIBS_GLIB = -pthread -lgthread-2.0 -lrt -lglib-2.0 QMAKE_CFLAGS_FONTCONFIG = -I/home/prabindh/ti-sdk-am335x-evm-06.00.00.00/linux-devkit/sysroots/armv7ahf-vfp-neon-3.2-oe-linux-gnueabi//usr/include/freetype2 QMAKE_LIBS_FONTCONFIG = -lfontconfig -lfreetype QMAKE_INCDIR_LIBUDEV = QMAKE_LIBS_LIBUDEV = -ludev DEFINES += QT_NO_XCB DEFINES += QT_NO_XKBCOMMON sql-drivers = sql-plugins = sqlite qmake switches .........
+
+Build options:
+Configuration .......... accessibility alsa audio-backend c++11 clock-gettime clock-monotonic compile_examples concurrent cross_compile dbus egl eglfs evdev eventfd fontconfig full-config getaddrinfo getifaddrs glib iconv inotify ipv6ifname large-config largefile libudev linuxfb medium-config minimal-config mremap neon nis no-harfbuzz opengl opengles2 openssl pcre png qpa qpa reduce_exports reduce_relocations release rpath shared small-config system-freetype system-jpeg system-png system-zlib
+Build parts ............ libs examples
+Mode ................... release
+Using C++11 ............ yes
+Using PCH .............. no
+Target compiler supports:
+iWMMXt/Neon .......... no/yes
+
+Qt modules and options:
+Qt D-Bus ............... yes (loading dbus-1 at runtime)
+Qt Concurrent .......... yes
+Qt GUI ................. yes
+Qt Widgets ............. yes
+JavaScriptCore JIT ..... yes (To be decided by JavaScriptCore)
+QML debugging .......... yes
+Use system proxies ..... no
+
+Support enabled for:
+Accessibility .......... yes
+ALSA ................... yes
+CUPS ................... no
+FontConfig ............. yes
+FreeType ............... system
+Iconv .................. yes
+ICU .................... no
+Image formats:
+GIF .................. yes (plugin, using bundled copy)
+JPEG ................. yes (plugin, using system library)
+PNG .................. yes (in QtGui, using system library)
+Glib ................... yes
+GTK theme .............. no
+Large File ............. yes
+Networking:
+getaddrinfo .......... yes
+getifaddrs ........... yes
+IPv6 ifname .......... yes
+OpenSSL .............. yes (loading libraries at run-time)
+NIS .................... yes
+OpenGL ................. yes (OpenGL ES 2.x)
+OpenVG ................. no
+PCRE ................... yes (bundled copy)
+pkg-config ............. yes
+PulseAudio ............. no
+QPA backends:
+DirectFB ............. no
+EGLFS ................ yes
+KMS .................. no
+LinuxFB .............. yes
+XCB .................. no
+Session management ..... yes
+SQL drivers:
+DB2 .................. no
+InterBase ............ no
+MySQL ................ no
+OCI .................. no
+ODBC ................. no
+PostgreSQL ........... no
+SQLite 2 ............. no
+SQLite ............... yes (plugin, using bundled copy)
+TDS .................. no
+udev ................... yes
+xkbcommon .............. no
+zlib ................... yes (system library)
+
+NOTE: Qt is using double for qreal on this system. This is binary incompatible against Qt 5.1.
+Configure with '-qreal float' to create a build that is binary compatible with 5.1.
+Info: creating cache file /home/prabindh/work2/arm-qt5.2rc1/qt-everywhere-opensource-src-5.2.0-rc1/qtbase/.qmake.cache
+
+Qt is now configured for building. Just run 'make'.
+====
+
+Then perform
+
+make && make install
+
+Then perform the same steps for the below modules.
+
+qtdeclarative
+qtscript
+qtsvg
+
+QtWebEngine build:
+
+After extracting qtwebengine preview package, perform qmake, followed by make.
+
+For the AM335x based SDK root filesystem, the make step throws below errors.
+
+No external chromium sources were found, falling back to /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/3rdparty/chromium
+Using extra options found in /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/core/qtwebengine_extras.gypi
+Using extra options found in /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/core/qmake_extras.gypi
+Updating projects from gyp files...
+Package gtk+-2.0 was not found in the pkg-config search path.
+Perhaps you should add the directory containing `gtk+-2.0.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'gtk+-2.0' found
+gyp: Call to './pkg-config-wrapper "/home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/3rdparty/chromium/arm-sysroot" "arm" --cflags gmodule-2.0 gtk+-2.0 gthread-2.0' returned exit status 1. while loading dependencies of /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/3rdparty/chromium/base/base.gyp while loading dependencies of /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/3rdparty/chromium/net/net.gyp while loading dependencies of /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/3rdparty/chromium/content/content.gyp while loading dependencies of /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/core/core_generated.gyp while loading dependencies of /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/core/core.gyp while trying to load /home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/core/core.gyp
+Project ERROR: -- running gyp_qtwebengine failed --
+make[2]: *** [sub-gyp_run-pro-make_first] Error 3
+make[2]: Leaving directory `/home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src/core'
+make[1]: *** [sub-core-make_first] Error 2
+make[1]: Leaving directory `/home/prabindh/work2/arm-qt5.2rc1/qtwebengine-opensource-src-0.1.0-tp1/src'
+make: *** [sub-src-make_first] Error 2
+
+Looking into the build process, the below are dependencies for QtWebEngine for ARM cross compilation.
+
+gtk
+nss
+gconf
+x11
+xfixes
+pangocairo/ pangoft2
+
+So need to get these in the filesystem first. Work in progress.
+
+All Qt5 related forum comments are archived at - Qt5 Discus comments (http://gpupowered.org/node/35) page
+
+-prabindh@yahoo.com, 2014
