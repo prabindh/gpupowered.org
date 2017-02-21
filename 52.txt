@@ -1,5 +1,10 @@
+Introducing Euclid, a labeller for image-datasets
+
+ Submitted by prabindh on Sat, 02/04/2017 - 18:57  / /
+
 Introduction:
-Euclid is a tool for manual labelling of data - sets, such as those found in Deep learning systems that employ Caffe. This includes systems like DIGITS.
+
+Euclid is a tool for manual labelling of data - sets, such as those found in Deep learning systems that employ Caffe. This includes systems like DIGITS, and YOLO. It is an object / class labelling tool for machine learning frameworks.
 
 https://github.com/prabindh/euclid/
 
@@ -7,7 +12,7 @@ This tool runs on Linux and Windows, and is based on Python 2.7/Tkinter. Though 
 
 Label format support:
 
-The tool supports Kitti data-set output format at this time.
+The tool supports Kitti data-set output format, and YOLO output format at this time.
 
 For the actual format, see the below link, or the Kitti dataset development kit.
 
@@ -17,5 +22,14 @@ Screenshot:
 
 https://github.com/prabindh/euclid/blob/master/euclid.png
 
-See also, http://sloth.readthedocs.org/en/latest/
- 	
+See also, SLOTH, for variety of xml format support,
+
+http://sloth.readthedocs.org/en/latest/
+
+And also, for PASCAL dataset,
+
+https://github.com/tzutalin/labelImg
+
+Euclid now referred in DIGITS pages:
+
+https://github.com/NVIDIA/DIGITS/issues/1248

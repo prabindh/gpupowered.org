@@ -1,0 +1,56 @@
+C++ Port of Darknet (of YOLO fame)
+
+OpenCV3 failures when working with C based DL frameworks, like DeepNet (Made famous by YOLO - http://pjreddie.com/darknet/yolo/) is a common issue.
+
+Here is the latest version of Darknet, ported to C++, fixing many coding bugs along the way. Work involved primarily encapsulation of APIs with C linkages, including undefined headers, bug fixes, and typecasting various allocations to actual types, and using correct Error detection types for CUBLAS.
+
+For training with own dataset, and detection, refer to the updated README at,
+
+https://github.com/prabindh/darknet/blob/master/README.md
+
+https://github.com/prabindh/darknet/tree/v3.76
+
+Sample logs with the CPP port version below:
+
+./darknet-cpp coco test cfg/tiny-coco.cfg tiny-coco.weights data/giraffe.jpg
+0: Convolutional Layer: 448 x 448 x 3 image, 16 filters -> 448 x 448 x 16 image
+1: Maxpool Layer: 448 x 448 x 16 image, 2 size, 2 stride
+2: Convolutional Layer: 224 x 224 x 16 image, 32 filters -> 224 x 224 x 32 image
+3: Maxpool Layer: 224 x 224 x 32 image, 2 size, 2 stride
+4: Convolutional Layer: 112 x 112 x 32 image, 64 filters -> 112 x 112 x 64 image
+5: Maxpool Layer: 112 x 112 x 64 image, 2 size, 2 stride
+6: Convolutional Layer: 56 x 56 x 64 image, 128 filters -> 56 x 56 x 128 image
+7: Maxpool Layer: 56 x 56 x 128 image, 2 size, 2 stride
+8: Convolutional Layer: 28 x 28 x 128 image, 256 filters -> 28 x 28 x 256 image
+9: Maxpool Layer: 28 x 28 x 256 image, 2 size, 2 stride
+10: Convolutional Layer: 14 x 14 x 256 image, 512 filters -> 14 x 14 x 512 image
+11: Maxpool Layer: 14 x 14 x 512 image, 2 size, 2 stride
+12: Convolutional Layer: 7 x 7 x 512 image, 1024 filters -> 7 x 7 x 1024 image
+13: Convolutional Layer: 7 x 7 x 1024 image, 256 filters -> 7 x 7 x 256 image
+14: Connected Layer: 12544 inputs, 4655 outputs
+15: Detection Layer
+forced: Using default '0'
+Loading weights from tiny-coco.weights...Done!
+data/giraffe.jpg: Predicted in 6.086653 seconds.
+giraffe: 49%
+zebra: 37%
+
+Many forks are currently using this, interesting ones like https://github.com/mrzl/ofxDarknet (darknet neural network addon for openFrameworks)
+
+Forum Discussion:
+
+Refer to the many threads on the C++ port, including this.
+
+1. https://groups.google.com/forum/#!topic/darknet/4Hb159aZBbA
+
+2. https://groups.google.com/forum/#!topic/darknet/bXDkfGwU3CE
+
+3. https://groups.google.com/forum/#!topic/darknet/4Hb159aZBbA
+
+And further blog posts,
+
+1. https://covijn.com/2016/11/fixing-darknet-opencv3-make-error-convolution...
+
+And, if Qt5 is involved, also refer to the work done at,
+
+http://gpupowered.org/node/56 [Integrating Darknet/Yolo and OpenCV3, with Qt5]

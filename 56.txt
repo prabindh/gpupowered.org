@@ -1,0 +1,8 @@
+Integrating Darknet/Yolo and OpenCV3, with Qt5
+
+ Submitted by prabindh on Sun, 01/08/2017 - 19:05  / /
+Just added a shared-library port of latest Darknet/Yolo framework, that enables easy integration into other frameworks like Qt5.
+
+An example Qt5 application, with OpenCV3, and Darknet is built in below repository.
+
+https://github.com/prabindh/qt5-opencv3-darknet

@@ -1,0 +1,46 @@
+Impact of Qualcomm-NXP-Freescale on the GPU Ecosystem
+
+ Submitted by prabindh on Wed, 11/02/2016 - 19:27  / /
+Its been a busy week in the markets, with the announcement of the Qualcomm-NXP deal. As is common in such big ticket announcements, a lot of detail gets shoved behind for later discussion.
+
+One of these "little" things is the number of GPU architectures that this combined entity will support at start, and where it will end up later. The same applies to the CPU architectures, but given that it is still coming from an ARM based family it might be less of an issue. On the DSP side, Freescale and Qualcomm also have their own separate DSP engines that need to have their own roadmaps.
+
+GPU Engines - Freescale
+
+Freescale currently has atleast 2 "Graphics" engines -
+
+Based on the Vivante GC family (both 2D and 3D engines), used on the IMX5/6. These support OpenGL ES and OpenVG with different combinations of software and hardware.
+Based on the erstwhile 2D cores licensed from AMD (Z160), used on the IMX3 series
+GPU Engines - Qualcomm
+
+Qualcomm designs and supports their own GPU's - the Adreno family.
+
+Software Support
+
+While Freescale has been primarily supporting Ubuntu on ARM and some versions of Android on their Embedded software kits, Qualcomm supports the latest versions of Android with their GPUs.
+
+An important and interesting care-about is the way Qualcomm integrates the latest Hardware-Composer Android architecture with the Display pipeline in their chipsets, along with the GPU.
+
+Since the GPU details of both are closed, both of them have FOSS (Open source) driver efforts driven by ambitious and passionate members of the opensource community -
+
+https://github.com/laanwj/etna_viv (for Vivante), and
+
+https://github.com/freedreno/freedreno (for Adreno)
+
+There is active support for the Vivante GPU in the Linux Xorg stack, driven by users and developers of the IMX6 in the Embedded market. Adreno drivers focus only on the Android stack, while some third parties work on the Embedded Linux stack.
+
+Performance
+
+The Vivante core in some tests has proven to be more accurate (in rendering) than other GPUs. In terms of real-world benchmarks and performance however, the Adreno fares better compared to the equivalent Vivante cores. The Adreno is also about the only core that can dynamically change from Immediate to Deferred mode rendering on a per frame basis.
+
+32b vs 64b
+
+Currently none of the GPUs from Freescale are 64bit. IMX8 was expected to be 64bit enabled, and to be announced in 2017. With almost all devices from Qualcomm 64bit (ARMv8) enabled, it is anybody's guess which architecture this high-end bracket will use.
+
+To conclude, in terms of GPU variants in the new entity - we have
+
+The Vivante GC2000, GC880 series (IMX5,6),
+The Adreno (erstwhile) Z series, and
+Qualcomm's Adreno 3 series, Adreno 4 series, and Adreno 5 series.
+
+The above 4 points will no doubt be discussed hotly in the coming months. Eventually, one architecture is going to win, spanning across overlapping product/performance ranges. This strategy will be key in markets like Automotive, where customers prefer to work with the same architecture, drivers, and tools, across product ranges. The only question is, how long before it happens.
