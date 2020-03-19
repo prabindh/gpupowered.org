@@ -1,134 +1,717 @@
-<html>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GPU powered graphics and compute applications, algorithms, and Deep Learning infrastructure">
+    <title>ML, Compute and Graphics &ndash; Algorithms &ndash; Applications</title>
+    
+    <link rel="stylesheet" href="css/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="css/grids-responsive-min.css">
+    <!--<![endif]-->
+    
+    
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="css/layouts/blog-old-ie.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="css/layouts/blog.css">
+        <!--<![endif]-->
+</head>
+<body>
 
-<h1>Introduction </h1>
- Submitted by prabindh on Fri, 01/15/2016 - 20:13  / /
-<br>
-GPUPowered.org contains labs and quiz material for learning advanced Graphics technologies in an easy and interactive manner, with just a browser as a tool.
-<br>
-The Course Material, Lab and the OpenGL quiz can be accessed [from <a href="http://gpupowered.org/node/13">http://gpupowered.org/node/13</a>].
 
 
-<h1>C++ Port of Darknet (of YOLO fame)</h1>
- 
-Submitted by prabindh on Sat, 02/11/2017 - 13:35  / /
-<br>
-OpenCV3 failures when working with C based DL frameworks, like DeepNet (Made famous by YOLO - http://pjreddie.com/darknet/yolo/) is a common issue.
-<br>
-Here is the latest version of Darknet, ported to C++, fixing many coding bugs along the way. Work involved primarily encapsulation of APIs with C linkages, including undefined headers, bug fixes, and typecasting various allocations to actual types, and using correct Error detection types for CUBLAS.
-<br>
-For training with own dataset, and detection, refer to the updated README at,
-<br>
-machine learningyolocaffedarknetc++
-<br>
-<a href = "http://gpupowered.org/node/53">Read more about C++ Port of Darknet (of YOLO fame)</a> 0 Comments
 
-<h1>Introducing Euclid, a labeller for image-datasets</h1>
 
- Submitted by prabindh on Sat, 02/04/2017 - 18:57  / /
-<br>
-Introduction:
-<br>
-Euclid is a tool for manual labelling of data - sets, such as those found in Deep learning systems that employ Caffe. This includes systems like DIGITS, and YOLO. It is an object / class labelling tool for machine learning frameworks.
-<br>
-https://github.com/prabindh/euclid/
-<br>
-This tool runs on Linux and Windows, and is based on Python 2.7/Tkinter. Though the UI is a bit clunky it is functional at this point.
-<br>
-Label format support:
-<br>
-digitsdetectnetcaffelabellingeuclid
-<br>
-<a href="http://gpupowered.org/node/52">Read more about Introducing Euclid, a labeller for image-datasets </a	> 0 Comments
 
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+            <h1 class="brand-title">GPU <br>Powered</h1>
+            <h2 class="brand-tagline">[Algorithms][Applications]</h2>
+
+        </div>
+    </div>
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Enabling COVID research with the GPU with OpenMM and Folding@Home</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Mar 2020 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">covid</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+
+What is the objective of Folding@Home COVID-19 ?<br>
+"After initial quality control and limited testing phases, Folding@home team has released an initial wave of projects simulating potentially druggable protein targets from SARS-CoV-2 (the virus that causes COVID-19) and the related SARS-CoV virus (for which more structural data is available) into full production on Folding@home. This initial wave of projects focuses on better understanding how these coronaviruses interact with the human ACE2 receptor required for viral entry into human host cells, and how researchers might be able to interfere with them through the design of new therapeutic antibodies or small molecules that might disrupt their interaction.<br><br>
+How does Folding@Home for COVID-19 work ?<br>
+Step1: Download the installer for your platform - at <a href="https://foldingathome.org/start-folding/">https://foldingathome.org/start-folding/</a>
+<br>
+Step2: Install on your system with default options (including screensaver, start at boot, etc)
+<br>
+Step3: After install, automatically "Folding@Home" client will launch, or you can start it from the Start menu as a Desktop application.
+<br>
+Step4: Configure to use the GPU when idle, or when using it. Configure your username/join a team name.
+<br>
+Locally, an application called "FAHClient.exe" starts, and in case the firewall needs to be enabled for this application to communicate to the Web (for status and data updates), enable it.
+<br>
+<br>
+What Compute Units are being used ?<br>
+Digging deeper into the running execution runtimes, it seems that both the CPU and integrated GPU and Nvidia GPUs are being used on the Laptop, and in both the cases of GPU, OpenCL kernels are being used.<br><br>
+
+On the Intel CPU, some of the accelerated FFT primitives are being used.<br>
+
+These are initiated by FahCore_22 executables, that are launched as below:
+<br>
+"C:\Program Files (x86)\FAHClient/FAHCoreWrapper.exe" C:\Users\xx\AppData\Roaming\FAHClient\cores/cores.foldingathome.org/v7/win/64bit/Core_22.fah/FahCore_22.exe -dir 01 -suffix 01 -version 705 -lifeline 5876 -checkpoint 15 -gpu-vendor nvidia -opencl-platform 0 -opencl-device 0 -cuda-device 0 -gpu 0
+<br>
+"C:\Program Files (x86)\FAHClient/FAHCoreWrapper.exe" C:\Users\xx\AppData\Roaming\FAHClient\cores/cores.foldingathome.org/v7/win/64bit/avx/Core_a7.fah/FahCore_a7.exe -dir 00 -suffix 01 -version 705 -lifeline 5876 -checkpoint 15 -np 6
+<br><br>
+Thoughts and Followup
+<br>
+Looking at the usage of different engines, the Nvidia GPU can be optimised to use CUDA kernels that can potentially provide improved performance in this case. Raised an issue about this and the scheduler at <a href="https://github.com/FoldingAtHome/fah-issues/issues/1326">https://github.com/FoldingAtHome/fah-issues/issues/1326</a>
+<br>
+
+                </div>
+                </section>
+            </div>           
+            
+            
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Accelerated Video Encode Decode with Nvidia GPU</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Mar 2020 under <a class="post-category post-category-design" href="#">GPU Video</a> <a class="post-category post-category-design" href="#">nvenc</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> Options for effectively using nvenc and nvdec </p>
+                       <p>
+From <a href="http://on-demand.gputechconf.com/gtc/2018/presentation/s8601-nvidia-gpu-video-technologies.pdf">this presentation http://on-demand.gputechconf.com/gtc/2018/presentation/s8601-nvidia-gpu-video-technologies.pdf</a> explains the various nvenc and nvdec and pre/post processing options available via the HW engine, and CUDA API. Target 490 fps on a GP104 GPU for a Transcode session.
+<br><br> In addition, various tools to debug the usage, via nvidia-smi dmon command are explained.
+
+                       </p>
+
+                </div>
+                </section>
+            </div>           
+            
+                        
+            
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">SLIDE - (Sub-LInear Deep learning Engine) Rice Univ</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Mar 2020 under <a class="post-category post-category-design" href="#">CPU Competition</a> <a class="post-category post-category-design" href="#">Extreme Classifier Algorithms</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> Using Locally Sensitive Hashing (LSH) to reduce training time </p>
+                       <p>
+From <a href="https://www.cs.rice.edu/~as143/Papers/SLIDE_MLSys.pdf">this rice university paper at MLSys 2020 https://www.cs.rice.edu/~as143/Papers/SLIDE_MLSys.pdf</a>, the authors present a method for fast training to required levels of accuracy, using LSH, for Extreme classification tasks (ex Amazon670 etc)
+<br>
+
+LSH was introduced in this paper "LSH-SAMPLING BREAKS THE COMPUTATIONAL CHICKEN-AND-EGG LOOP IN ADAPTIVE STOCHASTIC GRADIENT ESTIMATION<br>
+<br>
+<ul>
+<li>Without Hugepages, perf drops by 30%<br><br>
+<li>Without GMA,AVXx,SSE4.x perf drops by another 35%<br><br>
+<li>Benefits from adaptive sampling of active neurons<br><br>
+</ul>
+
+The code is provided at <A href="https://github.com/keroro824/HashingDeepLearning">https://github.com/keroro824/HashingDeepLearning</A>
+                       </p>
+
+                </div>
+                </section>
+            </div>           
+            
+            
+<!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Avoid Google Colab Disconnect</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Mar 2020 under <a class="post-category post-category-design" href="#">Tips</a> <a class="post-category post-category-design" href="#">Colab</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> Tip for preventing Google Colab from disconnecting</p>
+                       <p>
+From <a href="https://www.hackster.io/bandofpv/reading-eye-for-the-blind-with-nvidia-jetson-nano-8657ed">https://www.hackster.io/bandofpv/reading-eye-for-the-blind-with-nvidia-jetson-nano-8657ed</a>
+<br>
+
+During long operations (ex Training a model), to prevent Google Colab from disconnecting to the server, press Ctrl+ Shift + I to open inspector view. Select the Console tab and enter this:
+<br><br>
+function ClickConnect(){<br>
+console.log("Working"); <br>
+document.querySelector("colab-toolbar-button#connect").click() <br>
+}
+<br>
+setInterval(ClickConnect,60000)
+
+                       </p>
+
+                </div>
+                </section>
+            </div>           
+            
+            
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Performance improvement with cudf for the groupby operation</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Feb 2020 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">cudf, rapids with GPU</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p>Rapids cudf improvement on large CSV groupby</p>
+                       
+                       Test case at - <a href="https://github.com/prabindh/deepnotes/blob/master/rapids/cudf-test.py">https://github.com/prabindh/deepnotes/blob/master/rapids/cudf-test.py</a>
+                       <p>
+Selected chunk size:  1000000<br>
+Running CPU, size =  1000000<br>
+Pandas Groupby Time = 0.5486793518066406<br>
+Pandas Groupby Time = 0.0010442733764648438<br>
+Pandas Groupby Time = 0.0006716251373291016<br>
+Pandas Groupby Time = 0.0006544589996337891<br>
+Pandas Groupby Time = 0.0006563663482666016<br>
+Running GPU, size =  1000000<br>
+Cudf Groupby Time = 0.015185356140136719<br>
+Cudf Groupby Time = 0.0007460117340087891<br>
+Cudf Groupby Time = 0.0007538795471191406<br>
+Cudf Groupby Time = 0.0006649494171142578<br>
+Cudf Groupby Time = 0.0006606578826904297<br><br>
+                       </p>
+
+                </div>
+                </section>
+            </div>      
+            
+
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">DeepOps - Deploying GPU clusters</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Feb 2020 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">Clusters</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> DeepOps framework for deploying GPU clusters</p>
+                       <p>
+From <a href="https://github.com/NVIDIA/deepops">https://github.com/NVIDIA/deepops</a>
+<br>
+
+The DeepOps project encapsulates best practices in the deployment of GPU server clusters and sharing single powerful nodes (such as NVIDIA DGX Systems). DeepOps can also be adapted or used in a modular fashion to match site-specific cluster needs. For example: <br>
+<br>
+<ul>
+<li>An on-prem, air-gapped data center of NVIDIA DGX servers where DeepOps provides end-to-end capabilities to set up the entire cluster management stack<br><br>
+<li>An existing cluster running Kubernetes where DeepOps scripts are used to deploy Kubeflow and connect NFS storage<br><br>
+<li>An existing cluster that needs a resource manager / batch scheduler, where DeepOps is used to install Slurm, Kubernetes, or a hybrid of both<br><br>
+<li>A single machine where no scheduler is desired, only NVIDIA drivers, Docker, and the NVIDIA Container Runtime<br><br>
+</ul>
+
+A virtual deploy guide is also provided, to test out the deployment on a single machine.
+                       </p>
+
+                </div>
+                </section>
+            </div>           
+
+
+            
+                        <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Nvidia-Docker with GPU for Ubuntu 18.04.3</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Feb 2020 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">Docker with GPU</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> Nvidia-Docker setup on Ubuntu 18.04.3</p>
+                       <p>
+This link contains steps for installing Nvidia GPU enabled GPU, on Ubuntu 18.04.3<br>
+<a href="https://github.com/prabindh/deepnotes/blob/master/docker-18.04.3/docker.txt">https://github.com/prabindh/deepnotes/blob/master/docker-18.04.3/docker.txt</a>
+<br>
+Output of the nvidia-smi command running in the container should look like below <img src="https://raw.githubusercontent.com/prabindh/deepnotes/master/docker-18.04.3/docker.png">
+                       </p>
+
+                </div>
+                </section>
+            </div>           
+            
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">RAPIDS for the GPU</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Feb 2020 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">Rapids ML</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> Rapids support</p>
+                       <p>
+Rapids framework is available on Linux, most recent being the 0.11 version. Get the framework corresponding to preferences via the configurator at,
+<br>
+<a href="https://rapids.ai/start.html">https://rapids.ai/start.html</a>
+<br>
+Rapids framework is not available on Windows, and will show the error "PackagesNotFoundError: The following packages are not available from current channels". For the reasoning on why Rapids is not available via pip, due to the manylinux related issue, read more at <a href="https://medium.com/rapids-ai/rapids-0-7-release-drops-pip-packages-47fc966e9472"> https://medium.com/rapids-ai/rapids-0-7-release-drops-pip-packages-47fc966e9472</a>
+                       </p>
+
+                </div>
+                </section>
+            </div>                        
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Recent Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Parsing Tensorflow API documentation</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in Sep 2019 under <a class="post-category post-category-design" href="#">Tensorflow</a> <a class="post-category post-category-design" href="#">Frameworks</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> With API changes happening frequently, it becomes important to have the installed API handy and readily available for reading. Is it possible to do it without going online ? </p>
+                       <p>Since Tensorflow documents are generated from existing code, pydoc can be used to perform "man" like commands on the Python terminal following steps below</p>
+                       
+                       <p>1. Install pydoc via pip or other tool</p>
+                       <p>2. Invoke pydoc as below on the desired API to be looked up</p>
+                       <p>$ <i>pydoc tensorflow.data.Dataset</i></p>
+                       <p> This results in below display<br><br>
+"Help on class DatasetV2 in tensorflow.data:<br>
+
+tensorflow.data.Dataset = class DatasetV2(tensorflow.python.training.tracking<br>.base.Trackable, tensorflow.python.framework.composite_tensor<br>.CompositeTensor)
+ |  <br>tensorflow.data.Dataset(variant_tensor)
+ |<br>
+ |  Represents a potentially large set of elements."</p>
+
+                </div>
+                </section>
+            </div>                      
+            
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Enabling OpenCV 4.1.0 pkg-config</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in May 2019 under <a class="post-category post-category-design" href="#">OpenCV</a> <a class="post-category post-category-design" href="#">Frameworks</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> By default OpenCV4 does not enable package config (pkg-config pc files) generation anymore. But in 4.1.0 atleast, we can force enabling this during configure as below. </p>
+                       <p>
+                           <ul style="list-style-type:disc;">
+                          <li>Follow instructions in <a href="http://www.linuxfromscratch.org/blfs/view/svn/general/opencv.html">http://www.linuxfromscratch.org/blfs/view/svn/general/opencv.html</a> to download </li>
+                          <li>In cmake configure step, add this "-DOPENCV_GENERATE_PKGCONFIG=ON", and make and make install as described</li>
+                          <li>Now, pkg-config can be used for opencv, with the package name of "opencv4". Detailed output is mentioned in the post <a href="https://github.com/opencv/opencv/issues/13154#issuecomment-495978535">https://github.com/opencv/opencv/issues/13154#issuecomment-495978535</a></li>
+                        </ul>  
+                           
+                       </p>
+                       <p>$pkg-config --cflags opencv4<br>
+-I/usr/include/opencv4/opencv -I/usr/include/opencv4</p><p>
+$ pkg-config --libs opencv4<br>
+-lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_freetype -lopencv_fuzzy -lopencv_gapi -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_quality -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_stitching -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_superres -lopencv_optflow -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text -lopencv_dnn -lopencv_plot -lopencv_videostab -lopencv_video -lopencv_xfeatures2d -lopencv_shape -lopencv_ml -lopencv_ximgproc -lopencv_xobjdetect -lopencv_objdetect -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_imgcodecs -lopencv_flann -lopencv_xphoto -lopencv_photo -lopencv_imgproc -lopencv_core</p>
+
+                </div>
+                </section>
+            </div>            
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Blog Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">CUDA, Keras, Tensorflow versions</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in May 2019 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">Keras</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p> Current working version that is supportive of recent research works  </p>
+                       <p>
+                           <ul style="list-style-type:disc;">
+                          <li>keras - 2.2.4</li>
+                          <li>CUDA 10.0 + matching CUDNN</li>
+                          <li>tensorflow-gpu - 1.13.1</li>
+                        </ul>  
+                           
+                       </p>
+
+                </div>
+                </section>
+            </div>            
+            
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead"> Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">CenterNet based COCO data-set object detection on Windows</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in April 2019 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">Object Detection</a>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                       <p>CenterNet uses center-points instead of typical bounds of region of interest. Since the default build is on Linux, this post updates the steps for Windows. link <a href="https://github.com/prabindh/deepnotes/tree/master/CenterNet">https://github.com/prabindh/deepnotes/tree/master/CenterNet</a>, this is derived from xingyizhou et al , CenterNet. Steps and results of Webcam demo updated. GPU loading is 70% (Quadro1000M) at approx 30 fps using default Python code. Refer GPU-z logs in the same folder.<a href="https://github.com/prabindh/deepnotes/blob/master/CenterNet/centernet-GPU-Z%20Sensor%20Log.txt">https://github.com/prabindh/deepnotes/blob/master/CenterNet/centernet-GPU-Z%20Sensor%20Log.txt</a> </p>
+
+<p>Windows port of CenterNet <a href="https://github.com/prabindh/deepnotes/tree/master/CenterNet">https://github.com/prabindh/deepnotes/tree/master/CenterNet</a></p>
+                    </div>
+                </section>
+            </div>
+
+            
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Labelling and Training to detect capacitors in a PCB with Yolo (and Squeezedet) Deep learning framework in 1 hour</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in March 2019 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">ML</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p>One of the most time consuming tasks in object detection using deep learning frameworks like Yolo or Caffe, is the manual labelling. <br>This post shows how to perform labelling automatically with euclidaug and complete the detection task using Yolo in under one hour of work (including autolabelling), for a 3-class model of electronic capacitors in a PCB (Printed Circuit Board). Methods for Squeezedet (that uses the KITTI output mode of euclidaug since squeezedet uses KITTI format) are also shown. </p>
+
+<p><a href="https://github.com/prabindh/yolo-bins/tree/master/capacito">https://github.com/prabindh/yolo-bins/tree/master/capacito</a></p>
+                    </div>
+                </section>
+            </div>
+
+                        <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Yolo on the Tegra Jetson Nano with CUDNN</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">ML</a> <a class="post-category post-category-design" href="#">Nvidia Jetson Embedded</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p>Binaries for Yolov3, for Nvidia Tegra Nano, based on Ubuntu Linux available in the Jetson Nano Linux image, now available at the repository</p>
+
+<p><a href="https://github.com/prabindh/yolo-bins">https://github.com/prabindh/yolo-bins</a></p>
+                    </div>
+                </section>
+            </div>
+            
+                                    <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Making (and reverse engineering music) with Tensorflow</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">ML</a><a class="post-category post-category-design" href="#">Music</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p>Magenta and its applications (music transcribing - <a href="https://piano-scribe.glitch.me/">https://piano-scribe.glitch.me/</a>) seem interesting, for the way the onset events in the music are calculated with LSTM, and how the metrics seem much better than previous sota.</p>
+
+<p><a href="https://magenta.tensorflow.org/">https://magenta.tensorflow.org/</a></p>
+                    </div>
+                </section>
+            </div>
+
+                                    <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">C++ Port of Darknet (of YOLO fame) - CUDA and OpenCL</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in April 2017 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">ML</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        OpenCV3 failures when working with C based DL frameworks, like DeepNet (Made famous by YOLO - http://pjreddie.com/darknet/yolo/) is a common issue.<br />
+Here is the latest version of Darknet, ported to C++, fixing many coding bugs along the way. Work involved primarily encapsulation of APIs with C linkages, including undefined headers, bug fixes, and typecasting various allocations to actual types, and using correct Error detection types for CUBLAS. With a port to OpenCL by myestro.<br />
+For training with own dataset, and detection, refer to the updated README at,<br />
+machine learningyolocaffedarknetc++<br />
+<a href="http://gpupowered.org/node/53">Read more about C++ Port of Darknet (of YOLO fame)</a> 0 Comments</p>
+                    </div>
+                </section>
+            </div>
+
+
+                                    <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">GFX2017 Graphics Workshop completed</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">ML</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        GFX2017 Graphics workshop was completed on Apr 29th, 2017. Report at the IEEE Site,<br />
+<a href="http://ewh.ieee.org/r10/bangalore/ces/">link</a> 0 Comments</p>
+                    </div>
+                </section>
+            </div>
+
+                                    <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Introducing Euclid and Euclidaug, a labeller and augment tool for image-datasets</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">ML</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+Euclid is a tool for manual labelling of data - sets, such as those found in Deep learning systems that employ Caffe, systems like Tensorflow, SqueezeDet, and YOLO. It is an object / class labelling tool for machine learning frameworks, with applications in Road sign detection, Animal detection, Retail, Defense machinery. A typical usage is as in the IEEE paper "On the Applicability of Deep Learning for Road Signal Recognition", by Vinicios R. Soares et al- https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8627071<br />
+<a href="https://github.com/prabindh/euclid/">https://github.com/prabindh/euclid</a>/<br />
+This tool runs on Linux and Windows, and is based on Python<br />
+<br>Label format support:<br />
+digitsdetectnetcaffelabellingeuclid<br />
+<a href="http://gpupowered.org/node/52">Read more about Introducing Euclid, a labeller for image-datasets </a> 0 Comments</p>
 
 <h1>Integrating Darknet/Yolo and OpenCV3, with Qt5</h1>
 
-
- Submitted by prabindh on Sun, 01/08/2017 - 19:05  / /
-
-<br>
-Just added a shared-library port of latest Darknet/Yolo framework, that enables easy integration into other frameworks like Qt5.
-<br>
-An example Qt5 application, with OpenCV3, and Darknet is built in below repository.
-<br>
-https://github.com/prabindh/qt5-opencv3-darknet
-<br>
-qt5yoloopencv3
-<br>
-<A href="http://gpupowered.org/node/56">Read more about Integrating Darknet/Yolo and OpenCV3, with Qt5 </a> 0 Comments
-
-<h1>Impact of Qualcomm-NXP-Freescale on the GPU Ecosystem</h1>
-
- Submitted by prabindh on Wed, 11/02/2016 - 19:27  / /
-<br>
-Its been a busy week in the markets, with the announcement of the Qualcomm-NXP deal. As is common in such big ticket announcements, a lot of detail gets shoved behind for later discussion.
-<br>
-One of these "little" things is the number of GPU architectures that this combined entity will support at start, and where it will end up later. The same applies to the CPU architectures, but given that it is still coming from an ARM based family it might be less of an issue. On the DSP side, Freescale and Qualcomm also have their own separate DSP engines that need to have their own roadmaps.
-<br>
-
-<a href="http://gpupowered.org/node/39">Read more about Impact of Qualcomm-NXP-Freescale on the GPU Ecosystem</a> 0 Comments
-
-<h1>GTX960 vs Quadro 1000M (CUDA Bandwidth)</h1>
-
- Submitted by prabindh on Mon, 08/29/2016 - 15:25  / /
-<br>
-GTX960 summary:
-<br>
-Device 0: GeForce GTX 960
-Quick Mode
-<br>
-Host to Device Bandwidth, 1 Device(s)
-PINNED Memory Transfers
-Transfer Size (Bytes) Bandwidth(MB/s)
-33554432 12540.5
-<br>
-Device to Host Bandwidth, 1 Device(s)
-PINNED Memory Transfers
-Transfer Size (Bytes) Bandwidth(MB/s)
-33554432 12839.7
-<br>
-<a href="http://gpupowered.org/node/51">Read more about GTX960 vs Quadro 1000M (CUDA Bandwidth)</a> 0 Comments
+<p>Submitted by prabindh on Sun, 01/08/2017 - 19:05 / /<br />
+Just added a shared-library port of latest Darknet/Yolo framework, that enables easy integration into other frameworks like Qt5.<br />
+An example Qt5 application, with OpenCV3, and Darknet is built in below repository.<br />
+https://github.com/prabindh/qt5-opencv3-darknet<br />
+qt5yoloopencv3<br />
+<a href="http://gpupowered.org/node/56">Read more about Integrating Darknet/Yolo and OpenCV3, with Qt5 </a> 0 Comments</p>
+                    </div>
+                </section>
+            </div>
 
 
-<h1>From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support</h1>
+ <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
 
- Submitted by prabindh on Sat, 08/13/2016 - 23:16  / /
-<br>
-From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support (Replicated from https://github.com/prabindh/Lasagne/wiki/From-Zero-to-Lasagne-on-Windows...(64-bit),-on-Dell-Precision-with-Quadro-GPU,-with-CUDNN-support till the Wiki gets mainlined)
-<br>
-cudacudnnlasagnewindows10theanowinpython
-<br>
-<a href="http://gpupowered.org/node/50">Read more about From Zero to Lasagne on Windows 10 (64-bit), on Dell Precision with Quadro GPU, with CUDNN support </a> 0 Comments
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Impact of Qualcomm-NXP-Freescale on the GPU Ecosystem</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in November 2016 under <a class="post-category post-category-design" href="#">GPU HW</a> <a class="post-category post-category-design" href="#">Ecosystem</a><a class="post-category post-category-design" href="#">Qualcomm/NXP/Freescale</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p> The proposed Qualcomm-Nxp-Freescale merger brings a new dimension in terms of GPU variants in the new entity - we have (1) The Vivante GC2000, GC880 series (IMX5,6), (2) The Adreno (erstwhile) Z series, and (3) Qualcomm's Adreno 3 series, Adreno 4 series, and Adreno 5 series.</p><p>How do they compare and who is going to win ? Read more at <a href="https://www.linkedin.com/pulse/impact-qualcomm-nxp-freescale-gpu-ecosystem-prabindh-sundareson/">this linked in post</a></p>
+                    </div>
+                </section>
+            </div>
 
 
-<h1>Caffe on Ubuntu 16.04 with VirtualBox + Windows 10 x64 Dell Precision + Quadro 1000</h1>
 
- Submitted by prabindh on Sun, 08/07/2016 - 08:37  / /
-<br>
-Note: Detailed installation steps of Nvidia DIGITS on Ubuntu 16.04 (native, not VMWare on Windows10), is at https://github.com/prabindh/deepnotes/tree/master/ubuntu16.04.1
-<br>
-Steps
-<br>
-1. Install the AMD64 ISO on the VM using standard procedure
-<br>
-http://releases.ubuntu.com/16.04/ubuntu-16.04.1-desktop-amd64.iso
-<br>
-VMWare version - 5.1.2 r108956
-<br>
-2. sudo apt-get install build-essential
-<br>
-caffemlpythonubuntu 16.04vmwarewindows10quadrocuda
-<br>
-<A href="http://gpupowered.org/node/49">Read more about Caffe on Ubuntu 16.04 with VirtualBox + Windows 10 x64 Dell Precision + Quadro 1000 </a>0 Comments
+                                   <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
 
-<h1>Virtual Reality - 9 issues</h1>
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
 
-Introduction
-<br>
-As VR (Virtual Reality) begins its second (or third) cycle of push into the realms of technology, it is worthwhile to check what problems remain to be solved. This article is a review of past research on fundamental issues that have not yet been solved.
-<br>
-Note: In this article, VR will primarily refer to immersiveness in the Visual domain, and specifically with HMDs (Head Mounted Displays).
-<br>
-<a href="http://gpupowered.org/node/46">Read more about Virtual Reality - 9 issues</a> 0 Comments
-<br>
+                        <h2 class="post-title">Khronos Chapter Inaugurated</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in October 2016 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">Graphics</a><a class="post-category post-category-design" href="#">Khronos</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p>The Khronos chapter at Bangalore was inaugurated recently with participation from key companies - Samsung, Nvidia, AMD, TI, and many more startups and established companies. Read more at <a href="https://news.samsung.com/in/samsung-rd-institute-hosts-inauguration-of-khronos-bangalore-chapter"> this Samsung page</a>, and in <a href="https://chapters.khronos.org/locations/india"> this Khronos page </a>. Panel discussion on how Khronos chapter can proceed further in coming years at <a href="https://www.youtube.com/watch?v=YayMypE-m10">this Khronos Youtube link</a></p>
+                    </div>
+                </section>
+            </div>
+
+
+                                   <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead">Post</h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+                        <img width="48" height="48" alt="paintbrush-icon" class="post-avatar" src="img/common/paintbrush-icon.png">
+
+                        <h2 class="post-title">Origins</h2>
+
+                        <p class="post-meta">
+                            By <a href="http://gpupowered.org/profile.html" class="post-author">Prabindh Sundareson</a> in August 2011 under <a class="post-category post-category-design" href="#">GPU</a> <a class="post-category post-category-design" href="#">Graphics</a><a class="post-category post-category-design" href="#">WebGL</a>
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p>GPUPowered.Org was started as a WebGL experiment in 2010-11, when WebGL was still in its early stages. The tutorials setup has been used in various presentations every year. Ref <a href="http://ewh.ieee.org/r10/bangalore/ces/">http://ewh.ieee.org/r10/bangalore/ces/</p>
+                    </div>
+                </section>
+            </div>
+
+
+            <!-- End of blog -->
+            <div class="footer">
+                <div class="pure-menu pure-menu-horizontal">
+                    <ul>
+                        <li class="pure-menu-item"><a href="http://gpupowered.org/profile.html" class="pure-menu-link">About</a></li>
+                        <li class="pure-menu-item"><a href="https://github.com/prabindh" class="pure-menu-link">GitHub</a></li>
+                        <li class="pure-menu-item"><a href="https://purecss.io/layouts/" class="pure-menu-link">Layout</a></li>
+                    </ul>
+                     
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
 </html>
